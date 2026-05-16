@@ -97,7 +97,7 @@ class AppState extends ChangeNotifier with WindowListener {
       _currentPassword = password;
       _isLocked = false;
       notifyListeners();
-      
+
       // If search overlay was requested while locked, show it after unlock
       if (_pendingSearchOverlay) {
         _pendingSearchOverlay = false;
@@ -105,7 +105,7 @@ class AppState extends ChangeNotifier with WindowListener {
           _triggerSearchOverlay();
         });
       }
-      
+
       return true;
     } catch (e) {
       debugPrint("Unlock Error: $e");

@@ -24,7 +24,12 @@ class GlowButton extends StatelessWidget {
       decoration: BoxDecoration(
         boxShadow: [
           if (onPressed != null)
-            BoxShadow(color: glowColor.withOpacity(0.45), blurRadius: 20, spreadRadius: -2, offset: const Offset(0, 4))
+            BoxShadow(
+              color: glowColor.withOpacity(0.45),
+              blurRadius: 20,
+              spreadRadius: -2,
+              offset: const Offset(0, 4),
+            ),
         ],
       ),
       child: ElevatedButton(
@@ -37,8 +42,22 @@ class GlowButton extends StatelessWidget {
         ),
         onPressed: isLoading ? null : onPressed,
         child: isLoading
-            ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
-            : Text(label, style: const TextStyle(fontWeight: FontWeight.w700, color: Colors.white, letterSpacing: 1.2)),
+            ? const SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                  strokeWidth: 2,
+                ),
+              )
+            : Text(
+                label,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                  letterSpacing: 1.2,
+                ),
+              ),
       ),
     );
   }
@@ -67,7 +86,11 @@ class CyberTextField extends StatelessWidget {
     return TextField(
       controller: controller,
       obscureText: obscureText,
-      style: const TextStyle(color: Color(0xFFF5F7FF), fontSize: 14, letterSpacing: 1.2),
+      style: const TextStyle(
+        color: Color(0xFFF5F7FF),
+        fontSize: 14,
+        letterSpacing: 1.2,
+      ),
       onSubmitted: onSubmitted,
       onChanged: onChanged,
       cursorColor: const Color(0xFF00D4FF),
@@ -77,8 +100,14 @@ class CyberTextField extends StatelessWidget {
         prefixIcon: prefixIcon,
         filled: true,
         fillColor: const Color(0xFF0B1023),
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: Color(0xFF171D38))),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: Color(0xFF00D4FF), width: 1.5)),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(color: Color(0xFF171D38)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(color: Color(0xFF00D4FF), width: 1.5),
+        ),
       ),
     );
   }
@@ -113,7 +142,9 @@ class _CreateVaultScreenState extends State<CreateVaultScreen> {
       return;
     }
     if (password.length < 8) {
-      setState(() => _errorMessage = "Password must be at least 8 characters long.");
+      setState(
+        () => _errorMessage = "Password must be at least 8 characters long.",
+      );
       return;
     }
     if (password != confirmPassword) {
@@ -145,7 +176,13 @@ class _CreateVaultScreenState extends State<CreateVaultScreen> {
           color: const Color(0xFF0B1023),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(color: const Color(0xFF171D38)),
-          boxShadow: const [BoxShadow(color: Color(0x2600D4FF), blurRadius: 60, spreadRadius: -10)],
+          boxShadow: const [
+            BoxShadow(
+              color: Color(0x2600D4FF),
+              blurRadius: 60,
+              spreadRadius: -10,
+            ),
+          ],
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -155,20 +192,42 @@ class _CreateVaultScreenState extends State<CreateVaultScreen> {
               children: [
                 Container(
                   padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(color: const Color(0xFF12172D), borderRadius: BorderRadius.circular(12)),
-                  child: const Icon(Icons.shield_outlined, size: 28, color: Color(0xFF00D4FF)),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF12172D),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Icon(
+                    Icons.shield_outlined,
+                    size: 28,
+                    color: Color(0xFF00D4FF),
+                  ),
                 ),
                 const SizedBox(width: 16),
-                const Text("Vault Initialization", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Color(0xFFF5F7FF))),
+                const Text(
+                  "Vault Initialization",
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFFF5F7FF),
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 16),
             const Text(
               "No vault file detected. Set a strong master password to encrypt your credentials locally.",
-              style: TextStyle(fontSize: 13, color: Color(0xFFA8B2D1), height: 1.5),
+              style: TextStyle(
+                fontSize: 13,
+                color: Color(0xFFA8B2D1),
+                height: 1.5,
+              ),
             ),
             const SizedBox(height: 32),
-            CyberTextField(controller: _passCtrl, hintText: "Master Password", obscureText: true),
+            CyberTextField(
+              controller: _passCtrl,
+              hintText: "Master Password",
+              obscureText: true,
+            ),
             const SizedBox(height: 16),
             CyberTextField(
               controller: _confirmPassCtrl,
@@ -178,10 +237,21 @@ class _CreateVaultScreenState extends State<CreateVaultScreen> {
             ),
             if (_errorMessage.isNotEmpty) ...[
               const SizedBox(height: 16),
-              Text(_errorMessage, style: const TextStyle(color: Color(0xFFFF5470), fontSize: 13, fontWeight: FontWeight.w600)),
+              Text(
+                _errorMessage,
+                style: const TextStyle(
+                  color: Color(0xFFFF5470),
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
             ],
             const SizedBox(height: 32),
-            GlowButton(label: "CREATE VAULT", onPressed: _isCreating ? null : _handleCreateVault, isLoading: _isCreating),
+            GlowButton(
+              label: "CREATE VAULT",
+              onPressed: _isCreating ? null : _handleCreateVault,
+              isLoading: _isCreating,
+            ),
           ],
         ),
       ),
@@ -234,7 +304,13 @@ class _LockScreenState extends State<LockScreen> {
           color: const Color(0xFF0B1023),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(color: const Color(0xFF171D38)),
-          boxShadow: const [BoxShadow(color: Color(0x337C5CFF), blurRadius: 60, spreadRadius: -10)],
+          boxShadow: const [
+            BoxShadow(
+              color: Color(0x337C5CFF),
+              blurRadius: 60,
+              spreadRadius: -10,
+            ),
+          ],
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -244,28 +320,59 @@ class _LockScreenState extends State<LockScreen> {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: const Color(0xFF12172D),
-                border: Border.all(color: const Color(0xFF7C5CFF).withOpacity(0.3)),
+                border: Border.all(
+                  color: const Color(0xFF7C5CFF).withOpacity(0.3),
+                ),
               ),
-              child: const Icon(Icons.lock_outline, size: 36, color: Color(0xFF7C5CFF)),
+              child: const Icon(
+                Icons.lock_outline,
+                size: 36,
+                color: Color(0xFF7C5CFF),
+              ),
             ),
             const SizedBox(height: 24),
-            const Text("Encrypted Vault", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFFF5F7FF))),
+            const Text(
+              "Encrypted Vault",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFFF5F7FF),
+              ),
+            ),
             const SizedBox(height: 8),
-            const Text("Enter your master password to unlock.", style: TextStyle(fontSize: 13, color: Color(0xFFA8B2D1))),
+            const Text(
+              "Enter your master password to unlock.",
+              style: TextStyle(fontSize: 13, color: Color(0xFFA8B2D1)),
+            ),
             const SizedBox(height: 32),
             CyberTextField(
               controller: _passCtrl,
               hintText: "Master Password",
               obscureText: true,
-              prefixIcon: const Icon(Icons.key, color: Color(0xFF4B5675), size: 18),
+              prefixIcon: const Icon(
+                Icons.key,
+                color: Color(0xFF4B5675),
+                size: 18,
+              ),
               onSubmitted: (_) => _submit(),
             ),
             if (_error.isNotEmpty) ...[
               const SizedBox(height: 16),
-              Text(_error, style: const TextStyle(color: Color(0xFFFF5470), fontSize: 13, fontWeight: FontWeight.w600)),
+              Text(
+                _error,
+                style: const TextStyle(
+                  color: Color(0xFFFF5470),
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
             ],
             const SizedBox(height: 32),
-            GlowButton(label: "UNLOCK VAULT", onPressed: _isLoading ? null : _submit, isLoading: _isLoading),
+            GlowButton(
+              label: "UNLOCK VAULT",
+              onPressed: _isLoading ? null : _submit,
+              isLoading: _isLoading,
+            ),
           ],
         ),
       ),
@@ -314,10 +421,16 @@ class _MainWindowState extends State<MainWindow> {
 
   void _saveContent() {
     if (_selectedKey != null) {
-      context.read<AppState>().addOrUpdateCredential(_selectedKey!, _contentCtrl.text);
+      context.read<AppState>().addOrUpdateCredential(
+        _selectedKey!,
+        _contentCtrl.text,
+      );
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text("Changes encrypted and saved to disk.", style: TextStyle(color: Color(0xFFF5F7FF))),
+          content: Text(
+            "Changes encrypted and saved to disk.",
+            style: TextStyle(color: Color(0xFFF5F7FF)),
+          ),
           backgroundColor: Color(0xFF171D38),
           behavior: SnackBarBehavior.floating,
         ),
@@ -342,8 +455,18 @@ class _MainWindowState extends State<MainWindow> {
 
         return AlertDialog(
           backgroundColor: const Color(0xFF0B1023),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: const BorderSide(color: Color(0xFF171D38))),
-          title: const Text("New Credential Profile", style: TextStyle(fontSize: 18, color: Color(0xFFF5F7FF), fontWeight: FontWeight.w600)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+            side: const BorderSide(color: Color(0xFF171D38)),
+          ),
+          title: const Text(
+            "New Credential Profile",
+            style: TextStyle(
+              fontSize: 18,
+              color: Color(0xFFF5F7FF),
+              fontWeight: FontWeight.w600,
+            ),
+          ),
           content: TextField(
             controller: ctrl,
             autofocus: true,
@@ -352,19 +475,29 @@ class _MainWindowState extends State<MainWindow> {
             decoration: const InputDecoration(
               hintText: "Enter profile identifier...",
               hintStyle: TextStyle(color: Color(0xFF4B5675)),
-              focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Color(0xFF00D4FF))),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Color(0xFF00D4FF)),
+              ),
             ),
             onSubmitted: (_) => submitNewProfile(),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(c),
-              child: const Text("CANCEL", style: TextStyle(color: Color(0xFFA8B2D1))),
+              child: const Text(
+                "CANCEL",
+                style: TextStyle(color: Color(0xFFA8B2D1)),
+              ),
             ),
             ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF7C5CFF)),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF7C5CFF),
+              ),
               onPressed: submitNewProfile,
-              child: const Text("ADD PROFILE", style: TextStyle(color: Colors.white)),
+              child: const Text(
+                "ADD PROFILE",
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ],
         );
@@ -390,7 +523,11 @@ class _MainWindowState extends State<MainWindow> {
                 child: CyberTextField(
                   controller: _searchSideCtrl,
                   hintText: "Search vault...",
-                  prefixIcon: const Icon(Icons.search, color: Color(0xFF6E7A9C), size: 18),
+                  prefixIcon: const Icon(
+                    Icons.search,
+                    color: Color(0xFF6E7A9C),
+                    size: 18,
+                  ),
                 ),
               ),
               Expanded(
@@ -400,23 +537,51 @@ class _MainWindowState extends State<MainWindow> {
                     final key = state.filteredKeys[index];
                     final isSelected = key == _selectedKey;
                     return Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 2,
+                      ),
                       decoration: BoxDecoration(
-                        color: isSelected ? const Color(0xFF7C5CFF).withOpacity(0.1) : Colors.transparent,
+                        color: isSelected
+                            ? const Color(0xFF7C5CFF).withOpacity(0.1)
+                            : Colors.transparent,
                         borderRadius: BorderRadius.circular(6),
-                        border: Border.all(color: isSelected ? const Color(0xFF7C5CFF).withOpacity(0.3) : Colors.transparent),
+                        border: Border.all(
+                          color: isSelected
+                              ? const Color(0xFF7C5CFF).withOpacity(0.3)
+                              : Colors.transparent,
+                        ),
                       ),
                       child: ListTile(
                         dense: true,
-                        title: Text(key, style: TextStyle(color: isSelected ? const Color(0xFFF5F7FF) : const Color(0xFFA8B2D1), fontSize: 13, fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal)),
-                        onTap: () => _selectCredential(key, state.credentials[key]!),
+                        title: Text(
+                          key,
+                          style: TextStyle(
+                            color: isSelected
+                                ? const Color(0xFFF5F7FF)
+                                : const Color(0xFFA8B2D1),
+                            fontSize: 13,
+                            fontWeight: isSelected
+                                ? FontWeight.w600
+                                : FontWeight.normal,
+                          ),
+                        ),
+                        onTap: () =>
+                            _selectCredential(key, state.credentials[key]!),
                         trailing: IconButton(
-                          icon: const Icon(Icons.delete_outline, size: 16, color: Color(0xFFFF5470)),
+                          icon: const Icon(
+                            Icons.delete_outline,
+                            size: 16,
+                            color: Color(0xFFFF5470),
+                          ),
                           splashRadius: 16,
                           onPressed: () {
                             state.deleteCredential(key);
                             if (_selectedKey == key) {
-                              setState(() { _selectedKey = null; _contentCtrl.clear(); });
+                              setState(() {
+                                _selectedKey = null;
+                                _contentCtrl.clear();
+                              });
                             }
                           },
                         ),
@@ -429,15 +594,30 @@ class _MainWindowState extends State<MainWindow> {
                 padding: const EdgeInsets.all(20),
                 child: ElevatedButton.icon(
                   onPressed: _addNew,
-                  icon: const Icon(Icons.add, size: 18, color: Color(0xFF00D4FF)),
-                  label: const Text("ADD CREDENTIAL", style: TextStyle(color: Color(0xFF00D4FF), fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1.0)),
+                  icon: const Icon(
+                    Icons.add,
+                    size: 18,
+                    color: Color(0xFF00D4FF),
+                  ),
+                  label: const Text(
+                    "ADD CREDENTIAL",
+                    style: TextStyle(
+                      color: Color(0xFF00D4FF),
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.0,
+                    ),
+                  ),
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size(double.infinity, 48),
                     backgroundColor: const Color(0xFF12172D),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: const BorderSide(color: Color(0xFF171D38))),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      side: const BorderSide(color: Color(0xFF171D38)),
+                    ),
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -446,65 +626,104 @@ class _MainWindowState extends State<MainWindow> {
             color: const Color(0xFF050816),
             padding: const EdgeInsets.all(32),
             child: _selectedKey == null
-                ? const Center(child: Text("Select a profile to decrypt contents.", style: TextStyle(color: Color(0xFF4B5675), fontSize: 14, letterSpacing: 1.0)))
-                : Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(_selectedKey!, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: Color(0xFFF5F7FF), letterSpacing: 0.5)),
-                    Row(
-                      children: [
-                        Tooltip(
-                          message: "Generate 64-char Strong Password",
-                          child: IconButton(
-                            icon: const Icon(Icons.vpn_key_outlined, color: Color(0xFF00D4FF)),
-                            onPressed: () {
-                              final psw = state.generateStrongPassword();
-                              Clipboard.setData(ClipboardData(text: psw));
-                              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                                content: Text("Strong password copied to clipboard.", style: TextStyle(color: Colors.white)),
-                                backgroundColor: Color(0xFF171D38),
-                                behavior: SnackBarBehavior.floating,
-                              ));
-                            },
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        SizedBox(
-                          width: 160,
-                          child: GlowButton(
-                            label: "SAVE DATA",
-                            onPressed: _saveContent,
-                            isLoading: state.isSaving,
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-                const SizedBox(height: 32),
-                Expanded(
-                  child: TextField(
-                    controller: _contentCtrl,
-                    maxLines: null,
-                    expands: true,
-                    textAlignVertical: TextAlignVertical.top,
-                    style: const TextStyle(color: Color(0xFFF5F7FF), height: 1.6, fontSize: 14),
-                    cursorColor: const Color(0xFF00D4FF),
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: const Color(0xFF0B1023),
-                      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFF12172D))),
-                      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFF171D38))),
+                ? const Center(
+                    child: Text(
+                      "Select a profile to decrypt contents.",
+                      style: TextStyle(
+                        color: Color(0xFF4B5675),
+                        fontSize: 14,
+                        letterSpacing: 1.0,
+                      ),
                     ),
+                  )
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            _selectedKey!,
+                            style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w700,
+                              color: Color(0xFFF5F7FF),
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              Tooltip(
+                                message: "Generate 64-char Strong Password",
+                                child: IconButton(
+                                  icon: const Icon(
+                                    Icons.vpn_key_outlined,
+                                    color: Color(0xFF00D4FF),
+                                  ),
+                                  onPressed: () {
+                                    final psw = state.generateStrongPassword();
+                                    Clipboard.setData(ClipboardData(text: psw));
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                          "Strong password copied to clipboard.",
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                        backgroundColor: Color(0xFF171D38),
+                                        behavior: SnackBarBehavior.floating,
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                              const SizedBox(width: 16),
+                              SizedBox(
+                                width: 160,
+                                child: GlowButton(
+                                  label: "SAVE DATA",
+                                  onPressed: _saveContent,
+                                  isLoading: state.isSaving,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 32),
+                      Expanded(
+                        child: TextField(
+                          controller: _contentCtrl,
+                          maxLines: null,
+                          expands: true,
+                          textAlignVertical: TextAlignVertical.top,
+                          style: const TextStyle(
+                            color: Color(0xFFF5F7FF),
+                            height: 1.6,
+                            fontSize: 14,
+                          ),
+                          cursorColor: const Color(0xFF00D4FF),
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: const Color(0xFF0B1023),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(
+                                color: Color(0xFF12172D),
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(
+                                color: Color(0xFF171D38),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                )
-              ],
-            ),
           ),
-        )
+        ),
       ],
     );
   }
@@ -531,11 +750,16 @@ class _SearchOverlayState extends State<SearchOverlay> {
     final state = context.watch<AppState>();
 
     if (state.isLocked) {
-      WidgetsBinding.instance.addPostFrameCallback((_) => Navigator.pop(context));
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => Navigator.pop(context),
+      );
     }
 
     final query = _searchCtrl.text.toLowerCase();
-    final results = state.credentials.keys.where((k) => k.toLowerCase().contains(query)).take(6).toList();
+    final results = state.credentials.keys
+        .where((k) => k.toLowerCase().contains(query))
+        .take(6)
+        .toList();
 
     return GestureDetector(
       onTap: () => Navigator.pop(context),
@@ -551,8 +775,17 @@ class _SearchOverlayState extends State<SearchOverlay> {
                 decoration: BoxDecoration(
                   color: const Color(0xFF0B1023).withOpacity(0.9),
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: const Color(0xFF7C5CFF).withOpacity(0.2), width: 1.5),
-                  boxShadow: const [BoxShadow(color: Color(0x267C5CFF), blurRadius: 80, spreadRadius: -10)],
+                  border: Border.all(
+                    color: const Color(0xFF7C5CFF).withOpacity(0.2),
+                    width: 1.5,
+                  ),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Color(0x267C5CFF),
+                      blurRadius: 80,
+                      spreadRadius: -10,
+                    ),
+                  ],
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -560,11 +793,18 @@ class _SearchOverlayState extends State<SearchOverlay> {
                     TextField(
                       controller: _searchCtrl,
                       autofocus: true,
-                      style: const TextStyle(fontSize: 20, color: Color(0xFFF5F7FF), letterSpacing: 0.5),
+                      style: const TextStyle(
+                        fontSize: 20,
+                        color: Color(0xFFF5F7FF),
+                        letterSpacing: 0.5,
+                      ),
                       cursorColor: const Color(0xFF00D4FF),
                       decoration: const InputDecoration(
                         hintText: "Global vault search...",
-                        hintStyle: TextStyle(color: Color(0xFF4B5675), fontSize: 18),
+                        hintStyle: TextStyle(
+                          color: Color(0xFF4B5675),
+                          fontSize: 18,
+                        ),
                         prefixIcon: Padding(
                           padding: EdgeInsets.only(left: 18, right: 10),
                           child: Icon(
@@ -584,7 +824,10 @@ class _SearchOverlayState extends State<SearchOverlay> {
                       onSubmitted: (val) {
                         if (results.isNotEmpty) {
                           final firstKey = results.first;
-                          _MainWindowState._currentInstance?._selectCredential(firstKey, state.credentials[firstKey]!);
+                          _MainWindowState._currentInstance?._selectCredential(
+                            firstKey,
+                            state.credentials[firstKey]!,
+                          );
                           Navigator.pop(context);
                         }
                       },
@@ -598,17 +841,30 @@ class _SearchOverlayState extends State<SearchOverlay> {
                       itemBuilder: (context, index) {
                         final key = results[index];
                         return ListTile(
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-                          title: Text(key, style: const TextStyle(color: Color(0xFFA8B2D1), fontSize: 16)),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 24,
+                            vertical: 8,
+                          ),
+                          title: Text(
+                            key,
+                            style: const TextStyle(
+                              color: Color(0xFFA8B2D1),
+                              fontSize: 16,
+                            ),
+                          ),
                           hoverColor: const Color(0xFF7C5CFF).withOpacity(0.15),
                           onTap: () {
-                            _MainWindowState._currentInstance?._selectCredential(key, state.credentials[key]!);
+                            _MainWindowState._currentInstance
+                                ?._selectCredential(
+                                  key,
+                                  state.credentials[key]!,
+                                );
                             Navigator.pop(context);
                           },
                         );
                       },
                     ),
-                    const SizedBox(height: 12)
+                    const SizedBox(height: 12),
                   ],
                 ),
               ),

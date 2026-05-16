@@ -44,13 +44,13 @@ class OnlyYoursApp extends StatefulWidget {
 
 class _OnlyYoursAppState extends State<OnlyYoursApp> {
   static final GlobalKey<NavigatorState> navigatorKey =
-  GlobalKey<NavigatorState>();
+      GlobalKey<NavigatorState>();
 
   @override
   void initState() {
     super.initState();
     _registerHotKey();
-    
+
     // Set up callback for showing search overlay after unlock
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final state = context.read<AppState>();
@@ -71,18 +71,18 @@ class _OnlyYoursAppState extends State<OnlyYoursApp> {
         if (!mounted) return;
 
         final state = context.read<AppState>();
-        
+
         // Step 1: Always restore and focus the window first
         await windowManager.show();
         await windowManager.focus();
         await windowManager.restore();
-        
+
         // Step 2: If locked or not initialized, request search overlay after unlock
         if (state.isLocked || !state.isInitialized) {
           state.requestShowSearchOverlay();
           return;
         }
-        
+
         // Step 3: If unlocked, show search overlay immediately
         _showSearchOverlay();
       },

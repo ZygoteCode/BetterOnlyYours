@@ -51,7 +51,10 @@ class SecurityCore {
   }
 
   static Uint8List combine(List<Uint8List> arrays) {
-    final totalLength = arrays.fold<int>(0, (sum, element) => sum + element.length);
+    final totalLength = arrays.fold<int>(
+      0,
+      (sum, element) => sum + element.length,
+    );
     final result = Uint8List(totalLength);
     var offset = 0;
     for (final array in arrays) {
@@ -110,15 +113,8 @@ class SecurityCore {
       return Uint8List.fromList(_cachedKey!);
     }
 
-    final derivator = PBKDF2KeyDerivator(
-      HMac(SHA256Digest(), 64),
-    )..init(
-      Pbkdf2Parameters(
-        salt,
-        _pbkdf2Iterations,
-        _keyLength,
-      ),
-    );
+    final derivator = PBKDF2KeyDerivator(HMac(SHA256Digest(), 64))
+      ..init(Pbkdf2Parameters(salt, _pbkdf2Iterations, _keyLength));
 
     final key = derivator.process(passwordBytes);
 
@@ -150,9 +146,9 @@ class SecurityCore {
   }
 
   static Future<void> saveAllCredentials(
-      Map<String, String> credentials,
-      String password,
-      ) async {
+    Map<String, String> credentials,
+    String password,
+  ) async {
     final passBytes = Uint8List.fromList(utf8.encode(password));
     final salt = _randomBytes(_saltLength);
     final nonce = _randomBytes(_nonceLength);
