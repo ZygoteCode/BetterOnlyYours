@@ -17,7 +17,7 @@ class SecurityCore {
   static const int _saltLength = 16;
   static const int _nonceLength = 12; // GCM standard nonce size
   static const int _keyLength = 32; // 256-bit key
-  static const int _pbkdf2Iterations = 60000;
+  static const int _pbkdf2Iterations = 3000;
 
   static final Random _secureRandom = Random.secure();
 

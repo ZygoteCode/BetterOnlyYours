@@ -63,13 +63,14 @@ class GlowButton extends StatelessWidget {
   }
 }
 
-class CyberTextField extends StatelessWidget {
+class CyberTextField extends StatefulWidget {
   final TextEditingController controller;
   final String hintText;
   final bool obscureText;
   final ValueChanged<String>? onSubmitted;
   final ValueChanged<String>? onChanged;
   final Widget? prefixIcon;
+  final bool autoFocus;
 
   const CyberTextField({
     Key? key,
@@ -79,25 +80,69 @@ class CyberTextField extends StatelessWidget {
     this.onSubmitted,
     this.onChanged,
     this.prefixIcon,
+    this.autoFocus = false,
   }) : super(key: key);
+
+  @override
+  State<CyberTextField> createState() => _CyberTextFieldState();
+}
+
+class _CyberTextFieldState extends State<CyberTextField> {
+  late FocusNode _focusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode = FocusNode();
+    // Richiede il focus dopo il primo frame per evitare conflitti durante il build
+    // Questo approccio è fondamentale su Windows desktop per garantire che il campo riceva il focus
+    if (widget.autoFocus) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted && !_focusNode.hasFocus && _focusNode.canRequestFocus) {
+          FocusScope.of(context).requestFocus(_focusNode);
+        }
+      });
+    }
+  }
+
+  @override
+  void didUpdateWidget(CyberTextField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Se il widget viene riattivato, richiedi il focus
+    if (widget.autoFocus && !oldWidget.autoFocus) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted && !_focusNode.hasFocus && _focusNode.canRequestFocus) {
+          FocusScope.of(context).requestFocus(_focusNode);
+        }
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return TextField(
-      controller: controller,
-      obscureText: obscureText,
+      focusNode: _focusNode,
+      autofocus: widget.autoFocus,
+      controller: widget.controller,
+      obscureText: widget.obscureText,
       style: const TextStyle(
         color: Color(0xFFF5F7FF),
         fontSize: 14,
         letterSpacing: 1.2,
       ),
-      onSubmitted: onSubmitted,
-      onChanged: onChanged,
+      onSubmitted: widget.onSubmitted,
+      onChanged: widget.onChanged,
       cursorColor: const Color(0xFF00D4FF),
       decoration: InputDecoration(
-        hintText: hintText,
+        hintText: widget.hintText,
         hintStyle: const TextStyle(color: Color(0xFF4B5675)),
-        prefixIcon: prefixIcon,
+        prefixIcon: widget.prefixIcon,
         filled: true,
         fillColor: const Color(0xFF0B1023),
         enabledBorder: OutlineInputBorder(
@@ -227,6 +272,7 @@ class _CreateVaultScreenState extends State<CreateVaultScreen> {
               controller: _passCtrl,
               hintText: "Master Password",
               obscureText: true,
+              autoFocus: true,
             ),
             const SizedBox(height: 16),
             CyberTextField(
@@ -355,6 +401,7 @@ class _LockScreenState extends State<LockScreen> {
                 size: 18,
               ),
               onSubmitted: (_) => _submit(),
+              autoFocus: true,
             ),
             if (_error.isNotEmpty) ...[
               const SizedBox(height: 16),
@@ -392,6 +439,7 @@ class _MainWindowState extends State<MainWindow> {
   String? _selectedKey;
   final TextEditingController _contentCtrl = TextEditingController();
   final TextEditingController _searchSideCtrl = TextEditingController();
+  final FocusNode _contentFocusNode = FocusNode();
 
   @override
   void initState() {
@@ -409,6 +457,7 @@ class _MainWindowState extends State<MainWindow> {
     }
     _contentCtrl.dispose();
     _searchSideCtrl.dispose();
+    _contentFocusNode.dispose();
     super.dispose();
   }
 
@@ -416,6 +465,12 @@ class _MainWindowState extends State<MainWindow> {
     setState(() {
       _selectedKey = key;
       _contentCtrl.text = content;
+    });
+    // Auto-focus sul content editor quando viene selezionato un credential
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted && !_contentFocusNode.hasFocus) {
+        _contentFocusNode.requestFocus();
+      }
     });
   }
 
@@ -528,6 +583,7 @@ class _MainWindowState extends State<MainWindow> {
                     color: Color(0xFF6E7A9C),
                     size: 18,
                   ),
+                  autoFocus: true,
                 ),
               ),
               Expanded(
@@ -692,6 +748,7 @@ class _MainWindowState extends State<MainWindow> {
                       const SizedBox(height: 32),
                       Expanded(
                         child: TextField(
+                          focusNode: _contentFocusNode,
                           controller: _contentCtrl,
                           maxLines: null,
                           expands: true,
