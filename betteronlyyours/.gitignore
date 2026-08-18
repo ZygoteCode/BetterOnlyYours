@@ -44,5 +44,8 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
+# Local vault and preferences: never commit these.
 credentials.plf
 credentials.plf.bak
+credentials.plf.tmp
+settings.json

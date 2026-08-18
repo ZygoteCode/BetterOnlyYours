@@ -1,5 +1,5 @@
 name: betteronlyyours
-description: "A new Flutter project."
+description: "BetterOnlyYours — a local-first, encrypted credential vault for Windows desktop."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -16,7 +16,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.0.0+1
+version: 2.0.0+1
 
 environment:
   sdk: ^3.11.5
@@ -30,17 +30,20 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-    
-# UI & Window Management
+
+  # Desktop shell: custom window frame and system-wide hotkey.
   window_manager: ^0.5.1
   hotkey_manager: ^0.2.3
+
+  # State management.
   provider: ^6.1.1
-  # Crittografia e Compressione
-  pointycastle: ^3.7.3
-  encrypt: ^5.0.1
-  archive: ^4.0.9
-  # Utility
-  crypto: ^3.0.3
+
+  # Cryptography: PBKDF2-HMAC-SHA256 + AES-256-GCM.
+  pointycastle: ^4.0.0
+
+  # Path joining and opening entry URLs in the default browser.
+  path: ^1.9.0
+  url_launcher: ^6.3.1
 
 dev_dependencies:
   flutter_test:

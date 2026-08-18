@@ -1,227 +1,191 @@
 <div align="center">
 
-# 🔐⚡ BETTER ONLY YOURS
+# BetterOnlyYours
 
-### _Military-Grade Encrypted Credential Vault // Secure Your Digital Fortress_
+**A local, encrypted vault that stays yours.**
 
-[![Flutter](https://img.shields.io/badge/Flutter-3.11+-02569B?style=for-the-badge&logo=flutter&logoColor=white)](https://flutter.dev)
-[![Windows](https://img.shields.io/badge/Windows-Desktop-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://www.microsoft.com/windows)
-[![License](https://img.shields.io/badge/License-Private-FF5470?style=for-the-badge)]()
-[![Security](https://img.shields.io/badge/Security-AE--256--GCM-00D4FF?style=for-the-badge)]()
+Credentials, notes and secrets in a single encrypted file on your own machine.
+No account, no sync, no telemetry.
 
-**Your secrets. Encrypted. Untouchable. Yours.**
+[![Flutter](https://img.shields.io/badge/Flutter-3.47-02569B?style=flat-square&logo=flutter&logoColor=white)](https://flutter.dev)
+[![Windows](https://img.shields.io/badge/Windows-desktop-0078D6?style=flat-square&logo=windows&logoColor=white)](https://www.microsoft.com/windows)
+[![Crypto](https://img.shields.io/badge/AES--256--GCM-PBKDF2--HMAC--SHA256-6E56CF?style=flat-square)]()
 
 </div>
 
 ---
 
-## 🚀 What Is This?
+## What it is
 
-**BetterOnlyYours** is not just another password manager. It's a **fortress**.
+A desktop vault for Windows. Entries live in one file, `credentials.plf`,
+encrypted with a key derived from your master password. The app never talks to
+the network — not for sync, not for updates, not for favicons.
 
-A cyberpunk-themed, military-grade encrypted credential vault built for Windows desktop that treats your sensitive data with the paranoia it deserves. No cloud. No compromises. No backdoors. Just **pure, unbreakable cryptography** wrapped in a sleek, futuristic UI.
+- **Vault dashboard** — counts, recent activity, weak-password review, quick actions.
+- **Structured entries** — title, username, password, URL, notes, tags, favorites, custom fields.
+- **Command palette** — fuzzy search over entries and commands, from inside the app (`Ctrl+K`) or from anywhere in Windows (`Ctrl+Alt+P`).
+- **Password generator** — random characters or passphrase, with strength estimation.
+- **Security center** — the real encryption parameters of your vault file, not marketing copy.
+- **Keyboard-first** — every core action has a shortcut; the mouse is optional.
+- **Responsive desktop shell** — one, two or three panes depending on window width.
 
----
-
-## 🔥 Features
-
-### 💀 **Zero-Trust Security Architecture**
-- **AES-256-GCM** encryption — the gold standard trusted by governments and militaries
-- **PBKDF2** key derivation with **60,000 iterations** — brute force? Good luck with that
-- **Keccak-512** hashing — SHA-3 family, next-gen cryptographic security
-- **128-bit authentication tags** — tamper-proof integrity verification
-- **Secure memory wiping** — sensitive data zeroed out after use, even from RAM
-
-### 🛡️ **Bulletproof Data Protection**
-- Atomic write operations — no corruption, ever. Power failure? We got you.
-- Backup file rotation — automatic fallback if something goes sideways
-- Magic byte signature verification — file integrity checked at byte level
-- Version-controlled vault format — future-proof architecture
-
-### ⚡ **Cyberpunk UI/UX**
-- Dark theme with neon glow effects — because security should look badass
-- Custom window frame with draggable title bar
-- System-wide hotkey (`Ctrl+Alt+P`) — instant vault access from anywhere
-- Real-time search with fuzzy matching — find credentials in milliseconds
-- Smooth animations and transitions — 60fps eye candy
-
-### 🎯 **Smart Workflow**
-- Auto-lock on window minimize — step away, stay secure
-- Global search overlay — access your vault without breaking focus
-- One-click strong password generation (64 characters of pure entropy)
-- Instant clipboard copy — paste credentials anywhere, anytime
-- Credential profiles — organize multiple accounts like a pro
+Minimizing, Alt-Tabbing or losing focus **never** locks the vault. Locking is
+explicit (`Ctrl+L`) or, if you enable it, after a configurable idle timeout.
 
 ---
 
-## 🛠️ Tech Stack
+## Security, precisely
 
-| Category | Technology |
-|----------|-----------|
-| **Framework** | Flutter 3.11+ (Dart) |
-| **Platform** | Windows Desktop |
-| **Encryption** | PointyCastle (AES-256-GCM, PBKDF2, Keccak-512) |
-| **State Management** | Provider |
-| **Window Control** | window_manager |
-| **Hotkeys** | hotkey_manager |
-| **Crypto** | encrypt, crypto, archive |
+| Property | Implementation |
+|---|---|
+| Cipher | AES-256-GCM, 128-bit authentication tag (PointyCastle) |
+| Key derivation | PBKDF2-HMAC-SHA256, **200,000** iterations, 16-byte random salt |
+| Nonce | Fresh 96-bit random nonce per save |
+| Authenticated header | Version, KDF id, iteration count, salt and nonce are GCM associated data |
+| Writes | Temp file → `fsync` → previous file copied to `.bak` → atomic rename |
+| Key lifetime | Only the derived key is held while unlocked; the master password is wiped after unlocking |
+| Metadata | Usage history lives inside the encrypted payload, never in a plaintext file |
+| Network | None |
+
+What this does **not** claim: PBKDF2 is not memory-hard, so a long, unique
+master password remains the real protection. The password strength meter is a
+heuristic estimate, not a proof.
+
+### Vault file format
+
+```
+v2 (current)
+[4]  magic     FF FE 0D 0A
+[1]  version   0x02
+[1]  kdf id    0x01 (PBKDF2-HMAC-SHA256)
+[4]  iterations (big endian)
+[16] salt
+[12] nonce
+[..] AES-256-GCM ciphertext + tag
+
+v1 (legacy, still readable)
+[4] magic | [1] 0x01 | [16] salt | [12] nonce | ciphertext + tag
+PBKDF2-HMAC-SHA256, fixed 3,000 iterations
+```
+
+A v1 vault is read with the old parameters, then transparently re-encrypted as
+v2 with the current iteration count on first unlock.
+
+### Entry format and compatibility
+
+Early builds stored `name -> free text`. That still works:
+
+- A value that is plain text is loaded as an entry with those **notes**, and is
+  written back byte-identical as long as it stays notes-only.
+- Structured entries are stored as `BOY1:<json>` and carry username, password,
+  URL, notes, tags, favorite, timestamps and custom fields.
+- Fields written by a newer version are preserved on round-trip instead of
+  being dropped.
+- Vault-level metadata (recently opened) lives under a reserved key inside the
+  encrypted payload and is hidden from the entry list.
 
 ---
 
-## 📦 Installation
+## Where your data lives
 
-### Prerequisites
-- **Windows 10/11**
-- **Flutter SDK 3.11+**
-- **Dart SDK 3.11+**
+Resolution order (first match wins):
 
-### Build From Source
+1. `BETTERONLYYOURS_VAULT` environment variable (absolute path — useful for portable installs)
+2. `credentials.plf` in the working directory (how early builds stored it)
+3. `credentials.plf` next to the executable
+4. `%APPDATA%\BetterOnlyYours\BetterOnlyYours\credentials.plf`
+
+Preferences (theme, timeouts, window bounds — never secrets) sit in
+`settings.json` in the per-user data folder. The Security center shows the
+exact path in use and can open the containing folder.
+
+**Back up `credentials.plf`.** There is no recovery: forget the master password
+and the data stays encrypted forever.
+
+---
+
+## Keyboard shortcuts
+
+| Shortcut | Action |
+|---|---|
+| `Ctrl + K` | Command palette |
+| `Ctrl + Alt + P` | Command palette from anywhere in Windows |
+| `Ctrl + N` | New entry |
+| `Ctrl + F` | Focus the vault search field |
+| `Ctrl + S` | Save the entry being edited |
+| `Ctrl + D` | Toggle favorite |
+| `Ctrl + Shift + C` | Copy the selected password |
+| `Ctrl + Shift + U` | Copy the selected username |
+| `Ctrl + G` | Password generator |
+| `Ctrl + ,` | Settings |
+| `Ctrl + L` | Lock vault |
+| `Delete` | Delete the selected entry (with confirmation and undo) |
+| `Esc` | Close palette, dialog or search |
+| `↑ / ↓ / Enter` | Move through results and open |
+
+In the palette, `Ctrl+Enter` copies the password and `Alt+Enter` the username
+of the highlighted entry.
+
+---
+
+## Build
+
 ```bash
-# Clone the repository
-git clone https://github.com/YOUR_USERNAME/betteronlyyours.git
-cd betteronlyyours
-
-# Install dependencies
 flutter pub get
-
-# Run in debug mode
 flutter run -d windows
-
-# Build release executable
 flutter build windows --release
 ```
 
-The compiled executable will be in: `build/windows/x64/runner/Release/betteronlyyours.exe`
+Output: `build/windows/x64/runner/Release/betteronlyyours.exe`
 
----
+Checks:
 
-## 🎮 Usage
-
-### First Launch
-1. Run the application
-2. Create your **Master Password** (minimum 8 characters — but come on, make it stronger)
-3. Your encrypted vault is initialized. Welcome to the fortress.
-
-### Daily Use
-- **Unlock**: Enter your master password on the lock screen
-- **Add Credential**: Click "ADD CREDENTIAL" and give it a name
-- **Edit Content**: Select a profile, paste/edit your sensitive data, hit "SAVE DATA"
-- **Search**: Use the sidebar search or press `Ctrl+Alt+P` for global overlay
-- **Generate Password**: Click the key icon to generate a 64-character beast and copy to clipboard
-- **Lock**: Minimize the window — auto-lock engaged
-
-### Keyboard Shortcuts
-| Shortcut | Action |
-|----------|--------|
-| `Ctrl+Alt+P` | Open global search overlay (system-wide) |
-| `Enter` | Submit current form/dialog |
-
----
-
-## 🔐 Security Details
-
-### Vault File Format (`credentials.plf`)
-```
-[4 bytes]  Magic Bytes: 0xFF 0xFE 0x0D 0x0A
-[1 byte]   Version: 0x01
-[16 bytes] Salt (random, per-save)
-[12 bytes] Nonce (random, per-save)
-[Variable] Encrypted payload (AES-256-GCM)
-```
-
-### Encryption Flow
-1. Master password → UTF-8 bytes
-2. Random salt generated (16 bytes)
-3. PBKDF2-SHA256 derives 256-bit key (60,000 iterations)
-4. Random nonce generated (12 bytes)
-5. JSON credentials → UTF-8 plaintext
-6. AES-256-GCM encrypts with authenticated header
-7. Atomic write with backup rotation
-8. **Secure wipe**: password, key, and plaintext zeroed from memory
-
-### Decryption Flow
-1. Read vault file, verify magic bytes and version
-2. Extract salt and nonce from header
-3. Derive key from password + salt
-4. AES-256-GCM decrypt + authenticate
-5. Parse JSON → credential map
-6. **Secure wipe**: sensitive intermediates destroyed
-
----
-
-## ⚠️ Important Notes
-
-- **NO CLOUD STORAGE** — Everything is local. You lose the file, it's gone forever.
-- **NO PASSWORD RECOVERY** — Forget your master password? Your data is cryptographically ashes.
-- **BACK UP YOUR VAULT** — Copy `credentials.plf` to secure offline storage.
-- **DO NOT SHARE** — The vault file is encrypted, but operational security matters.
-
----
-
-## 🏗️ Project Structure
-
-```
-betteronlyyours/
-├── lib/
-│   ├── core/
-│   │   ├── app_state.dart          # State management with Provider
-│   │   └── security_core.dart      # Cryptography engine (the beast)
-│   ├── ui/
-│   │   └── main_window.dart        # All UI components & screens
-│   └── main.dart                   # App entry point + hotkey setup
-├── windows/                        # Windows-specific build files
-├── test/                           # Unit tests
-└── pubspec.yaml                    # Dependencies
+```bash
+flutter analyze
+flutter test
 ```
 
 ---
 
-## 🎨 UI Screenshots
+## Project structure
 
-> **Cyberpunk Dark Theme** — Neon purple & cyan accents on deep navy
+```
+lib/
+  app/            MaterialApp, design tokens and themes, shortcuts, window and hotkey services
+  core/
+    models/       VaultEntry, VaultMeta, AppSettings, GeneratorOptions
+    security/     crypto primitives, file codec, repository, session, typed errors
+    services/     clipboard, generator, strength, fuzzy search, settings, word list
+    storage/      vault and settings path resolution
+    utils/        formatting helpers
+  features/
+    auth/         lock screen, vault creation
+    shell/        title bar, navigation rail, status bar, app shell
+    vault/        list, detail editor, inspector, dashboard, shared entry actions
+    search/       command palette
+    generator/    generator panel and page
+    security/     security center, change master password
+    settings/     settings page
+  shared/         buttons, fields, dialogs, toasts, chips, meters, animations
+state/            vault, settings, shell and toast controllers (Provider)
+```
 
-- **Lock Screen**: Sleek authentication with glow effects
-- **Vault Interface**: Two-panel layout (credentials list + editor)
-- **Search Overlay**: Frosted glass blur with instant results
-- **Custom Title Bar**: Draggable, minimal, cyberpunk aesthetic
-
----
-
-## 🤝 Contributing
-
-This is a **private security-focused project**. If you want to contribute:
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/InsaneSecurity`)
-3. Commit your changes (`git commit -m 'Add quantum-resistant encryption'`)
-4. Push to the branch (`git push origin feature/InsaneSecurity`)
-5. Open a Pull Request
-
-**Security audits and cryptographic improvements are always welcome.** 🔒
-
----
-
-## 📜 License
-
-Private. Proprietary. **Yours.**
-
-This project is not open for public distribution. Use at your own risk. No warranties. No guarantees. Just **encryption**.
+Tests cover the vault format and legacy migration, entry serialization,
+generator, strength estimation, fuzzy search, settings, controller behaviour,
+auth flows, the entry editor, and shell layout at window sizes from 720×520 to
+2560×1440.
 
 ---
 
-## 🙏 Acknowledgments
+## Privacy
 
-- **Flutter Team** — For the amazing cross-platform framework
-- **PointyCastle** — Dart's cryptographic powerhouse
-- **Cyberpunk Aesthetic** — Because security tools shouldn't be boring
+No telemetry, no crash reporting, no remote password services, no icon lookups.
+Everything the app does happens on your machine, against your file.
 
 ---
 
 <div align="center">
 
-### 🔐 Built for paranoia. Designed for power. Encrypted for eternity.
-
-**BetterOnlyYours** — _Because your secrets deserve better._
-
-⚡ _Stay secure. Stay paranoid. Stay yours._ ⚡
+**BetterOnlyYours** — your secrets, your disk, your key.
 
 </div>
