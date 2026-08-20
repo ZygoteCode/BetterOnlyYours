@@ -1,3 +1,5 @@
+import 'package:material_ui/material_ui.dart' show Locale;
+
 import 'generator_options.dart';
 
 enum AppThemeVariant {
@@ -9,6 +11,18 @@ enum AppThemeVariant {
 
   final String label;
   final String description;
+}
+
+/// Interface language. [AppLanguage.system] follows the operating system.
+enum AppLanguage {
+  system(null),
+  english(Locale('en')),
+  italian(Locale('it'));
+
+  const AppLanguage(this.locale);
+
+  /// `null` lets Flutter resolve the platform locale.
+  final Locale? locale;
 }
 
 enum UiDensity {
@@ -24,6 +38,7 @@ enum UiDensity {
 /// contains secrets, entry names or usage history.
 class AppSettings {
   const AppSettings({
+    this.language = AppLanguage.system,
     this.theme = AppThemeVariant.midnight,
     this.density = UiDensity.comfortable,
     this.reduceMotion = false,
@@ -31,6 +46,7 @@ class AppSettings {
     this.clipboardClearSeconds = 30,
     this.confirmDelete = true,
     this.revealSecretsByDefault = false,
+    this.keepPasswordHistory = true,
     this.sidebarWidth = 320,
     this.globalHotkeyEnabled = true,
     this.rememberWindowBounds = true,
@@ -48,6 +64,7 @@ class AppSettings {
   static const double minSidebarWidth = 248;
   static const double maxSidebarWidth = 460;
 
+  final AppLanguage language;
   final AppThemeVariant theme;
   final UiDensity density;
   final bool reduceMotion;
@@ -55,6 +72,9 @@ class AppSettings {
   final int clipboardClearSeconds;
   final bool confirmDelete;
   final bool revealSecretsByDefault;
+
+  /// Keep superseded passwords on the entry so a bad change can be undone.
+  final bool keepPasswordHistory;
   final double sidebarWidth;
   final bool globalHotkeyEnabled;
   final bool rememberWindowBounds;
@@ -66,6 +86,7 @@ class AppSettings {
   bool get clipboardClearEnabled => clipboardClearSeconds > 0;
 
   AppSettings copyWith({
+    AppLanguage? language,
     AppThemeVariant? theme,
     UiDensity? density,
     bool? reduceMotion,
@@ -73,6 +94,7 @@ class AppSettings {
     int? clipboardClearSeconds,
     bool? confirmDelete,
     bool? revealSecretsByDefault,
+    bool? keepPasswordHistory,
     double? sidebarWidth,
     bool? globalHotkeyEnabled,
     bool? rememberWindowBounds,
@@ -80,6 +102,7 @@ class AppSettings {
     WindowBounds? windowBounds,
   }) {
     return AppSettings(
+      language: language ?? this.language,
       theme: theme ?? this.theme,
       density: density ?? this.density,
       reduceMotion: reduceMotion ?? this.reduceMotion,
@@ -89,6 +112,7 @@ class AppSettings {
       confirmDelete: confirmDelete ?? this.confirmDelete,
       revealSecretsByDefault:
           revealSecretsByDefault ?? this.revealSecretsByDefault,
+      keepPasswordHistory: keepPasswordHistory ?? this.keepPasswordHistory,
       sidebarWidth: (sidebarWidth ?? this.sidebarWidth).clamp(
         minSidebarWidth,
         maxSidebarWidth,
@@ -103,6 +127,7 @@ class AppSettings {
 
   Map<String, dynamic> toJson() => <String, dynamic>{
     ...extra,
+    'language': language.name,
     'theme': theme.name,
     'density': density.name,
     'reduceMotion': reduceMotion,
@@ -110,6 +135,7 @@ class AppSettings {
     'clipboardClearSeconds': clipboardClearSeconds,
     'confirmDelete': confirmDelete,
     'revealSecretsByDefault': revealSecretsByDefault,
+    'keepPasswordHistory': keepPasswordHistory,
     'sidebarWidth': sidebarWidth,
     'globalHotkeyEnabled': globalHotkeyEnabled,
     'rememberWindowBounds': rememberWindowBounds,
@@ -120,6 +146,7 @@ class AppSettings {
   factory AppSettings.fromJson(Map<String, dynamic> json) {
     const fallback = AppSettings();
     const known = <String>{
+      'language',
       'theme',
       'density',
       'reduceMotion',
@@ -127,6 +154,7 @@ class AppSettings {
       'clipboardClearSeconds',
       'confirmDelete',
       'revealSecretsByDefault',
+      'keepPasswordHistory',
       'sidebarWidth',
       'globalHotkeyEnabled',
       'rememberWindowBounds',
@@ -135,6 +163,10 @@ class AppSettings {
     };
     final generatorJson = json['generator'];
     return AppSettings(
+      language: AppLanguage.values.firstWhere(
+        (v) => v.name == json['language'],
+        orElse: () => fallback.language,
+      ),
       theme: AppThemeVariant.values.firstWhere(
         (v) => v.name == json['theme'],
         orElse: () => fallback.theme,
@@ -158,6 +190,9 @@ class AppSettings {
           ? json['confirmDelete'] as bool
           : fallback.confirmDelete,
       revealSecretsByDefault: json['revealSecretsByDefault'] == true,
+      keepPasswordHistory: json['keepPasswordHistory'] is bool
+          ? json['keepPasswordHistory'] as bool
+          : fallback.keepPasswordHistory,
       sidebarWidth: _double(
         json['sidebarWidth'],
         fallback.sidebarWidth,

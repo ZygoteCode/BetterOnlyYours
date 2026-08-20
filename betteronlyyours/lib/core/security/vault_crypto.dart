@@ -5,8 +5,9 @@ import 'package:pointycastle/export.dart';
 
 /// Low-level cryptographic primitives used by the vault.
 ///
-/// Nothing here is home-grown: key derivation is PBKDF2-HMAC-SHA256 and
-/// confidentiality/integrity come from AES-256-GCM, both from PointyCastle.
+/// Nothing here is home-grown: key derivation is Argon2id (PBKDF2-HMAC-SHA256
+/// for vaults written by older builds) and confidentiality/integrity come from
+/// AES-256-GCM, all from PointyCastle.
 class VaultCrypto {
   const VaultCrypto._();
 
@@ -25,7 +26,7 @@ class VaultCrypto {
     return bytes;
   }
 
-  static Uint8List deriveKey({
+  static Uint8List deriveKeyPbkdf2({
     required Uint8List password,
     required Uint8List salt,
     required int iterations,
@@ -34,6 +35,33 @@ class VaultCrypto {
     final derivator = PBKDF2KeyDerivator(HMac(SHA256Digest(), 64))
       ..init(Pbkdf2Parameters(salt, iterations, length));
     return derivator.process(password);
+  }
+
+  /// Argon2id: memory-hard, so an attacker cannot trade memory for
+  /// parallelism the way they can against PBKDF2.
+  static Uint8List deriveKeyArgon2id({
+    required Uint8List password,
+    required Uint8List salt,
+    required int memoryKib,
+    required int iterations,
+    required int parallelism,
+    int length = keyLength,
+  }) {
+    final generator = Argon2BytesGenerator()
+      ..init(
+        Argon2Parameters(
+          Argon2Parameters.ARGON2_id,
+          salt,
+          desiredKeyLength: length,
+          memory: memoryKib,
+          iterations: iterations,
+          lanes: parallelism,
+          version: Argon2Parameters.ARGON2_VERSION_13,
+        ),
+      );
+    final out = Uint8List(length);
+    generator.deriveKey(password, 0, out, 0);
+    return out;
   }
 
   static Uint8List aesGcm({

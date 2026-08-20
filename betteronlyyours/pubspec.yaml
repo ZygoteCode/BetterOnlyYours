@@ -45,6 +45,14 @@ dependencies:
   path: ^1.9.0
   url_launcher: ^6.3.1
 
+  # Material widgets, split out of the Flutter SDK in 3.47.
+  material_ui: ^1.0.1
+
+  # Localisation (English + Italian).
+  flutter_localizations:
+    sdk: flutter
+  intl: any
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -66,6 +74,9 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  # Generates AppLocalizations from lib/l10n/*.arb (see l10n.yaml).
+  generate: true
 
   # To add assets to your application, add an assets section, like this:
   # assets:

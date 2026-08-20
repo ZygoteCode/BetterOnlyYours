@@ -1,11 +1,13 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
 import '../../app/app_info.dart';
 import '../../app/hotkey_service.dart';
 import '../../app/theme/palette.dart';
 import '../../app/theme/tokens.dart';
+import '../../l10n/l10n.dart';
 import '../../core/models/app_settings.dart';
+import '../../core/models/vault_entry.dart';
 import '../../shared/widgets/app_button.dart';
 import '../../shared/widgets/app_dialog.dart';
 import '../../shared/widgets/app_surface.dart';
@@ -13,6 +15,7 @@ import '../../shared/widgets/hover_builder.dart';
 import '../../shared/widgets/page_scaffold.dart';
 import '../../shared/widgets/tag_chip.dart';
 import '../../state/settings_controller.dart';
+import '../../state/toast_controller.dart';
 import '../../state/shell_controller.dart';
 import '../../state/vault_controller.dart';
 import '../security/change_master_password_dialog.dart';
@@ -29,21 +32,22 @@ class SettingsPage extends StatelessWidget {
     final settings = controller.settings;
     final shell = context.watch<ShellController>();
     final vault = context.watch<VaultController>();
+    final l10n = context.l10n;
 
     return PageScaffold(
-      title: 'Settings',
-      subtitle: 'Appearance, security behaviour, keyboard and vault storage.',
+      title: l10n.settingsTitle,
+      subtitle: l10n.settingsSubtitle,
       icon: Icons.tune_rounded,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           _Section(
-            title: 'Appearance',
+            title: l10n.settingsAppearance,
             icon: Icons.palette_outlined,
             children: <Widget>[
               _SettingRow(
-                title: 'Theme',
-                description: 'All variants are dark; pick the one you prefer.',
+                title: l10n.settingsTheme,
+                description: l10n.settingsThemeDescription,
                 control: const SizedBox.shrink(),
                 stacked: true,
                 stackedChild: Row(
@@ -63,21 +67,32 @@ class SettingsPage extends StatelessWidget {
                 ),
               ),
               _SettingRow(
-                title: 'Density',
-                description: 'Compact fits more rows on smaller windows.',
+                title: l10n.settingsLanguage,
+                description: l10n.settingsLanguageDescription,
+                control: _ChoiceChips<AppLanguage>(
+                  value: settings.language,
+                  options: <AppLanguage, String>{
+                    for (final language in AppLanguage.values)
+                      language: language.localizedLabel(l10n),
+                  },
+                  onChanged: controller.setLanguage,
+                ),
+              ),
+              _SettingRow(
+                title: l10n.settingsDensity,
+                description: l10n.settingsDensityDescription,
                 control: _ChoiceChips<UiDensity>(
                   value: settings.density,
                   options: <UiDensity, String>{
                     for (final density in UiDensity.values)
-                      density: density.label,
+                      density: density.localizedLabel(l10n),
                   },
                   onChanged: controller.setDensity,
                 ),
               ),
               _SettingRow(
-                title: 'Animations',
-                description:
-                    'Turn off transitions and micro-interactions entirely.',
+                title: l10n.settingsAnimations,
+                description: l10n.settingsAnimationsDescription,
                 control: Switch(
                   value: !settings.reduceMotion,
                   onChanged: (value) => controller.setReduceMotion(!value),
@@ -87,60 +102,87 @@ class SettingsPage extends StatelessWidget {
           ),
           const SizedBox(height: Insets.md),
           _Section(
-            title: 'Security',
+            title: l10n.settingsSecurity,
             icon: Icons.shield_outlined,
             children: <Widget>[
               _SettingRow(
-                title: 'Auto-lock after inactivity',
-                description:
-                    'Minimizing, Alt-Tab or losing focus never lock the vault '
-                    '— only this timer and the manual lock do.',
+                title: l10n.settingsAutoLock,
+                description: l10n.settingsAutoLockDescription,
                 control: _ChoiceChips<int>(
                   value: settings.autoLockMinutes,
                   options: <int, String>{
                     for (final minutes in AppSettings.autoLockChoices)
-                      minutes: minutes == 0 ? 'Never' : '${minutes}m',
+                      minutes: minutes == 0
+                          ? l10n.settingsNever
+                          : l10n.settingsMinutesShort(minutes),
                   },
                   onChanged: controller.setAutoLockMinutes,
                 ),
               ),
               _SettingRow(
-                title: 'Clear clipboard after copying',
-                description:
-                    'Only clears if the copied secret is still on the '
-                    'clipboard.',
+                title: l10n.settingsClipboard,
+                description: l10n.settingsClipboardDescription,
                 control: _ChoiceChips<int>(
                   value: settings.clipboardClearSeconds,
                   options: <int, String>{
                     for (final seconds in AppSettings.clipboardChoices)
-                      seconds: seconds == 0 ? 'Never' : '${seconds}s',
+                      seconds: seconds == 0
+                          ? l10n.settingsNever
+                          : l10n.settingsSecondsShort(seconds),
                   },
                   onChanged: controller.setClipboardClearSeconds,
                 ),
               ),
               _SettingRow(
-                title: 'Reveal secrets by default',
-                description:
-                    'When off, passwords and secret fields start hidden.',
+                title: l10n.settingsRevealSecrets,
+                description: l10n.settingsRevealSecretsDescription,
                 control: Switch(
                   value: settings.revealSecretsByDefault,
                   onChanged: controller.setRevealSecretsByDefault,
                 ),
               ),
               _SettingRow(
-                title: 'Confirm before deleting',
-                description:
-                    'Deleting always offers an undo; this adds a dialog first.',
+                title: l10n.settingsConfirmDelete,
+                description: l10n.settingsConfirmDeleteDescription,
                 control: Switch(
                   value: settings.confirmDelete,
                   onChanged: controller.setConfirmDelete,
                 ),
               ),
               _SettingRow(
-                title: 'Master password',
-                description: 'Re-encrypts the vault with a new key.',
+                title: l10n.settingsKeepHistory,
+                description: l10n.settingsKeepHistoryDescription(
+                  VaultEntry.maxPasswordHistory,
+                ),
+                control: Switch(
+                  value: settings.keepPasswordHistory,
+                  onChanged: controller.setKeepPasswordHistory,
+                ),
+              ),
+              _SettingRow(
+                title: l10n.settingsStoredHistory,
+                description: vault.storedPasswordHistoryCount == 0
+                    ? l10n.settingsStoredHistoryEmpty
+                    : l10n.settingsStoredHistoryCount(
+                        vault.storedPasswordHistoryCount,
+                        vault.entryCount,
+                      ),
                 control: AppButton(
-                  label: 'Change',
+                  label: l10n.settingsClearAll,
+                  icon: Icons.delete_sweep_outlined,
+                  variant: AppButtonVariant.danger,
+                  size: AppButtonSize.small,
+                  onPressed:
+                      vault.isUnlocked && vault.storedPasswordHistoryCount > 0
+                      ? () => _clearAllHistory(context, vault)
+                      : null,
+                ),
+              ),
+              _SettingRow(
+                title: l10n.settingsMasterPassword,
+                description: l10n.settingsMasterPasswordDescription,
+                control: AppButton(
+                  label: l10n.settingsChange,
                   variant: AppButtonVariant.secondary,
                   size: AppButtonSize.small,
                   onPressed: vault.isUnlocked
@@ -155,15 +197,13 @@ class SettingsPage extends StatelessWidget {
           ),
           const SizedBox(height: Insets.md),
           _Section(
-            title: 'Keyboard',
+            title: l10n.settingsKeyboard,
             icon: Icons.keyboard_alt_outlined,
             children: <Widget>[
               _SettingRow(
-                title: 'Global shortcut (Ctrl+Alt+P)',
+                title: l10n.settingsGlobalShortcut,
                 description:
-                    shell.hotkeyError ??
-                    'Brings BetterOnlyYours forward from any application and '
-                        'opens the command palette.',
+                    shell.hotkeyError ?? l10n.settingsGlobalShortcutDescription,
                 control: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
@@ -171,7 +211,7 @@ class SettingsPage extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(right: Insets.sm),
                         child: AppButton(
-                          label: 'Retry',
+                          label: l10n.commonRetry,
                           variant: AppButtonVariant.secondary,
                           size: AppButtonSize.small,
                           onPressed: () =>
@@ -189,8 +229,8 @@ class SettingsPage extends StatelessWidget {
                 ),
               ),
               _SettingRow(
-                title: 'Shortcuts',
-                description: 'Everything reachable without the mouse.',
+                title: l10n.settingsShortcuts,
+                description: l10n.settingsShortcutsDescription,
                 stacked: true,
                 control: const SizedBox.shrink(),
                 stackedChild: const _ShortcutTable(),
@@ -199,15 +239,15 @@ class SettingsPage extends StatelessWidget {
           ),
           const SizedBox(height: Insets.md),
           _Section(
-            title: 'Vault & window',
+            title: l10n.settingsVaultWindow,
             icon: Icons.folder_outlined,
             children: <Widget>[
               _SettingRow(
-                title: 'Vault file',
+                title: l10n.settingsVaultFile,
                 description:
-                    vault.fileInfo?.path ?? 'Resolving the vault location…',
+                    vault.fileInfo?.path ?? l10n.settingsVaultFileResolving,
                 control: AppButton(
-                  label: 'Security center',
+                  label: l10n.dashboardSecurityCenter,
                   variant: AppButtonVariant.secondary,
                   size: AppButtonSize.small,
                   onPressed: () => context.read<ShellController>().goTo(
@@ -216,9 +256,8 @@ class SettingsPage extends StatelessWidget {
                 ),
               ),
               _SettingRow(
-                title: 'Remember window size and position',
-                description:
-                    'Restores the window where you left it on the next start.',
+                title: l10n.settingsRememberWindow,
+                description: l10n.settingsRememberWindowDescription,
                 control: Switch(
                   value: settings.rememberWindowBounds,
                   onChanged: controller.setRememberWindowBounds,
@@ -228,17 +267,17 @@ class SettingsPage extends StatelessWidget {
           ),
           const SizedBox(height: Insets.md),
           _Section(
-            title: 'About',
+            title: l10n.settingsAbout,
             icon: Icons.info_outline_rounded,
             children: <Widget>[
-              InfoRow(label: 'Version', value: AppInfo.version),
-              const InfoRow(
-                label: 'Storage',
-                value: 'A single encrypted file, written atomically.',
+              InfoRow(label: l10n.settingsVersion, value: AppInfo.version),
+              InfoRow(
+                label: l10n.settingsStorage,
+                value: l10n.settingsStorageValue,
               ),
-              const InfoRow(
-                label: 'Network access',
-                value: 'None — the app never connects to anything.',
+              InfoRow(
+                label: l10n.settingsNetworkAccess,
+                value: l10n.settingsNetworkAccessValue,
               ),
               Padding(
                 padding: const EdgeInsets.only(top: Insets.sm),
@@ -248,6 +287,34 @@ class SettingsPage extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+Future<void> _clearAllHistory(
+  BuildContext context,
+  VaultController vault,
+) async {
+  final l10n = context.l10n;
+  final toasts = context.read<ToastController>();
+  final count = vault.storedPasswordHistoryCount;
+
+  final confirmed = await showConfirmDialog(
+    context: context,
+    title: l10n.settingsClearAllTitle,
+    message: l10n.settingsClearAllMessage,
+    detail: l10n.settingsClearAllDetail(count),
+    confirmLabel: l10n.settingsClearAllConfirm,
+    destructive: true,
+    icon: Icons.delete_sweep_outlined,
+  );
+  if (!confirmed) return;
+
+  final cleared = await vault.clearAllPasswordHistory();
+  if (cleared) {
+    toasts.success(
+      l10n.historyCleared,
+      detail: l10n.settingsClearAllDone(count),
     );
   }
 }
@@ -464,7 +531,10 @@ class _ThemeCard extends StatelessWidget {
             Row(
               children: <Widget>[
                 Expanded(
-                  child: Text(variant.label, style: tokens.text.bodyStrong),
+                  child: Text(
+                    variant.localizedLabel(context.l10n),
+                    style: tokens.text.bodyStrong,
+                  ),
                 ),
                 if (selected)
                   Icon(
@@ -476,7 +546,7 @@ class _ThemeCard extends StatelessWidget {
             ),
             const SizedBox(height: 2),
             Text(
-              variant.description,
+              variant.localizedDescription(context.l10n),
               style: tokens.text.caption,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
@@ -491,22 +561,23 @@ class _ThemeCard extends StatelessWidget {
 class _ShortcutTable extends StatelessWidget {
   const _ShortcutTable();
 
-  static const List<(String, String)> shortcuts = <(String, String)>[
-    ('Ctrl + K', 'Command palette'),
-    ('Ctrl + Alt + P', 'Command palette from anywhere in Windows'),
-    ('Ctrl + N', 'New entry'),
-    ('Ctrl + F', 'Focus the vault search field'),
-    ('Ctrl + S', 'Save the entry being edited'),
-    ('Ctrl + D', 'Toggle favorite on the selected entry'),
-    ('Ctrl + Shift + C', 'Copy the selected password'),
-    ('Ctrl + Shift + U', 'Copy the selected username'),
-    ('Ctrl + G', 'Password generator'),
-    ('Ctrl + ,', 'Settings'),
-    ('Ctrl + L', 'Lock the vault'),
-    ('Delete', 'Delete the selected entry'),
-    ('Esc', 'Close the palette, dialog or search'),
-    ('↑ / ↓ / Enter', 'Move through results and open'),
-  ];
+  static List<(String, String)> shortcuts(AppLocalizations l10n) =>
+      <(String, String)>[
+        ('Ctrl + K', l10n.shortcutPalette),
+        ('Ctrl + Alt + P', l10n.shortcutPaletteGlobal),
+        ('Ctrl + N', l10n.shortcutNewEntry),
+        ('Ctrl + F', l10n.shortcutFocusSearch),
+        ('Ctrl + S', l10n.shortcutSave),
+        ('Ctrl + D', l10n.shortcutFavorite),
+        ('Ctrl + Shift + C', l10n.shortcutCopyPassword),
+        ('Ctrl + Shift + U', l10n.shortcutCopyUsername),
+        ('Ctrl + G', l10n.shortcutGenerator),
+        ('Ctrl + ,', l10n.shortcutSettings),
+        ('Ctrl + L', l10n.shortcutLock),
+        ('Delete', l10n.shortcutDelete),
+        ('Esc', l10n.shortcutEscape),
+        ('↑ / ↓ / Enter', l10n.shortcutNavigate),
+      ];
 
   @override
   Widget build(BuildContext context) {
@@ -525,7 +596,7 @@ class _ShortcutTable extends StatelessWidget {
       ),
       child: Column(
         children: <Widget>[
-          for (final shortcut in shortcuts)
+          for (final shortcut in shortcuts(context.l10n))
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 5),
               child: Row(

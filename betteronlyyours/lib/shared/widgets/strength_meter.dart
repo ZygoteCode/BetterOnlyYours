@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../app/theme/tokens.dart';
+import '../../l10n/l10n.dart';
 import '../../core/services/password_strength.dart';
 
 /// Segmented strength indicator.
@@ -37,6 +38,7 @@ class StrengthMeter extends StatelessWidget {
   Widget build(BuildContext context) {
     final tokens = context.tokens;
     final palette = tokens.color;
+    final l10n = context.l10n;
     final color = colorFor(context, strength.level);
     final filled = switch (strength.level) {
       StrengthLevel.empty => 0,
@@ -78,7 +80,7 @@ class StrengthMeter extends StatelessWidget {
             children: <Widget>[
               if (showLabel)
                 Text(
-                  strength.level.label,
+                  strength.level.localizedLabel(l10n),
                   style: tokens.text.caption.copyWith(
                     color: color,
                     fontWeight: FontWeight.w600,
@@ -87,7 +89,7 @@ class StrengthMeter extends StatelessWidget {
               const Spacer(),
               if (showEntropy && strength.level != StrengthLevel.empty)
                 Text(
-                  '≈ ${strength.entropyBits.round()} bits',
+                  l10n.strengthBits(strength.entropyBits.round()),
                   style: tokens.text.caption,
                 ),
             ],

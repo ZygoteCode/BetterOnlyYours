@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:betteronlyyours/core/models/vault_entry.dart';
 import 'package:betteronlyyours/core/models/vault_meta.dart';
+import 'package:betteronlyyours/core/security/vault_kdf.dart';
 import 'package:betteronlyyours/core/security/vault_repository.dart';
 import 'package:betteronlyyours/core/services/settings_service.dart';
 import 'package:betteronlyyours/state/settings_controller.dart';
@@ -19,7 +20,7 @@ void main() {
   VaultRepository repository() => VaultRepository(
     path: vaultPath,
     deriveOnIsolate: false,
-    iterationsOverride: 1000,
+    kdfOverride: const Pbkdf2Params(iterations: 5000),
   );
 
   setUp(() async {

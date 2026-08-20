@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:betteronlyyours/core/security/vault_crypto.dart';
 import 'package:betteronlyyours/core/security/vault_exception.dart';
 import 'package:betteronlyyours/core/security/vault_file.dart';
+import 'package:betteronlyyours/core/security/vault_kdf.dart';
 import 'package:betteronlyyours/core/security/vault_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -26,17 +27,17 @@ void main() {
   VaultRepository repository() => VaultRepository(
     path: vaultPath,
     deriveOnIsolate: false,
-    iterationsOverride: 1000,
+    kdfOverride: const Pbkdf2Params(iterations: 5000),
   );
 
   /// Builds a file in the original v1 layout (fixed 3 000 PBKDF2 iterations).
   void writeLegacyVault(Map<String, String> entries, String password) {
     final salt = VaultCrypto.randomBytes(VaultCrypto.saltLength);
     final nonce = VaultCrypto.randomBytes(VaultCrypto.nonceLength);
-    final key = VaultCrypto.deriveKey(
+    final key = VaultCrypto.deriveKeyPbkdf2(
       password: Uint8List.fromList(utf8.encode(password)),
       salt: salt,
-      iterations: VaultFileCodec.legacyIterations,
+      iterations: 3000,
     );
     final header = VaultCrypto.concat(<Uint8List>[
       VaultFileCodec.magic,
@@ -102,7 +103,8 @@ void main() {
 
     final info = await repository().describe();
     expect(info.formatVersion, VaultFileCodec.currentVersion);
-    expect(info.iterations, 1000);
+    expect(info.kdf, isA<Pbkdf2Params>());
+    expect((info.kdf! as Pbkdf2Params).iterations, 5000);
 
     // The upgraded file still opens with the same password.
     final reopened = await repository().open('legacy pass');
@@ -203,7 +205,8 @@ void main() {
     final info = await repository().describe();
     expect(info.exists, isTrue);
     expect(info.formatVersion, VaultFileCodec.currentVersion);
-    expect(info.iterations, 1000);
+    expect(info.kdf, isA<Pbkdf2Params>());
+    expect((info.kdf! as Pbkdf2Params).iterations, 5000);
     expect(info.sizeBytes, greaterThan(0));
     expect(info.headerError, isNull);
   });

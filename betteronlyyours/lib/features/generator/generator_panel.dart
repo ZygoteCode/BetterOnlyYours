@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
 import '../../app/theme/tokens.dart';
+import '../../l10n/l10n.dart';
 import '../../core/models/generator_options.dart';
 import '../../core/services/password_generator.dart';
 import '../../core/services/password_strength.dart';
@@ -19,13 +20,13 @@ class GeneratorPanel extends StatefulWidget {
   const GeneratorPanel({
     super.key,
     this.onUse,
-    this.useLabel = 'Use password',
+    this.useLabel,
     this.showHistory = true,
   });
 
   /// When provided, an extra action hands the generated value back.
   final ValueChanged<String>? onUse;
-  final String useLabel;
+  final String? useLabel;
   final bool showHistory;
 
   @override
@@ -70,6 +71,7 @@ class _GeneratorPanelState extends State<GeneratorPanel> {
     final tokens = context.tokens;
     final palette = tokens.color;
     final options = context.watch<SettingsController>().settings.generator;
+    final l10n = context.l10n;
     final current = _current;
     final strength = current == null
         ? const PasswordStrength(level: StrengthLevel.empty, entropyBits: 0)
@@ -81,9 +83,9 @@ class _GeneratorPanelState extends State<GeneratorPanel> {
       children: <Widget>[
         _SegmentedToggle(
           value: options.mode,
-          segments: const <GeneratorMode, String>{
-            GeneratorMode.characters: 'Random characters',
-            GeneratorMode.passphrase: 'Passphrase',
+          segments: <GeneratorMode, String>{
+            GeneratorMode.characters: l10n.generatorModeCharacters,
+            GeneratorMode.passphrase: l10n.generatorModePassphrase,
           },
           onChanged: (mode) => _updateOptions((o) => o.copyWith(mode: mode)),
         ),
@@ -106,19 +108,19 @@ class _GeneratorPanelState extends State<GeneratorPanel> {
               Row(
                 children: <Widget>[
                   AppButton(
-                    label: 'Copy',
+                    label: l10n.generatorCopy,
                     icon: Icons.copy_rounded,
                     onPressed: current == null
                         ? null
                         : () => VaultActions.copyValue(
                             context,
                             value: current.value,
-                            label: 'Password',
+                            label: l10n.labelPassword,
                           ),
                   ),
                   const SizedBox(width: Insets.sm),
                   AppButton(
-                    label: 'Regenerate',
+                    label: l10n.generatorRegenerate,
                     icon: Icons.refresh_rounded,
                     variant: AppButtonVariant.secondary,
                     onPressed: _regenerate,
@@ -126,7 +128,7 @@ class _GeneratorPanelState extends State<GeneratorPanel> {
                   if (widget.onUse != null) ...<Widget>[
                     const SizedBox(width: Insets.sm),
                     AppButton(
-                      label: widget.useLabel,
+                      label: widget.useLabel ?? l10n.generatorUsePassword,
                       icon: Icons.check_rounded,
                       variant: AppButtonVariant.secondary,
                       onPressed: current == null
@@ -135,10 +137,7 @@ class _GeneratorPanelState extends State<GeneratorPanel> {
                     ),
                   ],
                   const Spacer(),
-                  Text(
-                    'Generated with a cryptographic RNG',
-                    style: tokens.text.caption,
-                  ),
+                  Text(l10n.generatorRngNote, style: tokens.text.caption),
                 ],
               ),
             ],
@@ -156,9 +155,9 @@ class _GeneratorPanelState extends State<GeneratorPanel> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                const SectionHeader(
-                  title: 'This session',
-                  subtitle: 'Previously generated values, kept in memory only.',
+                SectionHeader(
+                  title: l10n.generatorSessionTitle,
+                  subtitle: l10n.generatorSessionSubtitle,
                   icon: Icons.history_rounded,
                 ),
                 const SizedBox(height: Insets.sm),
@@ -167,7 +166,7 @@ class _GeneratorPanelState extends State<GeneratorPanel> {
                     onTap: () => VaultActions.copyValue(
                       context,
                       value: value,
-                      label: 'Password',
+                      label: l10n.labelPassword,
                     ),
                     builder: (context, state) => AnimatedContainer(
                       duration: context.motion.fast,
@@ -216,13 +215,14 @@ class _GeneratorPanelState extends State<GeneratorPanel> {
     GeneratorOptions options,
   ) {
     final tokens = context.tokens;
+    final l10n = context.l10n;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         Row(
           children: <Widget>[
-            Text('Length', style: tokens.text.cardTitle),
+            Text(l10n.generatorLength, style: tokens.text.cardTitle),
             const Spacer(),
             Text('${options.length}', style: tokens.text.mono),
           ],
@@ -242,31 +242,31 @@ class _GeneratorPanelState extends State<GeneratorPanel> {
           runSpacing: Insets.sm,
           children: <Widget>[
             _OptionSwitch(
-              label: 'Lowercase (a-z)',
+              label: l10n.generatorLowercase,
               value: options.lowercase,
               onChanged: (value) =>
                   _updateOptions((o) => o.copyWith(lowercase: value)),
             ),
             _OptionSwitch(
-              label: 'Uppercase (A-Z)',
+              label: l10n.generatorUppercase,
               value: options.uppercase,
               onChanged: (value) =>
                   _updateOptions((o) => o.copyWith(uppercase: value)),
             ),
             _OptionSwitch(
-              label: 'Digits (0-9)',
+              label: l10n.generatorDigits,
               value: options.digits,
               onChanged: (value) =>
                   _updateOptions((o) => o.copyWith(digits: value)),
             ),
             _OptionSwitch(
-              label: 'Symbols (!@#…)',
+              label: l10n.generatorSymbols,
               value: options.symbols,
               onChanged: (value) =>
                   _updateOptions((o) => o.copyWith(symbols: value)),
             ),
             _OptionSwitch(
-              label: 'Avoid look-alike characters',
+              label: l10n.generatorAvoidAmbiguous,
               value: options.avoidAmbiguous,
               onChanged: (value) =>
                   _updateOptions((o) => o.copyWith(avoidAmbiguous: value)),
@@ -276,8 +276,7 @@ class _GeneratorPanelState extends State<GeneratorPanel> {
         if (!options.hasCharacterClass) ...<Widget>[
           const SizedBox(height: Insets.md),
           Text(
-            'At least one character set is required — letters and digits are '
-            'used until you pick one.',
+            l10n.generatorNoClassWarning,
             style: tokens.text.caption.copyWith(color: tokens.color.warning),
           ),
         ],
@@ -290,13 +289,14 @@ class _GeneratorPanelState extends State<GeneratorPanel> {
     GeneratorOptions options,
   ) {
     final tokens = context.tokens;
+    final l10n = context.l10n;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         Row(
           children: <Widget>[
-            Text('Words', style: tokens.text.cardTitle),
+            Text(l10n.generatorWords, style: tokens.text.cardTitle),
             const Spacer(),
             Text('${options.words}', style: tokens.text.mono),
           ],
@@ -313,7 +313,7 @@ class _GeneratorPanelState extends State<GeneratorPanel> {
         const SizedBox(height: Insets.sm),
         Row(
           children: <Widget>[
-            Text('Separator', style: tokens.text.secondary),
+            Text(l10n.generatorSeparator, style: tokens.text.secondary),
             const SizedBox(width: Insets.md),
             for (final separator in <String>['-', '.', '_', ' '])
               Padding(
@@ -333,13 +333,13 @@ class _GeneratorPanelState extends State<GeneratorPanel> {
           runSpacing: Insets.sm,
           children: <Widget>[
             _OptionSwitch(
-              label: 'Capitalize words',
+              label: l10n.generatorCapitalize,
               value: options.capitalizeWords,
               onChanged: (value) =>
                   _updateOptions((o) => o.copyWith(capitalizeWords: value)),
             ),
             _OptionSwitch(
-              label: 'Append a number',
+              label: l10n.generatorAppendNumber,
               value: options.appendNumber,
               onChanged: (value) =>
                   _updateOptions((o) => o.copyWith(appendNumber: value)),
@@ -348,9 +348,10 @@ class _GeneratorPanelState extends State<GeneratorPanel> {
         ),
         const SizedBox(height: Insets.md),
         Text(
-          '${PassphraseWords.words.length} word list · '
-          'each word adds about '
-          '${(PassphraseWords.words.length.bitLength - 1)} bits of entropy.',
+          l10n.generatorWordListNote(
+            PassphraseWords.words.length,
+            PassphraseWords.words.length.bitLength - 1,
+          ),
           style: tokens.text.caption,
         ),
       ],

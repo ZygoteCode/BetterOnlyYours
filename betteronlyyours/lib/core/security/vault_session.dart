@@ -1,25 +1,28 @@
 import 'dart:typed_data';
 
 import 'vault_crypto.dart';
+import 'vault_kdf.dart';
 
 /// Everything needed to re-encrypt the vault while it is unlocked.
 ///
 /// Deliberately holds the derived key rather than the master password: the
-/// salt is stable for the lifetime of a vault file, so saving only needs a
-/// fresh nonce. The plaintext password is discarded as soon as unlocking or
-/// re-keying completes.
+/// salt and the KDF parameters are stable for the lifetime of a vault file, so
+/// saving only needs a fresh nonce. The plaintext password is discarded as
+/// soon as unlocking or re-keying completes.
 class VaultSession {
   VaultSession({
     required Uint8List key,
     required Uint8List salt,
-    required this.iterations,
+    required this.kdf,
     required this.fileVersion,
   }) : _key = key,
        _salt = salt;
 
   final Uint8List _key;
   final Uint8List _salt;
-  final int iterations;
+
+  /// Key-derivation settings the file was written with.
+  final VaultKdfParams kdf;
 
   /// Format version of the file this session was opened from.
   final int fileVersion;

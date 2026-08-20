@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
 import '../../app/theme/tokens.dart';
+import '../../l10n/l10n.dart';
 import '../../core/models/app_settings.dart';
 import '../../shared/widgets/empty_state.dart';
 import '../../state/settings_controller.dart';
@@ -122,29 +123,24 @@ class VaultPage extends StatelessWidget {
   }
 
   Widget _buildNoSelection(BuildContext context, VaultViewMode mode) {
+    final l10n = context.l10n;
     switch (mode) {
       case VaultViewMode.all:
         return const VaultDashboard();
       case VaultViewMode.favorites:
         return EmptyState(
           icon: Icons.star_outline_rounded,
-          title: 'Favorites',
-          message:
-              'Pick an entry on the left, or star the ones you use most so '
-              'they land here.',
-          actionLabel: 'New entry',
+          title: l10n.vaultPageFavoritesTitle,
+          message: l10n.vaultPageFavoritesMessage,
+          actionLabel: l10n.newEntry,
           onAction: () => VaultActions.createEntry(context),
         );
       case VaultViewMode.recent:
-        return const EmptyState(
+        return EmptyState(
           icon: Icons.history_rounded,
-          title: 'Recently opened',
-          message:
-              'Your last opened entries are listed on the left. Select one to '
-              'see it here.',
-          hint:
-              'History is stored inside the encrypted vault, never on disk '
-              'in the clear.',
+          title: l10n.vaultPageRecentTitle,
+          message: l10n.vaultPageRecentMessage,
+          hint: l10n.vaultPageRecentHint,
         );
     }
   }

@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:betteronlyyours/core/security/vault_crypto.dart';
 import 'package:betteronlyyours/core/security/vault_exception.dart';
 import 'package:betteronlyyours/core/security/vault_file.dart';
+import 'package:betteronlyyours/core/security/vault_kdf.dart';
 import 'package:betteronlyyours/core/security/vault_repository.dart';
 import 'package:betteronlyyours/core/security/vault_session.dart';
 
@@ -48,7 +49,7 @@ class InMemoryVaultStore implements VaultStore {
     sizeBytes: hasVault ? 512 : 0,
     modifiedAt: hasVault ? DateTime.fromMillisecondsSinceEpoch(0) : null,
     formatVersion: hasVault ? VaultFileCodec.currentVersion : null,
-    iterations: hasVault ? VaultFileCodec.currentIterations : null,
+    kdf: hasVault ? VaultKdfParams.current : null,
   );
 
   @override
@@ -112,7 +113,7 @@ class InMemoryVaultStore implements VaultStore {
   VaultSession _session() => VaultSession(
     key: Uint8List(VaultCrypto.keyLength),
     salt: Uint8List(VaultCrypto.saltLength),
-    iterations: VaultFileCodec.currentIterations,
+    kdf: VaultKdfParams.current,
     fileVersion: VaultFileCodec.currentVersion,
   );
 }

@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
 import '../../app/theme/tokens.dart';
+import '../../l10n/l10n.dart';
 import '../../app/window_controller.dart';
 import '../../shared/widgets/brand_mark.dart';
 import '../../shared/widgets/hover_builder.dart';
@@ -24,6 +25,7 @@ class AppTitleBar extends StatelessWidget {
     final tokens = context.tokens;
     final palette = tokens.color;
     final window = context.watch<WindowController>();
+    final l10n = context.l10n;
 
     return SizedBox(
       height: tokens.titleBarHeight,
@@ -76,20 +78,22 @@ class AppTitleBar extends StatelessWidget {
             ],
             _WindowButton(
               icon: Icons.remove_rounded,
-              tooltip: 'Minimize',
+              tooltip: l10n.windowMinimize,
               onPressed: window.minimize,
             ),
             _WindowButton(
               icon: window.isMaximized
                   ? Icons.filter_none_rounded
                   : Icons.crop_square_rounded,
-              tooltip: window.isMaximized ? 'Restore' : 'Maximize',
+              tooltip: window.isMaximized
+                  ? l10n.windowRestore
+                  : l10n.windowMaximize,
               iconSize: window.isMaximized ? 12 : 14,
               onPressed: window.toggleMaximize,
             ),
             _WindowButton(
               icon: Icons.close_rounded,
-              tooltip: 'Close',
+              tooltip: l10n.windowClose,
               danger: true,
               onPressed: window.close,
             ),

@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
 import '../../app/theme/tokens.dart';
+import '../../l10n/l10n.dart';
 import '../../core/models/vault_entry.dart';
 import '../../core/services/password_generator.dart';
 import '../../shared/widgets/app_button.dart';
@@ -55,11 +56,11 @@ class _EntryCreateDialogState extends State<EntryCreateDialog> {
 
     final title = _title.text.trim();
     if (title.isEmpty) {
-      setState(() => _error = 'Give the entry a name.');
+      setState(() => _error = context.l10n.createDialogNameEmpty);
       return;
     }
     if (vault.hasEntry(title)) {
-      setState(() => _error = 'An entry named "$title" already exists.');
+      setState(() => _error = context.l10n.createDialogNameExists(title));
       return;
     }
 
@@ -79,12 +80,12 @@ class _EntryCreateDialogState extends State<EntryCreateDialog> {
 
     if (ok) {
       vault.select(title);
-      toasts.success('Entry created', detail: title);
+      toasts.success(context.l10n.createDialogEntryCreated, detail: title);
       navigator.pop(title);
     } else {
       setState(() {
         _saving = false;
-        _error = 'The entry could not be saved. Check the Security tab.';
+        _error = context.l10n.createDialogSaveFailed;
       });
     }
   }
@@ -94,8 +95,8 @@ class _EntryCreateDialogState extends State<EntryCreateDialog> {
     final tokens = context.tokens;
 
     return AppDialog(
-      title: 'New entry',
-      subtitle: 'Stored encrypted in your local vault.',
+      title: context.l10n.createDialogTitle,
+      subtitle: context.l10n.createDialogSubtitle,
       icon: Icons.add_rounded,
       width: 520,
       content: Column(
@@ -104,8 +105,8 @@ class _EntryCreateDialogState extends State<EntryCreateDialog> {
         children: <Widget>[
           AppTextField(
             controller: _title,
-            label: 'Name',
-            hint: 'GitHub, Bank, Home server…',
+            label: context.l10n.fieldName,
+            hint: context.l10n.createDialogNameHint,
             autofocus: true,
             errorText: _error,
             textInputAction: TextInputAction.next,
@@ -117,8 +118,8 @@ class _EntryCreateDialogState extends State<EntryCreateDialog> {
           const SizedBox(height: Insets.lg),
           AppTextField(
             controller: _username,
-            label: 'Username or email',
-            hint: 'Optional',
+            label: context.l10n.fieldUsername,
+            hint: context.l10n.createDialogOptional,
             prefixIcon: Icons.person_outline_rounded,
             textInputAction: TextInputAction.next,
             onSubmitted: (_) => _submit(),
@@ -126,34 +127,31 @@ class _EntryCreateDialogState extends State<EntryCreateDialog> {
           const SizedBox(height: Insets.lg),
           SecretField(
             controller: _password,
-            label: 'Password',
-            hint: 'Optional — generate one',
+            label: context.l10n.fieldPassword,
+            hint: context.l10n.createDialogPasswordHint,
             onGenerate: _generate,
             onSubmitted: (_) => _submit(),
           ),
           const SizedBox(height: Insets.lg),
           AppTextField(
             controller: _url,
-            label: 'Website',
-            hint: 'Optional',
+            label: context.l10n.fieldWebsite,
+            hint: context.l10n.createDialogOptional,
             prefixIcon: Icons.link_rounded,
             onSubmitted: (_) => _submit(),
           ),
           const SizedBox(height: Insets.md),
-          Text(
-            'You can add notes, tags and custom fields after creating it.',
-            style: tokens.text.caption,
-          ),
+          Text(context.l10n.createDialogFooter, style: tokens.text.caption),
         ],
       ),
       actions: <Widget>[
         AppButton(
-          label: 'Cancel',
+          label: context.l10n.commonCancel,
           variant: AppButtonVariant.ghost,
           onPressed: _saving ? null : () => Navigator.of(context).pop(),
         ),
         AppButton(
-          label: 'Create entry',
+          label: context.l10n.createDialogCreate,
           icon: Icons.check_rounded,
           loading: _saving,
           onPressed: _submit,

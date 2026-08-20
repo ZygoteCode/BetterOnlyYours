@@ -41,6 +41,9 @@ class SettingsController extends ChangeNotifier {
     _schedulePersist(immediate: immediate);
   }
 
+  void setLanguage(AppLanguage language) =>
+      update((s) => s.copyWith(language: language), immediate: true);
+
   void setTheme(AppThemeVariant theme) =>
       update((s) => s.copyWith(theme: theme), immediate: true);
 
@@ -63,6 +66,9 @@ class SettingsController extends ChangeNotifier {
 
   void setRevealSecretsByDefault(bool value) =>
       update((s) => s.copyWith(revealSecretsByDefault: value), immediate: true);
+
+  void setKeepPasswordHistory(bool value) =>
+      update((s) => s.copyWith(keepPasswordHistory: value), immediate: true);
 
   void setGlobalHotkeyEnabled(bool value) =>
       update((s) => s.copyWith(globalHotkeyEnabled: value), immediate: true);

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
 import 'package:window_manager/window_manager.dart';
 
+import '../l10n/generated/app_localizations.dart';
 import '../state/shell_controller.dart';
 import '../state/vault_controller.dart';
 
@@ -17,6 +18,10 @@ class HotkeyService {
     required VaultController vault,
   }) : _shell = shell,
        _vault = vault;
+
+  /// Set once the widget tree exists, so a failure can be reported in the
+  /// user's language.
+  AppLocalizations? localizations;
 
   final ShellController _shell;
   final VaultController _vault;
@@ -52,8 +57,9 @@ class HotkeyService {
       _shell.setHotkeyStatus(
         registered: false,
         error:
+            localizations?.settingsGlobalShortcutFailed ??
             'Ctrl+Alt+P could not be registered — another application is '
-            'probably using it.',
+                'probably using it.',
       );
       debugPrint('Global hotkey registration failed: $error');
     }

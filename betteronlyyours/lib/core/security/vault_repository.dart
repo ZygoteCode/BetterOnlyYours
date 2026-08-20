@@ -7,6 +7,7 @@ import '../storage/app_paths.dart';
 import 'vault_crypto.dart';
 import 'vault_exception.dart';
 import 'vault_file.dart';
+import 'vault_kdf.dart';
 import 'vault_session.dart';
 
 class VaultOpenResult {
@@ -20,8 +21,8 @@ class VaultOpenResult {
   final VaultSession session;
   final Map<String, String> entries;
 
-  /// The file was written in the legacy v1 layout and has been re-encrypted
-  /// with the current key-derivation parameters.
+  /// The file used an older format or weaker key-derivation settings and has
+  /// been re-encrypted with the current parameters.
   final bool upgradedFormat;
 
   /// The primary file was unusable and the `.bak` copy was opened instead.
@@ -35,7 +36,7 @@ class VaultFileInfo {
     this.sizeBytes = 0,
     this.modifiedAt,
     this.formatVersion,
-    this.iterations,
+    this.kdf,
     this.backupExists = false,
     this.headerError,
   });
@@ -45,7 +46,7 @@ class VaultFileInfo {
   final int sizeBytes;
   final DateTime? modifiedAt;
   final int? formatVersion;
-  final int? iterations;
+  final VaultKdfParams? kdf;
   final bool backupExists;
   final String? headerError;
 
@@ -78,20 +79,23 @@ abstract interface class VaultStore {
 /// Reads and writes the encrypted vault file.
 ///
 /// All key derivation runs on a background isolate so the UI never stalls on
-/// PBKDF2. Writes are atomic (temp file + rename) and keep a `.bak` copy of
+/// Argon2id. Writes are atomic (temp file + rename) and keep a `.bak` copy of
 /// the previous good file.
 class VaultRepository implements VaultStore {
   VaultRepository({
     String? path,
     bool deriveOnIsolate = true,
-    int? iterationsOverride,
+    VaultKdfParams? kdfOverride,
   }) : _explicitPath = path,
        _deriveOnIsolate = deriveOnIsolate,
-       _iterations = iterationsOverride ?? VaultFileCodec.currentIterations;
+       _kdf = kdfOverride ?? VaultKdfParams.current;
 
   final String? _explicitPath;
   final bool _deriveOnIsolate;
-  final int _iterations;
+
+  /// Settings used for new vaults and for re-keying. Existing files keep the
+  /// parameters recorded in their own header until they are upgraded.
+  final VaultKdfParams _kdf;
 
   String? _resolvedPath;
 
@@ -120,15 +124,16 @@ class VaultRepository implements VaultStore {
 
     final stat = file.statSync();
     int? version;
-    int? iterations;
+    VaultKdfParams? kdf;
     String? headerError;
     try {
       final raf = file.openSync();
       try {
-        final headerBytes = raf.readSync(64);
+        // One byte more than the header, so the codec sees a payload behind it.
+        final headerBytes = raf.readSync(VaultFileCodec.maxHeaderLength + 1);
         final header = VaultFileCodec.parseHeader(headerBytes);
         version = header.version;
-        iterations = header.iterations;
+        kdf = header.kdf;
       } finally {
         raf.closeSync();
       }
@@ -144,7 +149,7 @@ class VaultRepository implements VaultStore {
       sizeBytes: stat.size,
       modifiedAt: stat.modified,
       formatVersion: version,
-      iterations: iterations,
+      kdf: kdf,
       backupExists: backupExists,
       headerError: headerError,
     );
@@ -157,11 +162,11 @@ class VaultRepository implements VaultStore {
     Map<String, String> entries = const <String, String>{},
   }) async {
     final salt = VaultCrypto.randomBytes(VaultCrypto.saltLength);
-    final key = await _deriveKey(password, salt, _iterations);
+    final key = await _deriveKey(password, salt, _kdf);
     final session = VaultSession(
       key: key,
       salt: salt,
-      iterations: _iterations,
+      kdf: _kdf,
       fileVersion: VaultFileCodec.currentVersion,
     );
     await save(entries, session);
@@ -210,9 +215,9 @@ class VaultRepository implements VaultStore {
       );
     }
 
-    if (result.session.fileVersion == VaultFileCodec.legacyVersion) {
-      // Legacy vaults use 3 000 PBKDF2 iterations. Re-key transparently with
-      // the current parameters now that the password is available.
+    if (result.session.kdf.isWeakerThan(_kdf)) {
+      // Vaults written before Argon2id (or with weaker settings than today's
+      // policy) are re-keyed transparently now that the password is at hand.
       try {
         final upgraded = await reKey(password, result.entries);
         result.session.dispose();
@@ -243,7 +248,7 @@ class VaultRepository implements VaultStore {
     final key = await _deriveKey(
       password,
       Uint8List.fromList(header.salt),
-      header.iterations,
+      header.kdf,
     );
 
     Uint8List plaintext;
@@ -270,7 +275,7 @@ class VaultRepository implements VaultStore {
         session: VaultSession(
           key: key,
           salt: Uint8List.fromList(header.salt),
-          iterations: header.iterations,
+          kdf: header.kdf,
           fileVersion: header.version,
         ),
         entries: entries,
@@ -297,7 +302,7 @@ class VaultRepository implements VaultStore {
     final header = VaultFileCodec.buildHeader(
       salt: session.salt,
       nonce: nonce,
-      iterations: session.iterations,
+      kdf: session.kdf,
     );
     final plaintext = VaultFileCodec.encodePayload(entries);
 
@@ -326,11 +331,11 @@ class VaultRepository implements VaultStore {
     Map<String, String> entries,
   ) async {
     final salt = VaultCrypto.randomBytes(VaultCrypto.saltLength);
-    final key = await _deriveKey(newPassword, salt, _iterations);
+    final key = await _deriveKey(newPassword, salt, _kdf);
     final session = VaultSession(
       key: key,
       salt: salt,
-      iterations: _iterations,
+      kdf: _kdf,
       fileVersion: VaultFileCodec.currentVersion,
     );
     await save(entries, session);
@@ -343,7 +348,7 @@ class VaultRepository implements VaultStore {
     final candidate = await _deriveKey(
       password,
       Uint8List.fromList(session.salt),
-      session.iterations,
+      session.kdf,
     );
     try {
       return session.matchesKey(candidate);
@@ -360,27 +365,18 @@ class VaultRepository implements VaultStore {
     }
   }
 
+  /// Key derivation is deliberately expensive, so it runs off the UI isolate.
   Future<Uint8List> _deriveKey(
     String password,
     Uint8List salt,
-    int iterations,
+    VaultKdfParams kdf,
   ) async {
     final passwordBytes = Uint8List.fromList(utf8.encode(password));
     try {
       if (!_deriveOnIsolate) {
-        return VaultCrypto.deriveKey(
-          password: passwordBytes,
-          salt: salt,
-          iterations: iterations,
-        );
+        return kdf.deriveKey(passwordBytes, salt);
       }
-      return await Isolate.run(
-        () => VaultCrypto.deriveKey(
-          password: passwordBytes,
-          salt: salt,
-          iterations: iterations,
-        ),
-      );
+      return await Isolate.run(() => kdf.deriveKey(passwordBytes, salt));
     } finally {
       VaultCrypto.wipe(passwordBytes);
     }

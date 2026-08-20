@@ -3,17 +3,21 @@ import 'package:betteronlyyours/app/theme/tokens.dart';
 import 'package:betteronlyyours/core/models/app_settings.dart';
 import 'package:betteronlyyours/core/models/vault_entry.dart';
 import 'package:betteronlyyours/core/services/password_strength.dart';
+import 'package:betteronlyyours/l10n/l10n.dart';
 import 'package:betteronlyyours/shared/widgets/app_button.dart';
 import 'package:betteronlyyours/shared/widgets/empty_state.dart';
 import 'package:betteronlyyours/shared/widgets/entry_avatar.dart';
 import 'package:betteronlyyours/shared/widgets/highlighted_text.dart';
 import 'package:betteronlyyours/shared/widgets/strength_meter.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 Widget wrap(Widget child, {AppSettings settings = const AppSettings()}) {
   return MaterialApp(
     theme: AppTheme.build(settings),
+    locale: const Locale('en'),
+    supportedLocales: appSupportedLocales,
+    localizationsDelegates: appLocalizationsDelegates,
     home: Scaffold(body: Center(child: child)),
   );
 }

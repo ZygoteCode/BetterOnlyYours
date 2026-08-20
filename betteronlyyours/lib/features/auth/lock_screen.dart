@@ -1,10 +1,11 @@
 import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../../app/theme/tokens.dart';
+import '../../l10n/l10n.dart';
 import 'auth_backdrop.dart';
 import '../../core/security/vault_exception.dart';
 import '../../shared/animations/entrance.dart';
@@ -99,6 +100,7 @@ class _LockScreenState extends State<LockScreen>
   Widget build(BuildContext context) {
     final tokens = context.tokens;
     final palette = tokens.color;
+    final l10n = context.l10n;
     final error = _error;
 
     return Stack(
@@ -147,7 +149,7 @@ class _LockScreenState extends State<LockScreen>
                                 const BrandWordmark(fontSize: 16),
                                 const SizedBox(height: 2),
                                 Text(
-                                  'Local encrypted vault',
+                                  l10n.authLocalVault,
                                   style: tokens.text.caption,
                                 ),
                               ],
@@ -155,10 +157,13 @@ class _LockScreenState extends State<LockScreen>
                           ],
                         ),
                         const SizedBox(height: Insets.xxl),
-                        Text('Vault locked', style: tokens.text.pageTitle),
+                        Text(
+                          l10n.authVaultLocked,
+                          style: tokens.text.pageTitle,
+                        ),
                         const SizedBox(height: Insets.xs),
                         Text(
-                          'Enter your master password to decrypt this vault.',
+                          l10n.authUnlockPrompt,
                           style: tokens.text.secondary,
                         ),
                         const SizedBox(height: Insets.xl),
@@ -170,16 +175,16 @@ class _LockScreenState extends State<LockScreen>
                           child: AppTextField(
                             controller: _password,
                             focusNode: _focus,
-                            hint: 'Master password',
-                            semanticLabel: 'Master password',
+                            hint: l10n.authMasterPassword,
+                            semanticLabel: l10n.authMasterPassword,
                             obscureText: !_revealed,
                             monospace: true,
                             autofocus: true,
                             enabled: !_working,
                             prefixIcon: Icons.key_rounded,
-                            errorText: error?.title,
+                            errorText: error?.localizedTitle(l10n),
                             helper: error == null && _capsLock
-                                ? 'Caps Lock is on'
+                                ? l10n.authCapsLockOn
                                 : null,
                             onSubmitted: (_) => _submit(),
                             onChanged: (_) {
@@ -190,8 +195,8 @@ class _LockScreenState extends State<LockScreen>
                                   ? Icons.visibility_off_outlined
                                   : Icons.visibility_outlined,
                               tooltip: _revealed
-                                  ? 'Hide password'
-                                  : 'Show password',
+                                  ? l10n.authHidePassword
+                                  : l10n.authShowPassword,
                               dense: true,
                               size: 16,
                               onPressed: () =>
@@ -202,7 +207,7 @@ class _LockScreenState extends State<LockScreen>
                         if (error != null) ...<Widget>[
                           const SizedBox(height: Insets.sm),
                           Text(
-                            error.hint,
+                            error.localizedHint(l10n),
                             style: tokens.text.caption.copyWith(
                               color: palette.textSecondary,
                             ),
@@ -219,7 +224,7 @@ class _LockScreenState extends State<LockScreen>
                               ),
                               const SizedBox(width: Insets.xs),
                               Text(
-                                'Caps Lock is on',
+                                l10n.authCapsLockOn,
                                 style: tokens.text.caption.copyWith(
                                   color: palette.warning,
                                 ),
@@ -229,7 +234,7 @@ class _LockScreenState extends State<LockScreen>
                         ],
                         const SizedBox(height: Insets.xl),
                         AppButton(
-                          label: 'Unlock vault',
+                          label: l10n.authUnlockButton,
                           icon: Icons.lock_open_rounded,
                           expand: true,
                           loading: _working,
@@ -237,8 +242,7 @@ class _LockScreenState extends State<LockScreen>
                         ),
                         const SizedBox(height: Insets.lg),
                         Text(
-                          'Everything stays on this machine. There is no '
-                          'account, no sync and no password reset.',
+                          l10n.authLocalOnlyNote,
                           textAlign: TextAlign.center,
                           style: tokens.text.caption,
                         ),

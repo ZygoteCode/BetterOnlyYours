@@ -49,6 +49,41 @@ class VaultCustomField {
   int get hashCode => Object.hash(label, value, secret);
 }
 
+/// A password this entry used before the current one.
+class VaultPasswordRecord {
+  const VaultPasswordRecord({required this.password, required this.replacedAt});
+
+  final String password;
+  final DateTime replacedAt;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    'password': password,
+    'replacedAt': replacedAt.millisecondsSinceEpoch,
+  };
+
+  static VaultPasswordRecord? fromJson(Object? raw) {
+    if (raw is! Map) return null;
+    final password = raw['password'];
+    if (password is! String || password.isEmpty) return null;
+    final replacedAt = raw['replacedAt'];
+    return VaultPasswordRecord(
+      password: password,
+      replacedAt: replacedAt is int
+          ? DateTime.fromMillisecondsSinceEpoch(replacedAt)
+          : DateTime.fromMillisecondsSinceEpoch(0),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      other is VaultPasswordRecord &&
+      other.password == password &&
+      other.replacedAt == replacedAt;
+
+  @override
+  int get hashCode => Object.hash(password, replacedAt);
+}
+
 /// A vault entry.
 ///
 /// Persistence contract (see [toStorageValue] / [fromStorage]):
@@ -69,11 +104,16 @@ class VaultEntry {
     this.createdAt,
     this.updatedAt,
     this.customFields = const <VaultCustomField>[],
+    this.passwordHistory = const <VaultPasswordRecord>[],
     this.extra = const <String, dynamic>{},
   });
 
   /// Marker prefix identifying a structured (JSON) payload.
   static const String structuredPrefix = 'BOY1:';
+
+  /// How many superseded passwords an entry keeps. Bounded so a vault cannot
+  /// grow without limit, and so an old secret does not linger forever.
+  static const int maxPasswordHistory = 20;
 
   final String title;
   final String username;
@@ -85,6 +125,9 @@ class VaultEntry {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final List<VaultCustomField> customFields;
+
+  /// Superseded passwords, newest first.
+  final List<VaultPasswordRecord> passwordHistory;
 
   /// Fields written by a newer version of the app. Preserved verbatim so an
   /// older build never silently drops data it does not understand.
@@ -123,6 +166,7 @@ class VaultEntry {
       'createdAt',
       'updatedAt',
       'fields',
+      'history',
     };
     final extra = <String, dynamic>{
       for (final entry in json.entries)
@@ -140,6 +184,7 @@ class VaultEntry {
       createdAt: _time(json['createdAt']),
       updatedAt: _time(json['updatedAt']),
       customFields: _fields(json['fields']),
+      passwordHistory: _history(json['history']),
       extra: extra,
     );
   }
@@ -153,6 +198,7 @@ class VaultEntry {
       tags.isNotEmpty ||
       favorite ||
       customFields.isNotEmpty ||
+      passwordHistory.isNotEmpty ||
       createdAt != null ||
       updatedAt != null ||
       extra.isNotEmpty;
@@ -183,6 +229,9 @@ class VaultEntry {
     if (customFields.isNotEmpty) {
       json['fields'] = customFields.map((f) => f.toJson()).toList();
     }
+    if (passwordHistory.isNotEmpty) {
+      json['history'] = passwordHistory.map((r) => r.toJson()).toList();
+    }
     return structuredPrefix + jsonEncode(json);
   }
 
@@ -197,6 +246,7 @@ class VaultEntry {
     DateTime? createdAt,
     DateTime? updatedAt,
     List<VaultCustomField>? customFields,
+    List<VaultPasswordRecord>? passwordHistory,
     Map<String, dynamic>? extra,
   }) {
     return VaultEntry(
@@ -210,9 +260,48 @@ class VaultEntry {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       customFields: customFields ?? this.customFields,
+      passwordHistory: passwordHistory ?? this.passwordHistory,
       extra: extra ?? this.extra,
     );
   }
+
+  /// Carries [previous]'s history over to this (edited) entry, recording the
+  /// old password when it actually changed.
+  ///
+  /// Rotation lives here rather than in the editor so every path that changes
+  /// a password — editor, generator, restore, import — behaves identically.
+  VaultEntry withHistoryFrom(
+    VaultEntry previous, {
+    DateTime? now,
+    int keep = maxPasswordHistory,
+  }) {
+    final history = <VaultPasswordRecord>[...previous.passwordHistory];
+    final replaced = previous.password;
+    final changed = replaced.isNotEmpty && replaced != password;
+
+    if (changed) {
+      history.removeWhere((record) => record.password == replaced);
+      history.insert(
+        0,
+        VaultPasswordRecord(
+          password: replaced,
+          replacedAt: now ?? DateTime.now(),
+        ),
+      );
+    }
+
+    // The password in use is never also kept as history.
+    history.removeWhere((record) => record.password == password);
+
+    return copyWith(
+      passwordHistory: history.length > keep
+          ? history.sublist(0, keep)
+          : history,
+    );
+  }
+
+  VaultEntry withoutPasswordHistory() =>
+      copyWith(passwordHistory: const <VaultPasswordRecord>[]);
 
   /// Marks the entry as touched, promoting legacy entries to the structured
   /// format only when they actually gained structure.
@@ -281,6 +370,19 @@ class VaultEntry {
       return DateTime.tryParse(value);
     }
     return null;
+  }
+
+  static List<VaultPasswordRecord> _history(Object? value) {
+    if (value is! List) return const <VaultPasswordRecord>[];
+    final result = <VaultPasswordRecord>[];
+    for (final raw in value) {
+      final record = VaultPasswordRecord.fromJson(raw);
+      if (record != null) result.add(record);
+    }
+    if (result.length > maxPasswordHistory) {
+      return result.sublist(0, maxPasswordHistory);
+    }
+    return result;
   }
 
   static List<VaultCustomField> _fields(Object? value) {

@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
 import '../../app/theme/tokens.dart';
+import '../../l10n/l10n.dart';
 import '../../core/models/vault_entry.dart';
-import '../../core/services/password_strength.dart';
-import '../../core/utils/formatting.dart';
+import '../../core/security/vault_kdf.dart';
 import '../../shared/animations/entrance.dart';
 import '../../shared/widgets/app_button.dart';
 import '../../shared/widgets/app_surface.dart';
@@ -26,24 +26,23 @@ class VaultDashboard extends StatelessWidget {
     final tokens = context.tokens;
     final vault = context.watch<VaultController>();
     final settings = context.watch<SettingsController>().settings;
+    final l10n = context.l10n;
 
     if (vault.isEmptyVault) {
       return EmptyState(
         icon: Icons.shield_moon_outlined,
-        title: 'Your vault is ready',
-        message:
-            'Nothing is stored yet. Create your first entry — it is encrypted '
-            'locally the moment you save it.',
-        actionLabel: 'New entry',
+        title: l10n.dashboardReadyTitle,
+        message: l10n.dashboardReadyMessage,
+        actionLabel: l10n.newEntry,
         onAction: () => VaultActions.createEntry(context),
-        secondaryActionLabel: 'Open generator',
+        secondaryActionLabel: l10n.dashboardOpenGenerator,
         onSecondaryAction: () =>
             context.read<ShellController>().goTo(ShellDestination.generator),
-        hint: 'Ctrl+N new entry · Ctrl+K command palette · Ctrl+L lock',
+        hint: l10n.dashboardShortcutHint,
       );
     }
 
-    final weak = _weakEntries(vault.allEntries);
+    final health = vault.health;
     final recents = vault.recentEntries.take(5).toList();
     final modified = vault.recentlyModified.take(5).toList();
 
@@ -69,51 +68,57 @@ class VaultDashboard extends StatelessWidget {
                         columns;
                     final tiles = <Widget>[
                       StatTile(
-                        label: 'Entries',
+                        label: l10n.statEntries,
                         value: '${vault.entryCount}',
                         icon: Icons.inventory_2_outlined,
                         caption: vault.legacyEntries.isEmpty
-                            ? 'All structured'
-                            : '${vault.legacyEntries.length} legacy',
+                            ? l10n.statEntriesAllStructured
+                            : l10n.statEntriesLegacy(
+                                vault.legacyEntries.length,
+                              ),
                         onTap: () => context.read<ShellController>().goTo(
                           ShellDestination.vault,
                         ),
                       ),
                       StatTile(
-                        label: 'Favorites',
+                        label: l10n.statFavorites,
                         value: '${vault.favorites.length}',
                         icon: Icons.star_rounded,
                         accent: tokens.color.warning,
-                        caption: 'Starred for quick access',
+                        caption: l10n.statFavoritesCaption,
                         onTap: () => context.read<ShellController>().goTo(
                           ShellDestination.favorites,
                         ),
                       ),
                       StatTile(
-                        label: 'Tags',
+                        label: l10n.statTags,
                         value: '${vault.allTags.length}',
                         icon: Icons.sell_outlined,
                         accent: tokens.color.secondary,
                         caption: vault.allTags.isEmpty
-                            ? 'Add tags to group entries'
+                            ? l10n.statTagsEmpty
                             : vault.allTags.take(3).join(' · '),
                       ),
                       StatTile(
-                        label: 'Weak passwords',
-                        value: '${weak.length}',
-                        icon: Icons.gpp_maybe_outlined,
-                        accent: weak.isEmpty
+                        label: l10n.statHealth,
+                        value: '${health.score}',
+                        icon: health.isClean
+                            ? Icons.verified_user_outlined
+                            : Icons.gpp_maybe_outlined,
+                        accent: health.isClean
                             ? tokens.color.success
-                            : tokens.color.danger,
-                        caption: weak.isEmpty
-                            ? 'Nothing obviously weak'
-                            : 'Review and regenerate',
-                        onTap: weak.isEmpty
-                            ? null
-                            : () => VaultActions.openEntry(
-                                context,
-                                weak.first.title,
+                            : (health.score >= 70
+                                  ? tokens.color.warning
+                                  : tokens.color.danger),
+                        caption: health.isClean
+                            ? l10n.statHealthClean
+                            : l10n.statHealthIssues(
+                                health.weak.length,
+                                health.reusedEntryCount,
                               ),
+                        onTap: () => context.read<ShellController>().goTo(
+                          ShellDestination.security,
+                        ),
                       ),
                     ];
                     return Wrap(
@@ -131,22 +136,22 @@ class VaultDashboard extends StatelessWidget {
                   builder: (context, constraints) {
                     final twoColumns = constraints.maxWidth > 780;
                     final left = _RecentList(
-                      title: 'Recently opened',
+                      title: l10n.dashboardRecentlyOpened,
                       icon: Icons.history_rounded,
                       entries: recents,
-                      emptyMessage: 'Open an entry and it shows up here.',
-                      subtitleBuilder: (entry) => Formatting.relativeTime(
+                      emptyMessage: l10n.dashboardRecentlyOpenedEmpty,
+                      subtitleBuilder: (entry) => formatRelativeTime(
+                        l10n,
                         vault.lastUsedAt(entry.title),
                       ),
                     );
                     final right = _RecentList(
-                      title: 'Recently modified',
+                      title: l10n.dashboardRecentlyModified,
                       icon: Icons.edit_calendar_outlined,
                       entries: modified,
-                      emptyMessage:
-                          'Entries you edit appear here with their timestamp.',
+                      emptyMessage: l10n.dashboardRecentlyModifiedEmpty,
                       subtitleBuilder: (entry) =>
-                          Formatting.relativeTime(entry.updatedAt),
+                          formatRelativeTime(l10n, entry.updatedAt),
                     );
                     if (!twoColumns) {
                       return Column(
@@ -184,17 +189,16 @@ class VaultDashboard extends StatelessWidget {
 
   Widget _buildHeader(BuildContext context, VaultController vault) {
     final tokens = context.tokens;
+    final l10n = context.l10n;
     final shell = context.read<ShellController>();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text('Vault', style: tokens.text.display),
+        Text(l10n.navVault, style: tokens.text.display),
         const SizedBox(height: Insets.xs),
         Text(
-          '${Formatting.plural(vault.entryCount, 'entry', 'entries')} '
-          'encrypted on this machine. Select an entry to view it, or start '
-          'something new.',
+          l10n.dashboardSubtitle(l10n.entriesCount(vault.entryCount)),
           style: tokens.text.secondary,
         ),
         const SizedBox(height: Insets.lg),
@@ -203,27 +207,27 @@ class VaultDashboard extends StatelessWidget {
           runSpacing: Insets.sm,
           children: <Widget>[
             AppButton(
-              label: 'New entry',
+              label: l10n.newEntry,
               icon: Icons.add_rounded,
               tooltip: 'Ctrl+N',
               onPressed: () => VaultActions.createEntry(context),
             ),
             AppButton(
-              label: 'Search',
+              label: l10n.dashboardSearch,
               icon: Icons.search_rounded,
               variant: AppButtonVariant.secondary,
               tooltip: 'Ctrl+K',
               onPressed: shell.openCommandPalette,
             ),
             AppButton(
-              label: 'Generate password',
+              label: l10n.dashboardGeneratePassword,
               icon: Icons.casino_rounded,
               variant: AppButtonVariant.secondary,
               tooltip: 'Ctrl+G',
               onPressed: () => shell.goTo(ShellDestination.generator),
             ),
             AppButton(
-              label: 'Lock vault',
+              label: l10n.navLockVault,
               icon: Icons.lock_outline_rounded,
               variant: AppButtonVariant.ghost,
               tooltip: 'Ctrl+L',
@@ -242,6 +246,7 @@ class VaultDashboard extends StatelessWidget {
     int clipboardSeconds,
   ) {
     final tokens = context.tokens;
+    final l10n = context.l10n;
     final info = vault.fileInfo;
 
     return AppCard(
@@ -249,11 +254,11 @@ class VaultDashboard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           SectionHeader(
-            title: 'Security snapshot',
-            subtitle: 'Current protection settings for this vault.',
+            title: l10n.dashboardSecuritySnapshot,
+            subtitle: l10n.dashboardSecuritySnapshotSubtitle,
             icon: Icons.shield_outlined,
             trailing: AppButton(
-              label: 'Security center',
+              label: l10n.dashboardSecurityCenter,
               variant: AppButtonVariant.ghost,
               size: AppButtonSize.small,
               onPressed: () => context.read<ShellController>().goTo(
@@ -263,47 +268,36 @@ class VaultDashboard extends StatelessWidget {
           ),
           const SizedBox(height: Insets.sm),
           InfoRow(
-            label: 'Encryption',
+            label: l10n.infoEncryption,
             value:
-                'AES-256-GCM · PBKDF2-HMAC-SHA256'
-                '${info?.iterations != null ? ' · ${info!.iterations} iterations' : ''}',
+                'AES-256-GCM · ${(info?.kdf ?? VaultKdfParams.current).describe()}',
           ),
           InfoRow(
-            label: 'Auto-lock',
+            label: l10n.infoAutoLock,
             value: autoLockMinutes == 0
-                ? 'Off — minimizing never locks the vault'
-                : 'After $autoLockMinutes minutes of inactivity',
+                ? l10n.infoAutoLockOff
+                : l10n.infoAutoLockAfter(autoLockMinutes),
           ),
           InfoRow(
-            label: 'Clipboard',
+            label: l10n.infoClipboard,
             value: clipboardSeconds == 0
-                ? 'Kept until you replace it'
-                : 'Cleared $clipboardSeconds seconds after copying',
+                ? l10n.infoClipboardKeep
+                : l10n.infoClipboardClear(clipboardSeconds),
           ),
           InfoRow(
-            label: 'Last saved',
-            value: Formatting.relativeTime(vault.lastSavedAt),
+            label: l10n.infoLastSaved,
+            value: formatRelativeTime(l10n, vault.lastSavedAt),
           ),
           if (vault.legacyEntries.isNotEmpty) ...<Widget>[
             const SizedBox(height: Insets.sm),
             Text(
-              '${vault.legacyEntries.length} entries still use the legacy '
-              'plain-text format. Open one and fill in a field to upgrade it.',
+              l10n.dashboardLegacyNote(vault.legacyEntries.length),
               style: tokens.text.caption,
             ),
           ],
         ],
       ),
     );
-  }
-
-  static List<VaultEntry> _weakEntries(List<VaultEntry> entries) {
-    return entries.where((entry) {
-      if (entry.password.isEmpty) return false;
-      final strength = PasswordStrength.evaluate(entry.password);
-      return strength.level == StrengthLevel.veryWeak ||
-          strength.level == StrengthLevel.weak;
-    }).toList();
   }
 }
 

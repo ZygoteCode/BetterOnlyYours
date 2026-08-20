@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
 import '../../app/theme/tokens.dart';
+import '../../l10n/l10n.dart';
 import '../../core/services/password_strength.dart';
 import '../../shared/widgets/app_button.dart';
 import '../../shared/widgets/app_dialog.dart';
@@ -39,16 +40,17 @@ class _ChangeMasterPasswordDialogState
 
   Future<void> _submit() async {
     if (_working) return;
+    final l10n = context.l10n;
     final vault = context.read<VaultController>();
     final toasts = context.read<ToastController>();
     final navigator = Navigator.of(context);
 
     if (_next.text.length < 10) {
-      setState(() => _error = 'The new password needs at least 10 characters.');
+      setState(() => _error = l10n.changePasswordTooShort(10));
       return;
     }
     if (_next.text != _confirm.text) {
-      setState(() => _error = 'The new passwords do not match.');
+      setState(() => _error = context.l10n.changePasswordMismatch);
       return;
     }
 
@@ -62,8 +64,8 @@ class _ChangeMasterPasswordDialogState
 
     if (failure == null) {
       toasts.success(
-        'Master password changed',
-        detail: 'The vault was re-encrypted with the new key.',
+        context.l10n.changePasswordDone,
+        detail: context.l10n.changePasswordDoneDetail,
       );
       navigator.pop(true);
       return;
@@ -71,7 +73,7 @@ class _ChangeMasterPasswordDialogState
 
     setState(() {
       _working = false;
-      _error = failure.title;
+      _error = failure.localizedTitle(l10n);
     });
   }
 
@@ -81,8 +83,8 @@ class _ChangeMasterPasswordDialogState
     final strength = PasswordStrength.evaluate(_next.text);
 
     return AppDialog(
-      title: 'Change master password',
-      subtitle: 'The vault is re-encrypted immediately.',
+      title: context.l10n.securityChangeMasterPassword,
+      subtitle: context.l10n.changePasswordSubtitle,
       icon: Icons.password_rounded,
       width: 480,
       content: Column(
@@ -91,7 +93,7 @@ class _ChangeMasterPasswordDialogState
         children: <Widget>[
           AppTextField(
             controller: _current,
-            label: 'Current master password',
+            label: context.l10n.changePasswordCurrent,
             obscureText: true,
             monospace: true,
             autofocus: true,
@@ -100,7 +102,7 @@ class _ChangeMasterPasswordDialogState
           const SizedBox(height: Insets.lg),
           AppTextField(
             controller: _next,
-            label: 'New master password',
+            label: context.l10n.changePasswordNew,
             obscureText: true,
             monospace: true,
             enabled: !_working,
@@ -113,7 +115,7 @@ class _ChangeMasterPasswordDialogState
           const SizedBox(height: Insets.lg),
           AppTextField(
             controller: _confirm,
-            label: 'Confirm new password',
+            label: context.l10n.changePasswordConfirm,
             obscureText: true,
             monospace: true,
             enabled: !_working,
@@ -123,20 +125,19 @@ class _ChangeMasterPasswordDialogState
           ),
           const SizedBox(height: Insets.lg),
           Text(
-            'Keep your backups in mind: copies of the old vault file still '
-            'need the old password.',
+            context.l10n.changePasswordBackupNote,
             style: tokens.text.caption,
           ),
         ],
       ),
       actions: <Widget>[
         AppButton(
-          label: 'Cancel',
+          label: context.l10n.commonCancel,
           variant: AppButtonVariant.ghost,
           onPressed: _working ? null : () => Navigator.of(context).pop(false),
         ),
         AppButton(
-          label: 'Change password',
+          label: context.l10n.changePasswordAction,
           icon: Icons.check_rounded,
           loading: _working,
           onPressed: _submit,

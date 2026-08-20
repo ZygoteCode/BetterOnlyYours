@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
 import '../../app/theme/tokens.dart';
+import '../../l10n/l10n.dart';
 import '../../core/models/vault_entry.dart';
 import '../../core/services/password_strength.dart';
 import '../../core/utils/formatting.dart';
@@ -29,6 +30,7 @@ class EntryInspector extends StatelessWidget {
     final palette = tokens.color;
     final vault = context.watch<VaultController>();
     final strength = PasswordStrength.evaluate(entry.password);
+    final reused = vault.health.isReused(entry.title);
     final related = vault.allEntries
         .where(
           (other) =>
@@ -49,7 +51,7 @@ class EntryInspector extends StatelessWidget {
         child: ListView(
           padding: const EdgeInsets.all(Insets.lg),
           children: <Widget>[
-            Text('INSPECTOR', style: tokens.text.label),
+            Text(context.l10n.inspectorTitle, style: tokens.text.label),
             const SizedBox(height: Insets.md),
             if (entry.password.isNotEmpty) ...<Widget>[
               AppCard(
@@ -57,7 +59,10 @@ class EntryInspector extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text('Password strength', style: tokens.text.cardTitle),
+                    Text(
+                      context.l10n.inspectorPasswordStrength,
+                      style: tokens.text.cardTitle,
+                    ),
                     const SizedBox(height: Insets.md),
                     StrengthMeter(strength: strength),
                     if (strength.suggestions.isNotEmpty) ...<Widget>[
@@ -71,10 +76,31 @@ class EntryInspector extends StatelessWidget {
                           ),
                         ),
                     ],
+                    if (reused) ...<Widget>[
+                      const SizedBox(height: Insets.sm),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Icon(
+                            Icons.copy_all_rounded,
+                            size: 13,
+                            color: palette.warning,
+                          ),
+                          const SizedBox(width: Insets.xs + 2),
+                          Expanded(
+                            child: Text(
+                              context.l10n.inspectorReused,
+                              style: tokens.text.caption.copyWith(
+                                color: palette.warning,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                     const SizedBox(height: Insets.xs),
                     Text(
-                      'Estimate only — based on length, character mix and '
-                      'obvious patterns.',
+                      context.l10n.strengthEstimateNote,
                       style: tokens.text.caption.copyWith(
                         color: palette.textTertiary,
                       ),
@@ -89,23 +115,26 @@ class EntryInspector extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('Quick actions', style: tokens.text.cardTitle),
+                  Text(
+                    context.l10n.inspectorQuickActions,
+                    style: tokens.text.cardTitle,
+                  ),
                   const SizedBox(height: Insets.sm),
                   _InspectorAction(
                     icon: Icons.person_outline_rounded,
-                    label: 'Copy username',
+                    label: context.l10n.menuCopyUsername,
                     enabled: entry.username.isNotEmpty,
                     onTap: () => VaultActions.copyUsername(context, entry),
                   ),
                   _InspectorAction(
                     icon: Icons.key_rounded,
-                    label: 'Copy password',
+                    label: context.l10n.menuCopyPassword,
                     enabled: entry.password.isNotEmpty,
                     onTap: () => VaultActions.copyPassword(context, entry),
                   ),
                   _InspectorAction(
                     icon: Icons.language_rounded,
-                    label: 'Open website',
+                    label: context.l10n.menuOpenWebsite,
                     enabled: entry.url.isNotEmpty,
                     onTap: () => VaultActions.openUrl(context, entry),
                   ),
@@ -114,18 +143,18 @@ class EntryInspector extends StatelessWidget {
                         ? Icons.star_rounded
                         : Icons.star_outline_rounded,
                     label: entry.favorite
-                        ? 'Remove from favorites'
-                        : 'Add to favorites',
+                        ? context.l10n.menuRemoveFavorite
+                        : context.l10n.menuAddFavorite,
                     onTap: () => VaultActions.toggleFavorite(context, entry),
                   ),
                   _InspectorAction(
                     icon: Icons.copy_all_rounded,
-                    label: 'Duplicate entry',
+                    label: context.l10n.inspectorDuplicate,
                     onTap: () => VaultActions.duplicate(context, entry),
                   ),
                   _InspectorAction(
                     icon: Icons.delete_outline_rounded,
-                    label: 'Delete entry',
+                    label: context.l10n.inspectorDelete,
                     destructive: true,
                     onTap: () => VaultActions.deleteEntry(context, entry),
                   ),
@@ -138,27 +167,41 @@ class EntryInspector extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('Timeline', style: tokens.text.cardTitle),
+                  Text(
+                    context.l10n.inspectorTimeline,
+                    style: tokens.text.cardTitle,
+                  ),
                   const SizedBox(height: Insets.sm),
                   _TimelineRow(
-                    label: 'Created',
+                    label: context.l10n.inspectorCreated,
                     value: entry.createdAt == null
-                        ? 'Unknown'
+                        ? context.l10n.inspectorUnknown
                         : Formatting.absoluteTime(entry.createdAt),
                   ),
                   _TimelineRow(
-                    label: 'Modified',
-                    value: Formatting.relativeTime(entry.updatedAt),
+                    label: context.l10n.inspectorModified,
+                    value: formatRelativeTime(context.l10n, entry.updatedAt),
                   ),
                   _TimelineRow(
-                    label: 'Opened',
-                    value: Formatting.relativeTime(
+                    label: context.l10n.inspectorOpened,
+                    value: formatRelativeTime(
+                      context.l10n,
                       vault.lastUsedAt(entry.title),
                     ),
                   ),
                   _TimelineRow(
-                    label: 'Format',
-                    value: entry.isLegacyFormat ? 'Legacy text' : 'Structured',
+                    label: context.l10n.inspectorFormat,
+                    value: entry.isLegacyFormat
+                        ? context.l10n.inspectorFormatLegacy
+                        : context.l10n.inspectorFormatStructured,
+                  ),
+                  _TimelineRow(
+                    label: context.l10n.inspectorHistory,
+                    value: entry.passwordHistory.isEmpty
+                        ? context.l10n.inspectorNoHistory
+                        : context.l10n.previousPasswordsCount(
+                            entry.passwordHistory.length,
+                          ),
                   ),
                 ],
               ),
@@ -170,7 +213,10 @@ class EntryInspector extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text('Tags', style: tokens.text.cardTitle),
+                    Text(
+                      context.l10n.inspectorTags,
+                      style: tokens.text.cardTitle,
+                    ),
                     const SizedBox(height: Insets.sm),
                     Wrap(
                       spacing: Insets.xs + 2,
@@ -196,7 +242,10 @@ class EntryInspector extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text('Related', style: tokens.text.cardTitle),
+                    Text(
+                      context.l10n.inspectorRelated,
+                      style: tokens.text.cardTitle,
+                    ),
                     const SizedBox(height: Insets.sm),
                     for (final other in related)
                       HoverBuilder(

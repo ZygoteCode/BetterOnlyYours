@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
 import '../../app/theme/tokens.dart';
+import '../../l10n/l10n.dart';
 import '../../shared/widgets/app_button.dart';
 import '../../state/shell_controller.dart';
 import '../../state/vault_controller.dart';
@@ -27,6 +28,7 @@ class AppShell extends StatelessWidget {
     final shell = context.watch<ShellController>();
     final vault = context.watch<VaultController>();
     final palette = context.colors;
+    final l10n = context.l10n;
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -37,21 +39,21 @@ class AppShell extends StatelessWidget {
         return Column(
           children: <Widget>[
             AppTitleBar(
-              contextLabel: _contextLabel(shell, vault),
+              contextLabel: _contextLabel(l10n, shell, vault),
               actions: <Widget>[
                 AppIconButton(
                   icon: Icons.search_rounded,
-                  tooltip: 'Command palette  ·  Ctrl+K',
+                  tooltip: l10n.actionSearchTooltip,
                   onPressed: shell.openCommandPalette,
                 ),
                 AppIconButton(
                   icon: Icons.add_rounded,
-                  tooltip: 'New entry  ·  Ctrl+N',
+                  tooltip: l10n.actionNewEntryTooltip,
                   onPressed: () => VaultActions.createEntry(context),
                 ),
                 AppIconButton(
                   icon: Icons.lock_outline_rounded,
-                  tooltip: 'Lock vault  ·  Ctrl+L',
+                  tooltip: l10n.actionLockTooltip,
                   onPressed: () => VaultActions.lockVault(context),
                 ),
               ],
@@ -120,9 +122,13 @@ class AppShell extends StatelessWidget {
     }
   }
 
-  String _contextLabel(ShellController shell, VaultController vault) {
+  String _contextLabel(
+    AppLocalizations l10n,
+    ShellController shell,
+    VaultController vault,
+  ) {
     final selected = vault.selectedEntry;
-    final destination = shell.destination.label;
+    final destination = shell.destination.localizedLabel(l10n);
     if (selected != null &&
         (shell.destination == ShellDestination.vault ||
             shell.destination == ShellDestination.favorites ||

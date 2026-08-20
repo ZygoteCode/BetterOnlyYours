@@ -9,11 +9,12 @@ import 'package:betteronlyyours/features/vault/entry_detail_panel.dart';
 import 'package:betteronlyyours/features/vault/entry_inspector.dart';
 import 'package:betteronlyyours/features/vault/entry_list_panel.dart';
 import 'package:betteronlyyours/features/vault/vault_dashboard.dart';
+import 'package:betteronlyyours/l10n/l10n.dart';
 import 'package:betteronlyyours/state/settings_controller.dart';
 import 'package:betteronlyyours/state/shell_controller.dart';
 import 'package:betteronlyyours/state/toast_controller.dart';
 import 'package:betteronlyyours/state/vault_controller.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
 
@@ -106,6 +107,9 @@ void main() {
         ],
         child: MaterialApp(
           theme: AppTheme.build(settings.settings),
+          locale: const Locale('en'),
+          supportedLocales: appSupportedLocales,
+          localizationsDelegates: appLocalizationsDelegates,
           home: Scaffold(
             body: Stack(
               children: <Widget>[

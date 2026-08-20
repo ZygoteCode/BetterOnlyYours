@@ -10,7 +10,7 @@ import 'package:betteronlyyours/state/settings_controller.dart';
 import 'package:betteronlyyours/state/shell_controller.dart';
 import 'package:betteronlyyours/state/toast_controller.dart';
 import 'package:betteronlyyours/state/vault_controller.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
 

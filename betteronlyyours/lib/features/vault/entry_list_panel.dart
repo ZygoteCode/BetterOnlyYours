@@ -1,8 +1,9 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../../app/theme/tokens.dart';
+import '../../l10n/l10n.dart';
 import '../../core/models/vault_entry.dart';
 import '../../core/services/fuzzy_search.dart';
 import '../../shared/animations/entrance.dart';
@@ -219,6 +220,7 @@ class _EntryListPanelState extends State<EntryListPanel> {
     List<VaultEntry> entries,
   ) {
     final tokens = context.tokens;
+    final l10n = context.l10n;
     final palette = tokens.color;
     final tags = vault.allTags;
 
@@ -244,15 +246,15 @@ class _EntryListPanelState extends State<EntryListPanel> {
                   child: AppTextField(
                     controller: _search,
                     focusNode: widget.searchFocusNode,
-                    hint: 'Search vault…',
+                    hint: l10n.listSearchHint,
                     prefixIcon: Icons.search_rounded,
-                    semanticLabel: 'Search vault',
+                    semanticLabel: l10n.listSearchSemantics,
                     onChanged: vault.setQuery,
                     suffix: _search.text.isEmpty
                         ? null
                         : AppIconButton(
                             icon: Icons.close_rounded,
-                            tooltip: 'Clear search',
+                            tooltip: l10n.listClearSearch,
                             dense: true,
                             size: 14,
                             onPressed: () {
@@ -267,13 +269,13 @@ class _EntryListPanelState extends State<EntryListPanel> {
               Builder(
                 builder: (buttonContext) => AppIconButton(
                   icon: Icons.sort_rounded,
-                  tooltip: 'Sort and filter',
+                  tooltip: l10n.listSortTooltip,
                   onPressed: () => _openSortMenu(buttonContext, vault),
                 ),
               ),
               AppIconButton(
                 icon: Icons.add_rounded,
-                tooltip: 'New entry  ·  Ctrl+N',
+                tooltip: l10n.actionNewEntryTooltip,
                 onPressed: () => VaultActions.createEntry(context),
               ),
             ],
@@ -287,7 +289,7 @@ class _EntryListPanelState extends State<EntryListPanel> {
                 scrollDirection: Axis.horizontal,
                 children: <Widget>[
                   TagChip(
-                    label: 'Favorites',
+                    label: l10n.navFavorites,
                     icon: Icons.star_rounded,
                     selected: vault.favoritesOnly,
                     onTap: () => vault.setFavoritesOnly(!vault.favoritesOnly),
@@ -318,6 +320,7 @@ class _EntryListPanelState extends State<EntryListPanel> {
     int shownCount,
   ) {
     final tokens = context.tokens;
+    final l10n = context.l10n;
     final palette = tokens.color;
     final total = switch (widget.mode) {
       VaultViewMode.all => vault.entryCount,
@@ -335,8 +338,8 @@ class _EntryListPanelState extends State<EntryListPanel> {
         children: <Widget>[
           Text(
             shownCount == total
-                ? '$total ${total == 1 ? 'entry' : 'entries'}'
-                : '$shownCount of $total',
+                ? l10n.entriesCount(total)
+                : l10n.listShownOfTotal(shownCount, total),
             style: tokens.text.caption,
           ),
           const Spacer(),
@@ -349,7 +352,7 @@ class _EntryListPanelState extends State<EntryListPanel> {
                 vault.clearFilters();
               },
               builder: (context, state) => Text(
-                'Clear filters',
+                l10n.listClearFilters,
                 style: tokens.text.caption.copyWith(
                   color: state.hovered ? palette.accent : palette.textTertiary,
                 ),
@@ -361,6 +364,7 @@ class _EntryListPanelState extends State<EntryListPanel> {
   }
 
   Widget _buildEmptyState(BuildContext context, VaultController vault) {
+    final l10n = context.l10n;
     final searching =
         vault.query.trim().isNotEmpty ||
         vault.tagFilter != null ||
@@ -370,16 +374,16 @@ class _EntryListPanelState extends State<EntryListPanel> {
       return EmptyState(
         compact: true,
         icon: Icons.search_off_rounded,
-        title: 'Nothing matched',
-        message: 'No entry matches the current search or filters.',
-        actionLabel: 'Create "${vault.query.trim()}"',
+        title: l10n.emptySearchTitle,
+        message: l10n.emptySearchMessage,
+        actionLabel: l10n.emptySearchCreate(vault.query.trim()),
         onAction: vault.query.trim().isEmpty
             ? null
             : () => VaultActions.createEntry(
                 context,
                 initialTitle: vault.query.trim(),
               ),
-        secondaryActionLabel: 'Clear filters',
+        secondaryActionLabel: l10n.listClearFilters,
         onSecondaryAction: () {
           _search.clear();
           vault.clearFilters();
@@ -388,31 +392,27 @@ class _EntryListPanelState extends State<EntryListPanel> {
     }
 
     return switch (widget.mode) {
-      VaultViewMode.favorites => const EmptyState(
+      VaultViewMode.favorites => EmptyState(
         compact: true,
         icon: Icons.star_outline_rounded,
-        title: 'No favorites yet',
-        message:
-            'Star the entries you reach for daily and they will appear here.',
-        hint: 'Ctrl+D toggles a favorite on the selected entry.',
+        title: l10n.emptyFavoritesTitle,
+        message: l10n.emptyFavoritesMessage,
+        hint: l10n.emptyFavoritesHint,
       ),
-      VaultViewMode.recent => const EmptyState(
+      VaultViewMode.recent => EmptyState(
         compact: true,
         icon: Icons.history_rounded,
-        title: 'Nothing opened yet',
-        message:
-            'Entries you open appear here, newest first. The history lives '
-            'inside the encrypted vault.',
+        title: l10n.emptyRecentTitle,
+        message: l10n.emptyRecentMessage,
       ),
       VaultViewMode.all => EmptyState(
         compact: true,
         icon: Icons.lock_open_rounded,
-        title: 'Your vault is empty',
-        message:
-            'Create your first entry — it is encrypted the moment you save.',
-        actionLabel: 'New entry',
+        title: l10n.emptyVaultTitle,
+        message: l10n.emptyVaultMessage,
+        actionLabel: l10n.newEntry,
         onAction: () => VaultActions.createEntry(context),
-        hint: 'Ctrl+N creates an entry from anywhere.',
+        hint: l10n.emptyVaultHint,
       ),
     };
   }
@@ -421,6 +421,7 @@ class _EntryListPanelState extends State<EntryListPanel> {
     BuildContext buttonContext,
     VaultController vault,
   ) async {
+    final l10n = buttonContext.l10n;
     final box = buttonContext.findRenderObject() as RenderBox?;
     final position = box == null
         ? Offset.zero
@@ -432,19 +433,19 @@ class _EntryListPanelState extends State<EntryListPanel> {
       entries: <AppMenuEntry?>[
         for (final sort in EntrySort.values)
           AppMenuEntry(
-            label: sort.label,
+            label: sort.localizedLabel(l10n),
             checked: vault.sort == sort,
             onSelected: () => vault.setSort(sort),
           ),
         null,
         AppMenuEntry(
-          label: 'Favorites only',
+          label: l10n.listFavoritesOnly,
           checked: vault.favoritesOnly,
           onSelected: () => vault.setFavoritesOnly(!vault.favoritesOnly),
         ),
         if (vault.tagFilter != null)
           AppMenuEntry(
-            label: 'Clear tag filter (${vault.tagFilter})',
+            label: l10n.listClearTagFilter(vault.tagFilter!),
             icon: Icons.filter_alt_off_rounded,
             onSelected: () => vault.setTagFilter(null),
           ),
@@ -472,6 +473,7 @@ class _EntryRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final tokens = context.tokens;
     final palette = tokens.color;
+    final l10n = context.l10n;
     final match = query.trim().isEmpty
         ? null
         : FuzzySearch.match(query, entry.title);
@@ -586,7 +588,7 @@ class _EntryRow extends StatelessWidget {
                             if (entry.username.isNotEmpty)
                               AppIconButton(
                                 icon: Icons.person_outline_rounded,
-                                tooltip: 'Copy username',
+                                tooltip: l10n.menuCopyUsername,
                                 dense: true,
                                 size: 15,
                                 onPressed: () =>
@@ -595,7 +597,7 @@ class _EntryRow extends StatelessWidget {
                             if (entry.password.isNotEmpty)
                               AppIconButton(
                                 icon: Icons.key_rounded,
-                                tooltip: 'Copy password',
+                                tooltip: l10n.menuCopyPassword,
                                 dense: true,
                                 size: 15,
                                 onPressed: () =>
@@ -604,7 +606,7 @@ class _EntryRow extends StatelessWidget {
                             Builder(
                               builder: (menuContext) => AppIconButton(
                                 icon: Icons.more_horiz_rounded,
-                                tooltip: 'Entry actions',
+                                tooltip: l10n.listEntryActions,
                                 dense: true,
                                 size: 16,
                                 onPressed: () {

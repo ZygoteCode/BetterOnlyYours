@@ -5,9 +5,12 @@ import 'package:flutter/foundation.dart';
 import '../core/models/vault_entry.dart';
 import '../core/models/vault_meta.dart';
 import '../core/security/vault_exception.dart';
+import '../core/security/vault_kdf.dart';
 import '../core/security/vault_repository.dart';
 import '../core/security/vault_session.dart';
 import '../core/services/fuzzy_search.dart';
+import '../core/services/vault_health.dart';
+import '../l10n/l10n.dart';
 import 'settings_controller.dart';
 import 'toast_controller.dart';
 
@@ -51,6 +54,11 @@ class VaultController extends ChangeNotifier {
   }
 
   final ToastController _toasts;
+
+  /// Attached by the widget tree so background notifications (unlock upgrade,
+  /// save failures, auto-lock) speak the user's language. English is used
+  /// until it is set.
+  AppLocalizations? localizations;
   final SettingsController _settings;
   final VaultStore _repository;
 
@@ -73,6 +81,7 @@ class VaultController extends ChangeNotifier {
   DeletedEntry? _lastDeleted;
   VaultFileInfo? _fileInfo;
 
+  VaultHealthReport? _health;
   Future<void> _saveChain = Future<void>.value();
   Timer? _metaFlushTimer;
   Timer? _autoLockTimer;
@@ -103,6 +112,13 @@ class VaultController extends ChangeNotifier {
 
   List<VaultEntry> get legacyEntries =>
       _entries.values.where((e) => e.isLegacyFormat).toList();
+
+  /// Password hygiene across the vault: weak passwords and reuse.
+  ///
+  /// Computed lazily and cached until the next change, so several widgets can
+  /// read it in the same frame without re-analysing the vault.
+  VaultHealthReport get health =>
+      _health ??= VaultHealth.analyze(_entries.values);
 
   /// Entries ordered by the moment they were last opened.
   List<VaultEntry> get recentEntries {
@@ -278,19 +294,22 @@ class VaultController extends ChangeNotifier {
       _noteActivityInternal();
       await refreshFileInfo();
 
+      final l10n = localizations;
       if (result.recoveredFromBackup) {
         _toasts.warning(
-          'Vault restored from backup',
+          l10n?.vaultRestoredBackup ?? 'Vault restored from backup',
           detail:
+              l10n?.vaultRestoredBackupDetail ??
               'The main file could not be read, so the .bak copy was opened.',
         );
       }
       if (result.upgradedFormat) {
+        final describe = VaultKdfParams.current.describe();
         _toasts.success(
-          'Vault upgraded',
+          l10n?.vaultUpgraded ?? 'Vault upgraded',
           detail:
-              'Re-encrypted with stronger key derivation (format v2, '
-              '200,000 PBKDF2 iterations).',
+              l10n?.vaultUpgradedDetail(describe) ??
+              'Re-encrypted with stronger key derivation ($describe).',
         );
       }
       return null;
@@ -337,7 +356,10 @@ class VaultController extends ChangeNotifier {
     _saveChain = _saveChain.whenComplete(() => session?.dispose());
 
     if (reason != null) {
-      _toasts.show('Vault locked', detail: reason);
+      _toasts.show(
+        localizations?.vaultLocked ?? 'Vault locked',
+        detail: reason,
+      );
     }
     notifyListeners();
   }
@@ -401,13 +423,24 @@ class VaultController extends ChangeNotifier {
       tags: _normalizeTags(entry.tags),
     );
 
+    final previous = _entries[previousTitle ?? title];
+
     if (previousTitle != null && previousTitle != title) {
       _entries.remove(previousTitle);
       _meta = _meta.renamed(previousTitle, title);
       if (_selectedTitle == previousTitle) _selectedTitle = title;
     }
 
-    _entries[title] = normalized.touched();
+    // Password rotation is recorded centrally, so every path that changes a
+    // password (editor, generator, restore) keeps the same history.
+    var stored = normalized;
+    if (!_settings.settings.keepPasswordHistory) {
+      stored = stored.withoutPasswordHistory();
+    } else if (previous != null) {
+      stored = stored.withHistoryFrom(previous);
+    }
+
+    _entries[title] = stored.touched();
     _noteActivityInternal();
     notifyListeners();
     return _persist();
@@ -451,7 +484,8 @@ class VaultController extends ChangeNotifier {
       index++;
     }
     final now = DateTime.now();
-    _entries[copyTitle] = source.copyWith(
+    // A duplicate starts clean: old secrets are not copied around.
+    _entries[copyTitle] = source.withoutPasswordHistory().copyWith(
       title: copyTitle,
       createdAt: now,
       updatedAt: now,
@@ -476,6 +510,54 @@ class VaultController extends ChangeNotifier {
     notifyListeners();
     return _persist();
   }
+
+  // ------------------------------------------------------ password history
+
+  /// Puts a superseded password back in use. The password being replaced is
+  /// pushed onto the history by [upsertEntry], so nothing is lost.
+  Future<bool> restorePassword(String title, VaultPasswordRecord record) {
+    final entry = _entries[title];
+    if (entry == null) return Future<bool>.value(false);
+    return upsertEntry(entry.copyWith(password: record.password));
+  }
+
+  Future<bool> forgetPassword(String title, VaultPasswordRecord record) async {
+    final entry = _entries[title];
+    if (entry == null) return false;
+    final history = entry.passwordHistory
+        .where((item) => item != record)
+        .toList();
+    if (history.length == entry.passwordHistory.length) return false;
+    _entries[title] = entry.copyWith(passwordHistory: history);
+    notifyListeners();
+    return _persist();
+  }
+
+  Future<bool> clearPasswordHistory(String title) async {
+    final entry = _entries[title];
+    if (entry == null || entry.passwordHistory.isEmpty) return false;
+    _entries[title] = entry.withoutPasswordHistory();
+    notifyListeners();
+    return _persist();
+  }
+
+  /// Drops every superseded password in the vault in a single write.
+  Future<bool> clearAllPasswordHistory() async {
+    var changed = false;
+    for (final entry in _entries.values.toList()) {
+      if (entry.passwordHistory.isEmpty) continue;
+      _entries[entry.title] = entry.withoutPasswordHistory();
+      changed = true;
+    }
+    if (!changed) return false;
+    notifyListeners();
+    return _persist();
+  }
+
+  int get storedPasswordHistoryCount => _entries.values.fold<int>(
+    0,
+    (total, entry) => total + entry.passwordHistory.length,
+  );
 
   /// Retries the last failed write.
   Future<bool> retrySave() => _persist();
@@ -633,9 +715,12 @@ class VaultController extends ChangeNotifier {
       _saveState = SaveState.failed;
       notifyListeners();
       if (!silent) {
+        final l10n = localizations;
         _toasts.error(
-          error.title,
-          detail: '${error.hint} Your changes are still here — retry the save.',
+          l10n == null ? error.title : error.localizedTitle(l10n),
+          detail: l10n == null
+              ? '${error.hint} Your changes are still here — retry the save.'
+              : l10n.vaultSaveRetryHint(error.localizedHint(l10n)),
         );
       }
       return false;
@@ -649,8 +734,10 @@ class VaultController extends ChangeNotifier {
       notifyListeners();
       if (!silent) {
         _toasts.error(
-          'Vault could not be saved',
-          detail: 'Your changes are still here — retry the save.',
+          localizations?.vaultSaveFailed ?? 'Vault could not be saved',
+          detail:
+              localizations?.vaultSaveFailedDetail ??
+              'Your changes are still here — retry the save.',
         );
       }
       return false;
@@ -684,8 +771,19 @@ class VaultController extends ChangeNotifier {
     }
     final idleFor = DateTime.now().difference(_lastActivity);
     if (idleFor.inMinutes >= minutes) {
-      lock(reason: 'Locked after $minutes minutes of inactivity.');
+      lock(
+        reason:
+            localizations?.vaultLockedInactivity(minutes) ??
+            'Locked after $minutes minutes of inactivity.',
+      );
     }
+  }
+
+  /// Any change invalidates the cached health report.
+  @override
+  void notifyListeners() {
+    _health = null;
+    super.notifyListeners();
   }
 
   @override

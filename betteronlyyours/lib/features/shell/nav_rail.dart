@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
 import '../../app/theme/tokens.dart';
+import '../../l10n/l10n.dart';
 import '../../shared/widgets/hover_builder.dart';
 import '../../state/shell_controller.dart';
 import '../../state/vault_controller.dart';
@@ -23,6 +24,7 @@ class AppNavRail extends StatelessWidget {
     final palette = tokens.color;
     final shell = context.watch<ShellController>();
     final vault = context.watch<VaultController>();
+    final l10n = context.l10n;
 
     final destinations = <_NavItemData>[
       _NavItemData(
@@ -86,10 +88,10 @@ class AppNavRail extends StatelessWidget {
               vertical: 2,
             ),
             child: _NavItem(
-              data: const _NavItemData(
+              data: _NavItemData(
                 destination: null,
                 icon: Icons.lock_outline_rounded,
-                label: 'Lock vault',
+                label: l10n.navLockVault,
                 shortcut: 'Ctrl+L',
               ),
               expanded: expanded,
@@ -111,7 +113,7 @@ class AppNavRail extends StatelessWidget {
                 icon: expanded
                     ? Icons.keyboard_double_arrow_left_rounded
                     : Icons.keyboard_double_arrow_right_rounded,
-                label: 'Collapse',
+                label: l10n.navCollapse,
               ),
               expanded: expanded,
               selected: false,
@@ -139,7 +141,8 @@ class _NavItemData {
   final int? badge;
   final String? shortcut;
 
-  String get title => label ?? destination?.label ?? '';
+  String title(AppLocalizations l10n) =>
+      label ?? destination?.localizedLabel(l10n) ?? '';
 }
 
 class _NavItem extends StatelessWidget {
@@ -199,7 +202,7 @@ class _NavItem extends StatelessWidget {
                 const SizedBox(width: Insets.md),
                 Expanded(
                   child: Text(
-                    data.title,
+                    data.title(context.l10n),
                     overflow: TextOverflow.ellipsis,
                     style: tokens.text.body.copyWith(
                       color: selected ? color : palette.textSecondary,
@@ -220,10 +223,9 @@ class _NavItem extends StatelessWidget {
       return Semantics(button: true, selected: selected, child: content);
     }
 
+    final title = data.title(context.l10n);
     return Tooltip(
-      message: data.shortcut == null
-          ? data.title
-          : '${data.title}  ·  ${data.shortcut}',
+      message: data.shortcut == null ? title : '$title  ·  ${data.shortcut}',
       child: Semantics(button: true, selected: selected, child: content),
     );
   }

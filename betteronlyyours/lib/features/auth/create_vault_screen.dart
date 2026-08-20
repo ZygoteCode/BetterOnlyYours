@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
 import '../../app/theme/tokens.dart';
+import '../../l10n/l10n.dart';
 import '../../core/security/vault_exception.dart';
 import '../../core/services/password_strength.dart';
 import '../../shared/animations/entrance.dart';
@@ -47,18 +48,17 @@ class _CreateVaultScreenState extends State<CreateVaultScreen> {
     if (_working) return;
     final vault = context.read<VaultController>();
 
+    final l10n = context.l10n;
     if (!_lengthOk) {
-      setState(() => _error = 'Use at least $_minimumLength characters.');
+      setState(() => _error = l10n.setupErrorFields(_minimumLength));
       return;
     }
     if (!_matches) {
-      setState(() => _error = 'The two passwords do not match.');
+      setState(() => _error = l10n.setupErrorMismatch);
       return;
     }
     if (!_acknowledged) {
-      setState(
-        () => _error = 'Confirm you understand there is no password recovery.',
-      );
+      setState(() => _error = l10n.setupErrorAcknowledge);
       return;
     }
 
@@ -93,6 +93,7 @@ class _CreateVaultScreenState extends State<CreateVaultScreen> {
     final tokens = context.tokens;
     final palette = tokens.color;
     final vault = context.watch<VaultController>();
+    final l10n = context.l10n;
     final strength = PasswordStrength.evaluate(_password.text);
     final path = vault.fileInfo?.path;
 
@@ -129,7 +130,7 @@ class _CreateVaultScreenState extends State<CreateVaultScreen> {
                                 const BrandWordmark(fontSize: 16),
                                 const SizedBox(height: 2),
                                 Text(
-                                  'Set up your vault',
+                                  l10n.setupTitle,
                                   style: tokens.text.caption,
                                 ),
                               ],
@@ -138,23 +139,14 @@ class _CreateVaultScreenState extends State<CreateVaultScreen> {
                         ],
                       ),
                       const SizedBox(height: Insets.xxl),
-                      Text(
-                        'One password, one file, no cloud',
-                        style: tokens.text.pageTitle,
-                      ),
+                      Text(l10n.setupHeadline, style: tokens.text.pageTitle),
                       const SizedBox(height: Insets.sm),
-                      Text(
-                        'Your entries are encrypted with AES-256-GCM using a '
-                        'key derived from the master password. The vault file '
-                        'never leaves this machine, and nothing else can '
-                        'decrypt it.',
-                        style: tokens.text.secondary,
-                      ),
+                      Text(l10n.setupIntro, style: tokens.text.secondary),
                       const SizedBox(height: Insets.xl),
                       AppTextField(
                         controller: _password,
-                        label: 'Master password',
-                        hint: 'Choose something long and memorable',
+                        label: l10n.authMasterPassword,
+                        hint: l10n.setupPasswordHint,
                         obscureText: !_revealed,
                         monospace: true,
                         autofocus: true,
@@ -165,7 +157,7 @@ class _CreateVaultScreenState extends State<CreateVaultScreen> {
                           icon: _revealed
                               ? Icons.visibility_off_outlined
                               : Icons.visibility_outlined,
-                          tooltip: _revealed ? 'Hide' : 'Show',
+                          tooltip: _revealed ? l10n.setupHide : l10n.setupShow,
                           dense: true,
                           size: 16,
                           onPressed: () =>
@@ -179,8 +171,8 @@ class _CreateVaultScreenState extends State<CreateVaultScreen> {
                       const SizedBox(height: Insets.lg),
                       AppTextField(
                         controller: _confirm,
-                        label: 'Confirm master password',
-                        hint: 'Type it once more',
+                        label: l10n.setupConfirmLabel,
+                        hint: l10n.setupConfirmHint,
                         obscureText: !_revealed,
                         monospace: true,
                         enabled: !_working,
@@ -192,9 +184,12 @@ class _CreateVaultScreenState extends State<CreateVaultScreen> {
                       const SizedBox(height: Insets.lg),
                       _Requirement(
                         met: _lengthOk,
-                        label: 'At least $_minimumLength characters',
+                        label: l10n.setupRequirementLength(_minimumLength),
                       ),
-                      _Requirement(met: _matches, label: 'Both entries match'),
+                      _Requirement(
+                        met: _matches,
+                        label: l10n.setupRequirementMatch,
+                      ),
                       const SizedBox(height: Insets.lg),
                       _Acknowledgement(
                         value: _acknowledged,
@@ -218,20 +213,23 @@ class _CreateVaultScreenState extends State<CreateVaultScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                _failure!.title,
+                                _failure!.localizedTitle(l10n),
                                 style: tokens.text.bodyStrong.copyWith(
                                   color: palette.danger,
                                 ),
                               ),
                               const SizedBox(height: 2),
-                              Text(_failure!.hint, style: tokens.text.caption),
+                              Text(
+                                _failure!.localizedHint(l10n),
+                                style: tokens.text.caption,
+                              ),
                             ],
                           ),
                         ),
                       ],
                       const SizedBox(height: Insets.xl),
                       AppButton(
-                        label: 'Create vault',
+                        label: l10n.setupCreateButton,
                         icon: Icons.shield_rounded,
                         expand: true,
                         loading: _working,
@@ -240,7 +238,7 @@ class _CreateVaultScreenState extends State<CreateVaultScreen> {
                       if (path != null) ...<Widget>[
                         const SizedBox(height: Insets.lg),
                         Text(
-                          'Vault file: $path',
+                          l10n.setupVaultFile(path),
                           textAlign: TextAlign.center,
                           style: tokens.text.caption,
                         ),
@@ -342,9 +340,7 @@ class _Acknowledgement extends StatelessWidget {
             const SizedBox(width: Insets.sm),
             Expanded(
               child: Text(
-                'I understand this password cannot be recovered or reset. If '
-                'I lose it, the vault stays encrypted forever — so I will keep '
-                'a backup of the vault file somewhere safe.',
+                context.l10n.setupAcknowledgement,
                 style: tokens.text.secondary,
               ),
             ),

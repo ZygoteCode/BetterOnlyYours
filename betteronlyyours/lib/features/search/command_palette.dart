@@ -1,10 +1,11 @@
 import 'dart:ui';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../../app/theme/tokens.dart';
+import '../../l10n/l10n.dart';
 import '../../core/models/vault_entry.dart';
 import '../../core/services/fuzzy_search.dart';
 import '../../shared/widgets/app_menu.dart';
@@ -52,6 +53,7 @@ class _CommandPaletteState extends State<CommandPalette> {
   void _close() => context.read<ShellController>().closeCommandPalette();
 
   List<_PaletteItem> _buildItems(BuildContext context, VaultController vault) {
+    final l10n = context.l10n;
     final query = _query.text.trim();
     final items = <_PaletteItem>[];
 
@@ -70,51 +72,51 @@ class _CommandPaletteState extends State<CommandPalette> {
 
     final commands = <_PaletteItem>[
       _PaletteItem.command(
-        title: 'New entry',
-        subtitle: 'Create a credential',
+        title: l10n.newEntry,
+        subtitle: l10n.paletteCommandNewEntry,
         icon: Icons.add_rounded,
         shortcut: const <String>['Ctrl', 'N'],
         run: (context) => VaultActions.createEntry(context),
       ),
       _PaletteItem.command(
-        title: 'Password generator',
-        subtitle: 'Generate a password or passphrase',
+        title: l10n.generatorTitle,
+        subtitle: l10n.paletteCommandGenerator,
         icon: Icons.casino_rounded,
         shortcut: const <String>['Ctrl', 'G'],
         run: (context) =>
             context.read<ShellController>().goTo(ShellDestination.generator),
       ),
       _PaletteItem.command(
-        title: 'Lock vault',
-        subtitle: 'Clear the session and return to the lock screen',
+        title: l10n.navLockVault,
+        subtitle: l10n.paletteCommandLock,
         icon: Icons.lock_outline_rounded,
         shortcut: const <String>['Ctrl', 'L'],
         run: (context) => VaultActions.lockVault(context),
       ),
       _PaletteItem.command(
-        title: 'Favorites',
-        subtitle: 'Jump to starred entries',
+        title: l10n.navFavorites,
+        subtitle: l10n.paletteCommandFavorites,
         icon: Icons.star_rounded,
         run: (context) =>
             context.read<ShellController>().goTo(ShellDestination.favorites),
       ),
       _PaletteItem.command(
-        title: 'Recent',
-        subtitle: 'Entries you opened last',
+        title: l10n.navRecent,
+        subtitle: l10n.paletteCommandRecent,
         icon: Icons.history_rounded,
         run: (context) =>
             context.read<ShellController>().goTo(ShellDestination.recent),
       ),
       _PaletteItem.command(
-        title: 'Security center',
-        subtitle: 'Encryption, vault file and protection settings',
+        title: l10n.dashboardSecurityCenter,
+        subtitle: l10n.paletteCommandSecurity,
         icon: Icons.shield_outlined,
         run: (context) =>
             context.read<ShellController>().goTo(ShellDestination.security),
       ),
       _PaletteItem.command(
-        title: 'Settings',
-        subtitle: 'Appearance, security, keyboard, vault',
+        title: l10n.navSettings,
+        subtitle: l10n.paletteCommandSettings,
         icon: Icons.tune_rounded,
         shortcut: const <String>['Ctrl', ','],
         run: (context) =>
@@ -323,6 +325,7 @@ class _CommandPaletteState extends State<CommandPalette> {
   Widget _buildInput(BuildContext context, List<_PaletteItem> items) {
     final tokens = context.tokens;
     final palette = tokens.color;
+    final l10n = context.l10n;
 
     return Focus(
       onKeyEvent: (node, event) => _onKey(event, items),
@@ -345,7 +348,7 @@ class _CommandPaletteState extends State<CommandPalette> {
                 onChanged: (_) => setState(() => _selectedIndex = 0),
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintText: 'Search entries or run a command…',
+                  hintText: l10n.paletteHint,
                   hintStyle: tokens.text.body.copyWith(
                     fontSize: 16,
                     color: palette.textTertiary,
@@ -365,6 +368,7 @@ class _CommandPaletteState extends State<CommandPalette> {
 
   Widget _buildNoResults(BuildContext context) {
     final tokens = context.tokens;
+    final l10n = context.l10n;
     final query = _query.text.trim();
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -373,7 +377,7 @@ class _CommandPaletteState extends State<CommandPalette> {
       ),
       child: Column(
         children: <Widget>[
-          Text('No matches for "$query"', style: tokens.text.body),
+          Text(l10n.paletteNoMatches(query), style: tokens.text.body),
           const SizedBox(height: Insets.sm),
           HoverBuilder(
             onTap: () {
@@ -381,7 +385,7 @@ class _CommandPaletteState extends State<CommandPalette> {
               VaultActions.createEntry(context, initialTitle: query);
             },
             builder: (context, state) => Text(
-              'Create an entry named "$query"',
+              l10n.paletteCreateNamed(query),
               style: tokens.text.secondary.copyWith(
                 color: state.hovered
                     ? tokens.color.accent
@@ -397,6 +401,7 @@ class _CommandPaletteState extends State<CommandPalette> {
   Widget _buildFooter(BuildContext context) {
     final tokens = context.tokens;
     final palette = tokens.color;
+    final l10n = context.l10n;
 
     return Container(
       padding: const EdgeInsets.symmetric(
@@ -415,15 +420,18 @@ class _CommandPaletteState extends State<CommandPalette> {
         runSpacing: Insets.xs,
         crossAxisAlignment: WrapCrossAlignment.center,
         children: <Widget>[
-          _FooterHint(keys: const <String>['↑', '↓'], label: 'navigate'),
-          _FooterHint(keys: const <String>['Enter'], label: 'open'),
+          _FooterHint(
+            keys: const <String>['↑', '↓'],
+            label: l10n.paletteNavigate,
+          ),
+          _FooterHint(keys: const <String>['Enter'], label: l10n.paletteOpen),
           _FooterHint(
             keys: const <String>['Ctrl', 'Enter'],
-            label: 'copy password',
+            label: l10n.paletteCopyPassword,
           ),
           _FooterHint(
             keys: const <String>['Alt', 'Enter'],
-            label: 'copy username',
+            label: l10n.paletteCopyUsername,
           ),
         ],
       ),
@@ -508,6 +516,7 @@ class _PaletteRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final tokens = context.tokens;
     final palette = tokens.color;
+    final l10n = context.l10n;
     final match = query.trim().isEmpty
         ? null
         : FuzzySearch.match(query, item.title);
@@ -586,7 +595,7 @@ class _PaletteRow extends StatelessWidget {
               if (item.shortcut != null)
                 ShortcutHint(keys: item.shortcut!)
               else if (selected && item.entry != null)
-                Text('Enter to open', style: tokens.text.caption),
+                Text(l10n.paletteEnterToOpen, style: tokens.text.caption),
             ],
           ),
         ),

@@ -1,8 +1,9 @@
 import 'dart:ui';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../app/theme/tokens.dart';
+import '../../l10n/l10n.dart';
 import 'app_button.dart';
 
 /// Shows a modal with the app's own transition: quick fade + subtle scale,
@@ -156,8 +157,8 @@ Future<bool> showConfirmDialog({
   required BuildContext context,
   required String title,
   required String message,
-  String confirmLabel = 'Confirm',
-  String cancelLabel = 'Cancel',
+  String? confirmLabel,
+  String? cancelLabel,
   bool destructive = false,
   String? detail,
   IconData icon = Icons.help_outline_rounded,
@@ -193,12 +194,12 @@ Future<bool> showConfirmDialog({
         ),
         actions: <Widget>[
           AppButton(
-            label: cancelLabel,
+            label: cancelLabel ?? dialogContext.l10n.commonCancel,
             variant: AppButtonVariant.ghost,
             onPressed: () => Navigator.of(dialogContext).pop(false),
           ),
           AppButton(
-            label: confirmLabel,
+            label: confirmLabel ?? dialogContext.l10n.commonConfirm,
             variant: destructive
                 ? AppButtonVariant.danger
                 : AppButtonVariant.primary,

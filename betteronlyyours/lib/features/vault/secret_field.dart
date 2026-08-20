@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../app/theme/tokens.dart';
+import '../../l10n/l10n.dart';
 import '../../core/services/password_strength.dart';
 import '../../shared/widgets/app_button.dart';
 import '../../shared/widgets/app_text_field.dart';
@@ -14,7 +15,7 @@ class SecretField extends StatefulWidget {
     super.key,
     required this.controller,
     this.label,
-    this.hint = 'Password',
+    this.hint,
     this.revealByDefault = false,
     this.showStrength = true,
     this.onGenerate,
@@ -28,7 +29,7 @@ class SecretField extends StatefulWidget {
 
   final TextEditingController controller;
   final String? label;
-  final String hint;
+  final String? hint;
   final bool revealByDefault;
   final bool showStrength;
   final VoidCallback? onGenerate;
@@ -59,7 +60,7 @@ class _SecretFieldState extends State<SecretField> {
         AppTextField(
           controller: widget.controller,
           label: widget.label,
-          hint: widget.hint,
+          hint: widget.hint ?? context.l10n.fieldPassword,
           obscureText: !_revealed,
           monospace: true,
           enabled: widget.enabled,
@@ -77,7 +78,9 @@ class _SecretFieldState extends State<SecretField> {
                 icon: _revealed
                     ? Icons.visibility_off_outlined
                     : Icons.visibility_outlined,
-                tooltip: _revealed ? 'Hide password' : 'Reveal password',
+                tooltip: _revealed
+                    ? context.l10n.secretHide
+                    : context.l10n.secretReveal,
                 dense: true,
                 size: 16,
                 onPressed: widget.enabled
@@ -87,7 +90,7 @@ class _SecretFieldState extends State<SecretField> {
               if (widget.onCopy != null)
                 AppIconButton(
                   icon: Icons.copy_rounded,
-                  tooltip: 'Copy password  ·  Ctrl+Shift+C',
+                  tooltip: context.l10n.secretCopyShortcut,
                   dense: true,
                   size: 15,
                   onPressed: value.isEmpty ? null : widget.onCopy,
@@ -95,7 +98,7 @@ class _SecretFieldState extends State<SecretField> {
               if (widget.onGenerate != null)
                 AppIconButton(
                   icon: Icons.auto_awesome_rounded,
-                  tooltip: 'Generate a new password',
+                  tooltip: context.l10n.secretGenerate,
                   dense: true,
                   size: 15,
                   onPressed: widget.enabled ? widget.onGenerate : null,

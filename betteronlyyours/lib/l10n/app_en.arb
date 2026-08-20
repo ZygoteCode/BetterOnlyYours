@@ -1,0 +1,1337 @@
+{
+  "@@locale": "en",
+  "appTagline": "A local, encrypted vault that stays yours.",
+  "@appTagline": {},
+  "appDescription": "BetterOnlyYours keeps credentials and secrets in a single encrypted file on this machine. No account, no sync, no telemetry — the vault is only readable with your master password.",
+  "@appDescription": {},
+  "navVault": "Vault",
+  "@navVault": {},
+  "navFavorites": "Favorites",
+  "@navFavorites": {},
+  "navRecent": "Recent",
+  "@navRecent": {},
+  "navGenerator": "Generator",
+  "@navGenerator": {},
+  "navSecurity": "Security",
+  "@navSecurity": {},
+  "navSettings": "Settings",
+  "@navSettings": {},
+  "navLockVault": "Lock vault",
+  "@navLockVault": {},
+  "navCollapse": "Collapse",
+  "@navCollapse": {},
+  "windowMinimize": "Minimize",
+  "@windowMinimize": {},
+  "windowMaximize": "Maximize",
+  "@windowMaximize": {},
+  "windowRestore": "Restore",
+  "@windowRestore": {},
+  "windowClose": "Close",
+  "@windowClose": {},
+  "actionSearchTooltip": "Command palette  ·  Ctrl+K",
+  "@actionSearchTooltip": {},
+  "actionNewEntryTooltip": "New entry  ·  Ctrl+N",
+  "@actionNewEntryTooltip": {},
+  "actionLockTooltip": "Lock vault  ·  Ctrl+L",
+  "@actionLockTooltip": {},
+  "statusUnlockedEntries": "Unlocked · {entries}",
+  "@statusUnlockedEntries": {
+    "placeholders": {
+      "entries": {
+        "type": "String"
+      }
+    }
+  },
+  "statusEncrypting": "Encrypting…",
+  "@statusEncrypting": {},
+  "statusSaveFailed": "Save failed — click to retry",
+  "@statusSaveFailed": {},
+  "statusNoChanges": "No changes yet",
+  "@statusNoChanges": {},
+  "statusSavedAgo": "Saved {when}",
+  "@statusSavedAgo": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "statusClipboardClears": "{label} clears in {seconds}s",
+  "@statusClipboardClears": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "statusKeep": "keep",
+  "@statusKeep": {},
+  "statusAutoLockOn": "Auto-lock {minutes}m",
+  "@statusAutoLockOn": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "statusAutoLockOff": "Auto-lock off",
+  "@statusAutoLockOff": {},
+  "authLocalVault": "Local encrypted vault",
+  "@authLocalVault": {},
+  "authVaultLocked": "Vault locked",
+  "@authVaultLocked": {},
+  "authUnlockPrompt": "Enter your master password to decrypt this vault.",
+  "@authUnlockPrompt": {},
+  "authMasterPassword": "Master password",
+  "@authMasterPassword": {},
+  "authUnlockButton": "Unlock vault",
+  "@authUnlockButton": {},
+  "authCapsLockOn": "Caps Lock is on",
+  "@authCapsLockOn": {},
+  "authShowPassword": "Show password",
+  "@authShowPassword": {},
+  "authHidePassword": "Hide password",
+  "@authHidePassword": {},
+  "authLocalOnlyNote": "Everything stays on this machine. There is no account, no sync and no password reset.",
+  "@authLocalOnlyNote": {},
+  "setupTitle": "Set up your vault",
+  "@setupTitle": {},
+  "setupHeadline": "One password, one file, no cloud",
+  "@setupHeadline": {},
+  "setupIntro": "Your entries are encrypted with AES-256-GCM using a key derived from the master password. The vault file never leaves this machine, and nothing else can decrypt it.",
+  "@setupIntro": {},
+  "setupPasswordHint": "Choose something long and memorable",
+  "@setupPasswordHint": {},
+  "setupConfirmLabel": "Confirm master password",
+  "@setupConfirmLabel": {},
+  "setupConfirmHint": "Type it once more",
+  "@setupConfirmHint": {},
+  "setupRequirementLength": "At least {count} characters",
+  "@setupRequirementLength": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "setupRequirementMatch": "Both entries match",
+  "@setupRequirementMatch": {},
+  "setupAcknowledgement": "I understand this password cannot be recovered or reset. If I lose it, the vault stays encrypted forever — so I will keep a backup of the vault file somewhere safe.",
+  "@setupAcknowledgement": {},
+  "setupCreateButton": "Create vault",
+  "@setupCreateButton": {},
+  "setupVaultFile": "Vault file: {path}",
+  "@setupVaultFile": {
+    "placeholders": {
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "setupErrorFields": "Use at least {count} characters.",
+  "@setupErrorFields": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "setupErrorMismatch": "The two passwords do not match.",
+  "@setupErrorMismatch": {},
+  "setupErrorAcknowledge": "Confirm you understand there is no password recovery.",
+  "@setupErrorAcknowledge": {},
+  "setupHide": "Hide",
+  "@setupHide": {},
+  "setupShow": "Show",
+  "@setupShow": {},
+  "timeNever": "never",
+  "@timeNever": {},
+  "timeJustNow": "just now",
+  "@timeJustNow": {},
+  "timeMinutesAgo": "{count, plural, =1{1 minute ago} other{{count} minutes ago}}",
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timeHoursAgo": "{count, plural, =1{1 hour ago} other{{count} hours ago}}",
+  "@timeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timeDaysAgo": "{count, plural, =1{1 day ago} other{{count} days ago}}",
+  "@timeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timeWeeksAgo": "{count, plural, =1{1 week ago} other{{count} weeks ago}}",
+  "@timeWeeksAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timeMonthsAgo": "{count, plural, =1{1 month ago} other{{count} months ago}}",
+  "@timeMonthsAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timeYearsAgo": "{count, plural, =1{1 year ago} other{{count} years ago}}",
+  "@timeYearsAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "entriesCount": "{count, plural, =1{1 entry} other{{count} entries}}",
+  "@entriesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "previousPasswordsCount": "{count, plural, =1{1 previous password} other{{count} previous passwords}}",
+  "@previousPasswordsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "listSearchHint": "Search vault...",
+  "@listSearchHint": {},
+  "listSearchSemantics": "Search vault",
+  "@listSearchSemantics": {},
+  "listClearSearch": "Clear search",
+  "@listClearSearch": {},
+  "listSortTooltip": "Sort and filter",
+  "@listSortTooltip": {},
+  "listFavoritesOnly": "Favorites only",
+  "@listFavoritesOnly": {},
+  "listClearTagFilter": "Clear tag filter ({tag})",
+  "@listClearTagFilter": {
+    "placeholders": {
+      "tag": {
+        "type": "String"
+      }
+    }
+  },
+  "listShownOfTotal": "{shown} of {total}",
+  "@listShownOfTotal": {
+    "placeholders": {
+      "shown": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "listClearFilters": "Clear filters",
+  "@listClearFilters": {},
+  "listEntryActions": "Entry actions",
+  "@listEntryActions": {},
+  "emptySearchTitle": "Nothing matched",
+  "@emptySearchTitle": {},
+  "emptySearchMessage": "No entry matches the current search or filters.",
+  "@emptySearchMessage": {},
+  "emptySearchCreate": "Create \"{query}\"",
+  "@emptySearchCreate": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "emptyFavoritesTitle": "No favorites yet",
+  "@emptyFavoritesTitle": {},
+  "emptyFavoritesMessage": "Star the entries you reach for daily and they will appear here.",
+  "@emptyFavoritesMessage": {},
+  "emptyFavoritesHint": "Ctrl+D toggles a favorite on the selected entry.",
+  "@emptyFavoritesHint": {},
+  "emptyRecentTitle": "Nothing opened yet",
+  "@emptyRecentTitle": {},
+  "emptyRecentMessage": "Entries you open appear here, newest first. The history lives inside the encrypted vault.",
+  "@emptyRecentMessage": {},
+  "emptyVaultTitle": "Your vault is empty",
+  "@emptyVaultTitle": {},
+  "emptyVaultMessage": "Create your first entry — it is encrypted the moment you save.",
+  "@emptyVaultMessage": {},
+  "emptyVaultHint": "Ctrl+N creates an entry from anywhere.",
+  "@emptyVaultHint": {},
+  "newEntry": "New entry",
+  "@newEntry": {},
+  "sortTitleAsc": "Name (A-Z)",
+  "@sortTitleAsc": {},
+  "sortTitleDesc": "Name (Z-A)",
+  "@sortTitleDesc": {},
+  "sortRecentlyUsed": "Recently opened",
+  "@sortRecentlyUsed": {},
+  "sortRecentlyUpdated": "Recently modified",
+  "@sortRecentlyUpdated": {},
+  "dashboardSubtitle": "{entries} encrypted on this machine. Select an entry to view it, or start something new.",
+  "@dashboardSubtitle": {
+    "placeholders": {
+      "entries": {
+        "type": "String"
+      }
+    }
+  },
+  "dashboardReadyTitle": "Your vault is ready",
+  "@dashboardReadyTitle": {},
+  "dashboardReadyMessage": "Nothing is stored yet. Create your first entry — it is encrypted locally the moment you save it.",
+  "@dashboardReadyMessage": {},
+  "dashboardOpenGenerator": "Open generator",
+  "@dashboardOpenGenerator": {},
+  "dashboardShortcutHint": "Ctrl+N new entry · Ctrl+K command palette · Ctrl+L lock",
+  "@dashboardShortcutHint": {},
+  "dashboardSearch": "Search",
+  "@dashboardSearch": {},
+  "dashboardGeneratePassword": "Generate password",
+  "@dashboardGeneratePassword": {},
+  "statEntries": "Entries",
+  "@statEntries": {},
+  "statEntriesAllStructured": "All structured",
+  "@statEntriesAllStructured": {},
+  "statEntriesLegacy": "{count} legacy",
+  "@statEntriesLegacy": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "statFavorites": "Favorites",
+  "@statFavorites": {},
+  "statFavoritesCaption": "Starred for quick access",
+  "@statFavoritesCaption": {},
+  "statTags": "Tags",
+  "@statTags": {},
+  "statTagsEmpty": "Add tags to group entries",
+  "@statTagsEmpty": {},
+  "statHealth": "Password health",
+  "@statHealth": {},
+  "statHealthClean": "No weak or reused passwords",
+  "@statHealthClean": {},
+  "statHealthIssues": "{weak} weak · {reused} reused",
+  "@statHealthIssues": {
+    "placeholders": {
+      "weak": {
+        "type": "int"
+      },
+      "reused": {
+        "type": "int"
+      }
+    }
+  },
+  "dashboardRecentlyOpened": "Recently opened",
+  "@dashboardRecentlyOpened": {},
+  "dashboardRecentlyOpenedEmpty": "Open an entry and it shows up here.",
+  "@dashboardRecentlyOpenedEmpty": {},
+  "dashboardRecentlyModified": "Recently modified",
+  "@dashboardRecentlyModified": {},
+  "dashboardRecentlyModifiedEmpty": "Entries you edit appear here with their timestamp.",
+  "@dashboardRecentlyModifiedEmpty": {},
+  "dashboardSecuritySnapshot": "Security snapshot",
+  "@dashboardSecuritySnapshot": {},
+  "dashboardSecuritySnapshotSubtitle": "Current protection settings for this vault.",
+  "@dashboardSecuritySnapshotSubtitle": {},
+  "dashboardSecurityCenter": "Security center",
+  "@dashboardSecurityCenter": {},
+  "infoEncryption": "Encryption",
+  "@infoEncryption": {},
+  "infoAutoLock": "Auto-lock",
+  "@infoAutoLock": {},
+  "infoAutoLockOff": "Off — minimizing never locks the vault",
+  "@infoAutoLockOff": {},
+  "infoAutoLockAfter": "After {minutes} minutes of inactivity",
+  "@infoAutoLockAfter": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "infoClipboard": "Clipboard",
+  "@infoClipboard": {},
+  "infoClipboardKeep": "Kept until you replace it",
+  "@infoClipboardKeep": {},
+  "infoClipboardClear": "Cleared {seconds} seconds after copying",
+  "@infoClipboardClear": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "infoLastSaved": "Last saved",
+  "@infoLastSaved": {},
+  "dashboardLegacyNote": "{count} entries still use the legacy plain-text format. Open one and fill in a field to upgrade it.",
+  "@dashboardLegacyNote": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "fieldName": "Name",
+  "@fieldName": {},
+  "fieldNameHint": "Entry name",
+  "@fieldNameHint": {},
+  "fieldUsername": "Username or email",
+  "@fieldUsername": {},
+  "fieldNotSet": "Not set",
+  "@fieldNotSet": {},
+  "fieldPassword": "Password",
+  "@fieldPassword": {},
+  "fieldWebsite": "Website",
+  "@fieldWebsite": {},
+  "fieldNotes": "Notes",
+  "@fieldNotes": {},
+  "fieldNotesHint": "Recovery codes, hints, anything else...",
+  "@fieldNotesHint": {},
+  "fieldTags": "TAGS",
+  "@fieldTags": {},
+  "fieldCustomFields": "CUSTOM FIELDS",
+  "@fieldCustomFields": {},
+  "fieldDetails": "DETAILS",
+  "@fieldDetails": {},
+  "fieldLabel": "Label",
+  "@fieldLabel": {},
+  "fieldValue": "Value",
+  "@fieldValue": {},
+  "fieldTagName": "Tag name",
+  "@fieldTagName": {},
+  "fieldAddTag": "Add tag",
+  "@fieldAddTag": {},
+  "fieldSuggestions": "Suggestions",
+  "@fieldSuggestions": {},
+  "fieldAddField": "Add field",
+  "@fieldAddField": {},
+  "fieldCustomFieldsEmpty": "Recovery codes, security questions, API keys — anything that belongs to this entry.",
+  "@fieldCustomFieldsEmpty": {},
+  "fieldCopyValue": "Copy value",
+  "@fieldCopyValue": {},
+  "fieldHideValue": "Hide this value",
+  "@fieldHideValue": {},
+  "fieldShowValue": "Stop hiding this value",
+  "@fieldShowValue": {},
+  "fieldRemoveField": "Remove field",
+  "@fieldRemoveField": {},
+  "fieldGenericField": "Field",
+  "@fieldGenericField": {},
+  "detailBackToList": "Back to list",
+  "@detailBackToList": {},
+  "detailAddFavorite": "Add to favorites  ·  Ctrl+D",
+  "@detailAddFavorite": {},
+  "detailRemoveFavorite": "Remove from favorites  ·  Ctrl+D",
+  "@detailRemoveFavorite": {},
+  "detailOpenWebsite": "Open website",
+  "@detailOpenWebsite": {},
+  "detailOpenInBrowser": "Open in browser",
+  "@detailOpenInBrowser": {},
+  "detailCopyPasswordShortcut": "Copy password  ·  Ctrl+Shift+C",
+  "@detailCopyPasswordShortcut": {},
+  "detailCopyUsernameShortcut": "Copy username  ·  Ctrl+Shift+U",
+  "@detailCopyUsernameShortcut": {},
+  "detailUnsavedChanges": "Unsaved changes",
+  "@detailUnsavedChanges": {},
+  "detailRevert": "Revert",
+  "@detailRevert": {},
+  "detailSave": "Save",
+  "@detailSave": {},
+  "detailSaved": "Saved",
+  "@detailSaved": {},
+  "detailNameRequired": "A name is required.",
+  "@detailNameRequired": {},
+  "detailNameTaken": "Another entry already uses that name.",
+  "@detailNameTaken": {},
+  "detailLegacyBanner": "Imported from an older vault, where entries were plain text. Your text is in Notes; filling any other field upgrades this entry to the structured format on the next save.",
+  "@detailLegacyBanner": {},
+  "detailChangesDiscarded": "Changes discarded",
+  "@detailChangesDiscarded": {},
+  "detailUnsavedPrompt": "You edited this entry but did not save. Keep the changes or drop them?",
+  "@detailUnsavedPrompt": {},
+  "detailSaveChanges": "Save changes",
+  "@detailSaveChanges": {},
+  "detailDiscard": "Discard",
+  "@detailDiscard": {},
+  "detailPasswordGenerated": "Password generated",
+  "@detailPasswordGenerated": {},
+  "detailPasswordGeneratedDetail": "Not saved yet — press Ctrl+S to store it.",
+  "@detailPasswordGeneratedDetail": {},
+  "detailCreated": "Created",
+  "@detailCreated": {},
+  "detailLastModified": "Last modified",
+  "@detailLastModified": {},
+  "detailLastOpened": "Last opened",
+  "@detailLastOpened": {},
+  "detailStorageFormat": "Storage format",
+  "@detailStorageFormat": {},
+  "detailUnknownLegacy": "Unknown (legacy entry)",
+  "@detailUnknownLegacy": {},
+  "detailFormatLegacy": "Legacy plain text",
+  "@detailFormatLegacy": {},
+  "detailFormatStructured": "Structured (BOY1)",
+  "@detailFormatStructured": {},
+  "secretReveal": "Reveal password",
+  "@secretReveal": {},
+  "secretHide": "Hide password",
+  "@secretHide": {},
+  "secretCopyShortcut": "Copy password  ·  Ctrl+Shift+C",
+  "@secretCopyShortcut": {},
+  "secretGenerate": "Generate a new password",
+  "@secretGenerate": {},
+  "createDialogTitle": "New entry",
+  "@createDialogTitle": {},
+  "createDialogSubtitle": "Stored encrypted in your local vault.",
+  "@createDialogSubtitle": {},
+  "createDialogNameHint": "GitHub, Bank, Home server...",
+  "@createDialogNameHint": {},
+  "createDialogOptional": "Optional",
+  "@createDialogOptional": {},
+  "createDialogPasswordHint": "Optional — generate one",
+  "@createDialogPasswordHint": {},
+  "createDialogFooter": "You can add notes, tags and custom fields after creating it.",
+  "@createDialogFooter": {},
+  "createDialogNameEmpty": "Give the entry a name.",
+  "@createDialogNameEmpty": {},
+  "createDialogNameExists": "An entry named \"{title}\" already exists.",
+  "@createDialogNameExists": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "createDialogSaveFailed": "The entry could not be saved. Check the Security tab.",
+  "@createDialogSaveFailed": {},
+  "createDialogCreate": "Create entry",
+  "@createDialogCreate": {},
+  "createDialogEntryCreated": "Entry created",
+  "@createDialogEntryCreated": {},
+  "commonCancel": "Cancel",
+  "@commonCancel": {},
+  "commonConfirm": "Confirm",
+  "@commonConfirm": {},
+  "commonClose": "Close",
+  "@commonClose": {},
+  "commonRetry": "Retry",
+  "@commonRetry": {},
+  "commonUndo": "Undo",
+  "@commonUndo": {},
+  "commonOpen": "Open",
+  "@commonOpen": {},
+  "commonDelete": "Delete",
+  "@commonDelete": {},
+  "commonClear": "Clear",
+  "@commonClear": {},
+  "historyTitle": "PASSWORD HISTORY",
+  "@historyTitle": {},
+  "historyEmptyHint": "When you change this password, the previous one is kept here so a mistaken change can be undone.",
+  "@historyEmptyHint": {},
+  "historyCountOf": "{count} of {max}",
+  "@historyCountOf": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "historyClear": "Clear history",
+  "@historyClear": {},
+  "historyCap": "History lives inside the encrypted vault and is capped at {max} entries.",
+  "@historyCap": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "historyClearTitle": "Clear password history?",
+  "@historyClearTitle": {},
+  "historyClearMessage": "Every superseded password of this entry is deleted from the vault. This cannot be undone.",
+  "@historyClearMessage": {},
+  "historyCleared": "Password history cleared",
+  "@historyCleared": {},
+  "historyReplacedAt": "Replaced {relative} · {absolute}",
+  "@historyReplacedAt": {
+    "placeholders": {
+      "relative": {
+        "type": "String"
+      },
+      "absolute": {
+        "type": "String"
+      }
+    }
+  },
+  "historyReveal": "Reveal",
+  "@historyReveal": {},
+  "historyHide": "Hide",
+  "@historyHide": {},
+  "historyCopy": "Copy this password",
+  "@historyCopy": {},
+  "historyRestore": "Use this password again",
+  "@historyRestore": {},
+  "historyForget": "Forget this password",
+  "@historyForget": {},
+  "historyRestoreTitle": "Use this password again?",
+  "@historyRestoreTitle": {},
+  "historyRestoreMessage": "The entry goes back to this password. The one in use now is kept in the history, so you can switch back.",
+  "@historyRestoreMessage": {},
+  "historyRestoreConfirm": "Restore",
+  "@historyRestoreConfirm": {},
+  "historyRestored": "Password restored",
+  "@historyRestored": {},
+  "historyForgotten": "Removed from history",
+  "@historyForgotten": {},
+  "historyPreviousPassword": "Previous password",
+  "@historyPreviousPassword": {},
+  "paletteHint": "Search entries or run a command...",
+  "@paletteHint": {},
+  "paletteNoMatches": "No matches for \"{query}\"",
+  "@paletteNoMatches": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "paletteCreateNamed": "Create an entry named \"{query}\"",
+  "@paletteCreateNamed": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "paletteNavigate": "navigate",
+  "@paletteNavigate": {},
+  "paletteOpen": "open",
+  "@paletteOpen": {},
+  "paletteCopyPassword": "copy password",
+  "@paletteCopyPassword": {},
+  "paletteCopyUsername": "copy username",
+  "@paletteCopyUsername": {},
+  "paletteEnterToOpen": "Enter to open",
+  "@paletteEnterToOpen": {},
+  "paletteCommandNewEntry": "Create a credential",
+  "@paletteCommandNewEntry": {},
+  "paletteCommandGenerator": "Generate a password or passphrase",
+  "@paletteCommandGenerator": {},
+  "paletteCommandLock": "Clear the session and return to the lock screen",
+  "@paletteCommandLock": {},
+  "paletteCommandFavorites": "Jump to starred entries",
+  "@paletteCommandFavorites": {},
+  "paletteCommandRecent": "Entries you opened last",
+  "@paletteCommandRecent": {},
+  "paletteCommandSecurity": "Encryption, vault file and protection settings",
+  "@paletteCommandSecurity": {},
+  "paletteCommandSettings": "Appearance, security, keyboard, vault",
+  "@paletteCommandSettings": {},
+  "generatorTitle": "Password generator",
+  "@generatorTitle": {},
+  "generatorSubtitle": "Everything is generated locally with the operating system's cryptographic random source.",
+  "@generatorSubtitle": {},
+  "generatorModeCharacters": "Random characters",
+  "@generatorModeCharacters": {},
+  "generatorModePassphrase": "Passphrase",
+  "@generatorModePassphrase": {},
+  "generatorCopy": "Copy",
+  "@generatorCopy": {},
+  "generatorRegenerate": "Regenerate",
+  "@generatorRegenerate": {},
+  "generatorRngNote": "Generated with a cryptographic RNG",
+  "@generatorRngNote": {},
+  "generatorLength": "Length",
+  "@generatorLength": {},
+  "generatorLowercase": "Lowercase (a-z)",
+  "@generatorLowercase": {},
+  "generatorUppercase": "Uppercase (A-Z)",
+  "@generatorUppercase": {},
+  "generatorDigits": "Digits (0-9)",
+  "@generatorDigits": {},
+  "generatorSymbols": "Symbols (!@#...)",
+  "@generatorSymbols": {},
+  "generatorAvoidAmbiguous": "Avoid look-alike characters",
+  "@generatorAvoidAmbiguous": {},
+  "generatorNoClassWarning": "At least one character set is required — letters and digits are used until you pick one.",
+  "@generatorNoClassWarning": {},
+  "generatorWords": "Words",
+  "@generatorWords": {},
+  "generatorSeparator": "Separator",
+  "@generatorSeparator": {},
+  "generatorCapitalize": "Capitalize words",
+  "@generatorCapitalize": {},
+  "generatorAppendNumber": "Append a number",
+  "@generatorAppendNumber": {},
+  "generatorWordListNote": "{words} word list · each word adds about {bits} bits of entropy.",
+  "@generatorWordListNote": {
+    "placeholders": {
+      "words": {
+        "type": "int"
+      },
+      "bits": {
+        "type": "int"
+      }
+    }
+  },
+  "generatorSessionTitle": "This session",
+  "@generatorSessionTitle": {},
+  "generatorSessionSubtitle": "Previously generated values, kept in memory only.",
+  "@generatorSessionSubtitle": {},
+  "generatorDialogTitle": "Generate a password",
+  "@generatorDialogTitle": {},
+  "generatorDialogSubtitle": "Pick the shape you need, then use it in the entry.",
+  "@generatorDialogSubtitle": {},
+  "generatorUsePassword": "Use password",
+  "@generatorUsePassword": {},
+  "securityTitle": "Security",
+  "@securityTitle": {},
+  "securitySubtitle": "How this vault is encrypted, stored and protected.",
+  "@securitySubtitle": {},
+  "securityLockNow": "Lock now",
+  "@securityLockNow": {},
+  "securitySession": "Session",
+  "@securitySession": {},
+  "securitySessionSubtitle": "Current state of the unlocked vault.",
+  "@securitySessionSubtitle": {},
+  "securityStateSaving": "Saving...",
+  "@securityStateSaving": {},
+  "securityStateSaveFailed": "Save failed",
+  "@securityStateSaveFailed": {},
+  "securityStateSaved": "Saved",
+  "@securityStateSaved": {},
+  "securityStateUnlocked": "Unlocked",
+  "@securityStateUnlocked": {},
+  "securityEntries": "Entries",
+  "@securityEntries": {},
+  "securityLastWritten": "Last written",
+  "@securityLastWritten": {},
+  "securityMasterPasswordMemory": "Master password in memory",
+  "@securityMasterPasswordMemory": {},
+  "securityMasterPasswordMemoryValue": "No — only the derived key is kept while unlocked, and it is wiped on lock.",
+  "@securityMasterPasswordMemoryValue": {},
+  "securityRenderingEngine": "Rendering engine",
+  "@securityRenderingEngine": {},
+  "securityRetrySave": "Retry save",
+  "@securityRetrySave": {},
+  "securityEncryption": "Encryption",
+  "@securityEncryption": {},
+  "securityEncryptionSubtitle": "Primitives used by this build.",
+  "@securityEncryptionSubtitle": {},
+  "securityCipher": "Cipher",
+  "@securityCipher": {},
+  "securityCipherValue": "AES-256-GCM (128-bit authentication tag)",
+  "@securityCipherValue": {},
+  "securityKeyDerivation": "Key derivation",
+  "@securityKeyDerivation": {},
+  "securityVaultFormat": "Vault format",
+  "@securityVaultFormat": {},
+  "securityFormatUnknown": "Unknown",
+  "@securityFormatUnknown": {},
+  "securityFormatLegacySuffix": " (legacy)",
+  "@securityFormatLegacySuffix": {},
+  "securityMemoryHard": "Memory-hard",
+  "@securityMemoryHard": {},
+  "securityMemoryHardNo": "No — this file still uses PBKDF2",
+  "@securityMemoryHardNo": {},
+  "securityMemoryHardYes": "Yes — Argon2id resists GPU and ASIC cracking",
+  "@securityMemoryHardYes": {},
+  "securityHeaderAuth": "Header authentication",
+  "@securityHeaderAuth": {},
+  "securityHeaderAuthValue": "The full header (version, KDF, parameters, salt, nonce) is authenticated as GCM associated data.",
+  "@securityHeaderAuthValue": {},
+  "securityNonce": "Nonce",
+  "@securityNonce": {},
+  "securityNonceValue": "Fresh 96-bit random nonce for every save",
+  "@securityNonceValue": {},
+  "securityLegacyFormatTitle": "Legacy vault format detected",
+  "@securityLegacyFormatTitle": {},
+  "securityOldKdfTitle": "Older key derivation detected",
+  "@securityOldKdfTitle": {},
+  "securityOldKdfMessage": "This file was written before Argon2id ({current}). The next successful unlock re-encrypts it with {target}.",
+  "@securityOldKdfMessage": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "securityArgonNote": "Argon2id is memory-hard, so cracking hardware cannot trade memory for parallelism the way it can against PBKDF2. A long, unique master password is still what protects the vault.",
+  "@securityArgonNote": {},
+  "securityHealthTitle": "Password health",
+  "@securityHealthTitle": {},
+  "securityHealthSubtitle": "Reuse and strength across every stored password.",
+  "@securityHealthSubtitle": {},
+  "securityHealthScore": "{score} / 100",
+  "@securityHealthScore": {
+    "placeholders": {
+      "score": {
+        "type": "int"
+      }
+    }
+  },
+  "securityHealthNoPasswords": "No passwords yet",
+  "@securityHealthNoPasswords": {},
+  "securityHealthWithPassword": "With password",
+  "@securityHealthWithPassword": {},
+  "securityHealthReused": "Reused",
+  "@securityHealthReused": {},
+  "securityHealthWeak": "Weak",
+  "@securityHealthWeak": {},
+  "securityHealthNoPassword": "No password",
+  "@securityHealthNoPassword": {},
+  "securityHealthEmptyMessage": "Nothing to analyse yet — add a credential with a password.",
+  "@securityHealthEmptyMessage": {},
+  "securityHealthCleanMessage": "Every password is unique and none of them look weak.",
+  "@securityHealthCleanMessage": {},
+  "securityHealthReusedTitle": "REUSED PASSWORDS",
+  "@securityHealthReusedTitle": {},
+  "securityHealthSharedBy": "Shared by {count} entries",
+  "@securityHealthSharedBy": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "securityHealthMoreGroups": "+ {count} more groups",
+  "@securityHealthMoreGroups": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "securityHealthReuseNote": "One leaked service exposes every entry sharing that password. Give each of them its own generated password.",
+  "@securityHealthReuseNote": {},
+  "securityHealthWeakTitle": "WEAK PASSWORDS",
+  "@securityHealthWeakTitle": {},
+  "securityHealthMore": "+ {count} more",
+  "@securityHealthMore": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "securityVaultFile": "Vault file",
+  "@securityVaultFile": {},
+  "securityVaultFileSubtitle": "Everything lives in a single encrypted file.",
+  "@securityVaultFileSubtitle": {},
+  "securityRefresh": "Refresh",
+  "@securityRefresh": {},
+  "securityLocation": "Location",
+  "@securityLocation": {},
+  "securityResolving": "Resolving...",
+  "@securityResolving": {},
+  "securityCopyPath": "Copy path",
+  "@securityCopyPath": {},
+  "securityOpenFolder": "Open containing folder",
+  "@securityOpenFolder": {},
+  "securitySize": "Size",
+  "@securitySize": {},
+  "securityModified": "Modified",
+  "@securityModified": {},
+  "securityBackupCopy": "Backup copy",
+  "@securityBackupCopy": {},
+  "securityBackupPresent": "credentials.plf.bak kept next to the vault",
+  "@securityBackupPresent": {},
+  "securityBackupOnNextSave": "Created automatically on the next save",
+  "@securityBackupOnNextSave": {},
+  "securityWrites": "Writes",
+  "@securityWrites": {},
+  "securityWritesValue": "Atomic: written to a temp file, then renamed over the vault, so an interrupted save cannot corrupt it.",
+  "@securityWritesValue": {},
+  "securityFolderOpenFailed": "The folder could not be opened",
+  "@securityFolderOpenFailed": {},
+  "securityVaultPathLabel": "Vault path",
+  "@securityVaultPathLabel": {},
+  "securityProtection": "Protection",
+  "@securityProtection": {},
+  "securityProtectionSubtitle": "Session behaviour you control in Settings.",
+  "@securityProtectionSubtitle": {},
+  "securityMinimizeLabel": "Minimize / Alt-Tab",
+  "@securityMinimizeLabel": {},
+  "securityMinimizeValue": "Never locks the vault — copy a secret, switch apps and come back to an open vault.",
+  "@securityMinimizeValue": {},
+  "securityClipboardCleared": "Cleared after {seconds}s, and only if the copied value is still there",
+  "@securityClipboardCleared": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "securityClipboardNever": "Never cleared automatically",
+  "@securityClipboardNever": {},
+  "securitySecretsOnScreen": "Secrets on screen",
+  "@securitySecretsOnScreen": {},
+  "securitySecretsRevealed": "Revealed by default in the editor",
+  "@securitySecretsRevealed": {},
+  "securitySecretsHidden": "Hidden until you reveal them",
+  "@securitySecretsHidden": {},
+  "securityNetwork": "Network",
+  "@securityNetwork": {},
+  "securityNetworkValue": "None. No telemetry, no sync, no favicon lookups, no update checks.",
+  "@securityNetworkValue": {},
+  "securityChangeMasterPassword": "Change master password",
+  "@securityChangeMasterPassword": {},
+  "changePasswordSubtitle": "The vault is re-encrypted immediately.",
+  "@changePasswordSubtitle": {},
+  "changePasswordCurrent": "Current master password",
+  "@changePasswordCurrent": {},
+  "changePasswordNew": "New master password",
+  "@changePasswordNew": {},
+  "changePasswordConfirm": "Confirm new password",
+  "@changePasswordConfirm": {},
+  "changePasswordTooShort": "The new password needs at least {count} characters.",
+  "@changePasswordTooShort": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "changePasswordMismatch": "The new passwords do not match.",
+  "@changePasswordMismatch": {},
+  "changePasswordBackupNote": "Keep your backups in mind: copies of the old vault file still need the old password.",
+  "@changePasswordBackupNote": {},
+  "changePasswordAction": "Change password",
+  "@changePasswordAction": {},
+  "changePasswordDone": "Master password changed",
+  "@changePasswordDone": {},
+  "changePasswordDoneDetail": "The vault was re-encrypted with the new key.",
+  "@changePasswordDoneDetail": {},
+  "settingsTitle": "Settings",
+  "@settingsTitle": {},
+  "settingsSubtitle": "Appearance, security behaviour, keyboard and vault storage.",
+  "@settingsSubtitle": {},
+  "settingsAppearance": "Appearance",
+  "@settingsAppearance": {},
+  "settingsTheme": "Theme",
+  "@settingsTheme": {},
+  "settingsThemeDescription": "All variants are dark; pick the one you prefer.",
+  "@settingsThemeDescription": {},
+  "settingsDensity": "Density",
+  "@settingsDensity": {},
+  "settingsDensityDescription": "Compact fits more rows on smaller windows.",
+  "@settingsDensityDescription": {},
+  "settingsAnimations": "Animations",
+  "@settingsAnimations": {},
+  "settingsAnimationsDescription": "Turn off transitions and micro-interactions entirely.",
+  "@settingsAnimationsDescription": {},
+  "settingsLanguage": "Language",
+  "@settingsLanguage": {},
+  "settingsLanguageDescription": "Interface language. \"System\" follows Windows.",
+  "@settingsLanguageDescription": {},
+  "settingsLanguageSystem": "System",
+  "@settingsLanguageSystem": {},
+  "settingsLanguageEnglish": "English",
+  "@settingsLanguageEnglish": {},
+  "settingsLanguageItalian": "Italiano",
+  "@settingsLanguageItalian": {},
+  "themeMidnight": "Midnight",
+  "@themeMidnight": {},
+  "themeMidnightDescription": "Deep indigo base with violet accent",
+  "@themeMidnightDescription": {},
+  "themeObsidian": "Obsidian",
+  "@themeObsidian": {},
+  "themeObsidianDescription": "Neutral graphite with cyan accent",
+  "@themeObsidianDescription": {},
+  "themeViolet": "Violet",
+  "@themeViolet": {},
+  "themeVioletDescription": "Saturated violet, higher contrast accents",
+  "@themeVioletDescription": {},
+  "densityComfortable": "Comfortable",
+  "@densityComfortable": {},
+  "densityCompact": "Compact",
+  "@densityCompact": {},
+  "settingsSecurity": "Security",
+  "@settingsSecurity": {},
+  "settingsAutoLock": "Auto-lock after inactivity",
+  "@settingsAutoLock": {},
+  "settingsAutoLockDescription": "Minimizing, Alt-Tab or losing focus never lock the vault — only this timer and the manual lock do.",
+  "@settingsAutoLockDescription": {},
+  "settingsNever": "Never",
+  "@settingsNever": {},
+  "settingsMinutesShort": "{minutes}m",
+  "@settingsMinutesShort": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsSecondsShort": "{seconds}s",
+  "@settingsSecondsShort": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsClipboard": "Clear clipboard after copying",
+  "@settingsClipboard": {},
+  "settingsClipboardDescription": "Only clears if the copied secret is still on the clipboard.",
+  "@settingsClipboardDescription": {},
+  "settingsRevealSecrets": "Reveal secrets by default",
+  "@settingsRevealSecrets": {},
+  "settingsRevealSecretsDescription": "When off, passwords and secret fields start hidden.",
+  "@settingsRevealSecretsDescription": {},
+  "settingsConfirmDelete": "Confirm before deleting",
+  "@settingsConfirmDelete": {},
+  "settingsConfirmDeleteDescription": "Deleting always offers an undo; this adds a dialog first.",
+  "@settingsConfirmDeleteDescription": {},
+  "settingsKeepHistory": "Keep password history",
+  "@settingsKeepHistory": {},
+  "settingsKeepHistoryDescription": "Superseded passwords stay on the entry (up to {max}) so a bad change can be undone. They are stored encrypted, inside the vault.",
+  "@settingsKeepHistoryDescription": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsStoredHistory": "Stored password history",
+  "@settingsStoredHistory": {},
+  "settingsStoredHistoryEmpty": "No superseded passwords are stored right now.",
+  "@settingsStoredHistoryEmpty": {},
+  "settingsStoredHistoryCount": "{count} superseded passwords across {entries} entries.",
+  "@settingsStoredHistoryCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "entries": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsClearAll": "Clear all",
+  "@settingsClearAll": {},
+  "settingsClearAllTitle": "Clear all password history?",
+  "@settingsClearAllTitle": {},
+  "settingsClearAllMessage": "Every superseded password in the vault is deleted. Current passwords are untouched. This cannot be undone.",
+  "@settingsClearAllMessage": {},
+  "settingsClearAllDetail": "{count} stored passwords",
+  "@settingsClearAllDetail": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsClearAllConfirm": "Clear everything",
+  "@settingsClearAllConfirm": {},
+  "settingsClearAllDone": "{count} removed",
+  "@settingsClearAllDone": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsMasterPassword": "Master password",
+  "@settingsMasterPassword": {},
+  "settingsMasterPasswordDescription": "Re-encrypts the vault with a new key.",
+  "@settingsMasterPasswordDescription": {},
+  "settingsChange": "Change",
+  "@settingsChange": {},
+  "settingsKeyboard": "Keyboard",
+  "@settingsKeyboard": {},
+  "settingsGlobalShortcut": "Global shortcut (Ctrl+Alt+P)",
+  "@settingsGlobalShortcut": {},
+  "settingsGlobalShortcutDescription": "Brings BetterOnlyYours forward from any application and opens the command palette.",
+  "@settingsGlobalShortcutDescription": {},
+  "settingsShortcuts": "Shortcuts",
+  "@settingsShortcuts": {},
+  "settingsShortcutsDescription": "Everything reachable without the mouse.",
+  "@settingsShortcutsDescription": {},
+  "settingsVaultWindow": "Vault & window",
+  "@settingsVaultWindow": {},
+  "settingsVaultFile": "Vault file",
+  "@settingsVaultFile": {},
+  "settingsVaultFileResolving": "Resolving the vault location...",
+  "@settingsVaultFileResolving": {},
+  "settingsRememberWindow": "Remember window size and position",
+  "@settingsRememberWindow": {},
+  "settingsRememberWindowDescription": "Restores the window where you left it on the next start.",
+  "@settingsRememberWindowDescription": {},
+  "settingsAbout": "About",
+  "@settingsAbout": {},
+  "settingsVersion": "Version",
+  "@settingsVersion": {},
+  "settingsStorage": "Storage",
+  "@settingsStorage": {},
+  "settingsStorageValue": "A single encrypted file, written atomically.",
+  "@settingsStorageValue": {},
+  "settingsNetworkAccess": "Network access",
+  "@settingsNetworkAccess": {},
+  "settingsNetworkAccessValue": "None — the app never connects to anything.",
+  "@settingsNetworkAccessValue": {},
+  "actionCopied": "{label} copied",
+  "@actionCopied": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "actionCopiedDetail": "Clipboard clears in {seconds}s unless you copy something else.",
+  "@actionCopiedDetail": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "actionClipboardUnavailable": "Clipboard unavailable",
+  "@actionClipboardUnavailable": {},
+  "actionClipboardUnavailableDetail": "Windows refused the copy — another app may be holding it.",
+  "@actionClipboardUnavailableDetail": {},
+  "labelUsername": "Username",
+  "@labelUsername": {},
+  "labelPassword": "Password",
+  "@labelPassword": {},
+  "actionNoUsername": "No username on this entry",
+  "@actionNoUsername": {},
+  "actionNoUsernameDetail": "Add one from the entry details.",
+  "@actionNoUsernameDetail": {},
+  "actionNoPassword": "No password on this entry",
+  "@actionNoPassword": {},
+  "actionNoPasswordLegacy": "This entry still holds free-form notes only.",
+  "@actionNoPasswordLegacy": {},
+  "actionNoPasswordDetail": "Add or generate one from the entry details.",
+  "@actionNoPasswordDetail": {},
+  "actionNoWebsite": "No website on this entry",
+  "@actionNoWebsite": {},
+  "actionBadUrl": "That address cannot be opened",
+  "@actionBadUrl": {},
+  "actionBadUrlDetail": "Only http and https links are launched.",
+  "@actionBadUrlDetail": {},
+  "actionNoBrowser": "No browser responded",
+  "@actionNoBrowser": {},
+  "actionLinkFailed": "The link could not be opened",
+  "@actionLinkFailed": {},
+  "actionFavoriteAdded": "Added to favorites",
+  "@actionFavoriteAdded": {},
+  "actionFavoriteRemoved": "Removed from favorites",
+  "@actionFavoriteRemoved": {},
+  "actionDuplicated": "Entry duplicated",
+  "@actionDuplicated": {},
+  "actionDeleteTitle": "Delete this entry?",
+  "@actionDeleteTitle": {},
+  "actionDeleteMessage": "It is removed from the encrypted vault. You can undo this right after, from the notification.",
+  "@actionDeleteMessage": {},
+  "actionDeleted": "Entry deleted",
+  "@actionDeleted": {},
+  "menuOpen": "Open",
+  "@menuOpen": {},
+  "menuCopyUsername": "Copy username",
+  "@menuCopyUsername": {},
+  "menuCopyPassword": "Copy password",
+  "@menuCopyPassword": {},
+  "menuOpenWebsite": "Open website",
+  "@menuOpenWebsite": {},
+  "menuAddFavorite": "Add to favorites",
+  "@menuAddFavorite": {},
+  "menuRemoveFavorite": "Remove from favorites",
+  "@menuRemoveFavorite": {},
+  "menuDuplicate": "Duplicate",
+  "@menuDuplicate": {},
+  "menuDelete": "Delete",
+  "@menuDelete": {},
+  "vaultLocked": "Vault locked",
+  "@vaultLocked": {},
+  "vaultLockedInactivity": "Locked after {minutes} minutes of inactivity.",
+  "@vaultLockedInactivity": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "vaultRestoredBackup": "Vault restored from backup",
+  "@vaultRestoredBackup": {},
+  "vaultRestoredBackupDetail": "The main file could not be read, so the .bak copy was opened.",
+  "@vaultRestoredBackupDetail": {},
+  "vaultUpgraded": "Vault upgraded",
+  "@vaultUpgraded": {},
+  "vaultUpgradedDetail": "Re-encrypted with stronger key derivation ({kdf}).",
+  "@vaultUpgradedDetail": {
+    "placeholders": {
+      "kdf": {
+        "type": "String"
+      }
+    }
+  },
+  "vaultSaveRetryHint": "{hint} Your changes are still here — retry the save.",
+  "@vaultSaveRetryHint": {
+    "placeholders": {
+      "hint": {
+        "type": "String"
+      }
+    }
+  },
+  "vaultSaveFailed": "Vault could not be saved",
+  "@vaultSaveFailed": {},
+  "vaultSaveFailedDetail": "Your changes are still here — retry the save.",
+  "@vaultSaveFailedDetail": {},
+  "errorNotFoundTitle": "Vault file not found",
+  "@errorNotFoundTitle": {},
+  "errorNotFoundHint": "Restore your vault file or create a new vault to continue.",
+  "@errorNotFoundHint": {},
+  "errorInvalidPasswordTitle": "Master password not accepted",
+  "@errorInvalidPasswordTitle": {},
+  "errorInvalidPasswordHint": "Check for Caps Lock and keyboard layout. If the password is right, the file may have been modified on disk.",
+  "@errorInvalidPasswordHint": {},
+  "errorBadSignatureTitle": "This file is not a BetterOnlyYours vault",
+  "@errorBadSignatureTitle": {},
+  "errorBadSignatureHint": "The file header does not match the vault format. Restore a backup copy.",
+  "@errorBadSignatureHint": {},
+  "errorUnsupportedVersionTitle": "Unsupported vault version",
+  "@errorUnsupportedVersionTitle": {},
+  "errorUnsupportedVersionHint": "The vault was written by a newer version of BetterOnlyYours. Update the app to open it.",
+  "@errorUnsupportedVersionHint": {},
+  "errorTruncatedTitle": "Vault file is incomplete",
+  "@errorTruncatedTitle": {},
+  "errorTruncatedHint": "The file is shorter than a valid vault. Restore the .bak backup next to it.",
+  "@errorTruncatedHint": {},
+  "errorMalformedTitle": "Vault contents could not be read",
+  "@errorMalformedTitle": {},
+  "errorMalformedHint": "Decryption succeeded but the contents are not valid vault data.",
+  "@errorMalformedHint": {},
+  "errorPermissionTitle": "Access to the vault file was denied",
+  "@errorPermissionTitle": {},
+  "errorPermissionHint": "Close other apps using the file, or run from a folder you can write to.",
+  "@errorPermissionHint": {},
+  "errorIoTitle": "Vault could not be read or written",
+  "@errorIoTitle": {},
+  "errorIoHint": "Check that the vault folder exists and has free space, then retry.",
+  "@errorIoHint": {},
+  "strengthEmpty": "—",
+  "@strengthEmpty": {},
+  "strengthVeryWeak": "Very weak",
+  "@strengthVeryWeak": {},
+  "strengthWeak": "Weak",
+  "@strengthWeak": {},
+  "strengthFair": "Fair",
+  "@strengthFair": {},
+  "strengthStrong": "Strong",
+  "@strengthStrong": {},
+  "strengthExcellent": "Excellent",
+  "@strengthExcellent": {},
+  "strengthBits": "~ {bits} bits",
+  "@strengthBits": {
+    "placeholders": {
+      "bits": {
+        "type": "int"
+      }
+    }
+  },
+  "strengthEstimateNote": "Estimate only — based on length, character mix and obvious patterns.",
+  "@strengthEstimateNote": {},
+  "inspectorTitle": "INSPECTOR",
+  "@inspectorTitle": {},
+  "inspectorPasswordStrength": "Password strength",
+  "@inspectorPasswordStrength": {},
+  "inspectorReused": "This password is also used by another entry.",
+  "@inspectorReused": {},
+  "inspectorQuickActions": "Quick actions",
+  "@inspectorQuickActions": {},
+  "inspectorDuplicate": "Duplicate entry",
+  "@inspectorDuplicate": {},
+  "inspectorDelete": "Delete entry",
+  "@inspectorDelete": {},
+  "inspectorTimeline": "Timeline",
+  "@inspectorTimeline": {},
+  "inspectorCreated": "Created",
+  "@inspectorCreated": {},
+  "inspectorModified": "Modified",
+  "@inspectorModified": {},
+  "inspectorOpened": "Opened",
+  "@inspectorOpened": {},
+  "inspectorFormat": "Format",
+  "@inspectorFormat": {},
+  "inspectorFormatLegacy": "Legacy text",
+  "@inspectorFormatLegacy": {},
+  "inspectorFormatStructured": "Structured",
+  "@inspectorFormatStructured": {},
+  "inspectorHistory": "History",
+  "@inspectorHistory": {},
+  "inspectorNoHistory": "No previous passwords",
+  "@inspectorNoHistory": {},
+  "inspectorUnknown": "Unknown",
+  "@inspectorUnknown": {},
+  "inspectorTags": "Tags",
+  "@inspectorTags": {},
+  "inspectorRelated": "Related",
+  "@inspectorRelated": {},
+  "vaultPageFavoritesTitle": "Favorites",
+  "@vaultPageFavoritesTitle": {},
+  "vaultPageFavoritesMessage": "Pick an entry on the left, or star the ones you use most so they land here.",
+  "@vaultPageFavoritesMessage": {},
+  "vaultPageRecentTitle": "Recently opened",
+  "@vaultPageRecentTitle": {},
+  "vaultPageRecentMessage": "Your last opened entries are listed on the left. Select one to see it here.",
+  "@vaultPageRecentMessage": {},
+  "vaultPageRecentHint": "History is stored inside the encrypted vault, never on disk in the clear.",
+  "@vaultPageRecentHint": {},
+  "shortcutPalette": "Command palette",
+  "@shortcutPalette": {},
+  "shortcutPaletteGlobal": "Command palette from anywhere in Windows",
+  "@shortcutPaletteGlobal": {},
+  "shortcutNewEntry": "New entry",
+  "@shortcutNewEntry": {},
+  "shortcutFocusSearch": "Focus the vault search field",
+  "@shortcutFocusSearch": {},
+  "shortcutSave": "Save the entry being edited",
+  "@shortcutSave": {},
+  "shortcutFavorite": "Toggle favorite on the selected entry",
+  "@shortcutFavorite": {},
+  "shortcutCopyPassword": "Copy the selected password",
+  "@shortcutCopyPassword": {},
+  "shortcutCopyUsername": "Copy the selected username",
+  "@shortcutCopyUsername": {},
+  "shortcutGenerator": "Password generator",
+  "@shortcutGenerator": {},
+  "shortcutSettings": "Settings",
+  "@shortcutSettings": {},
+  "shortcutLock": "Lock the vault",
+  "@shortcutLock": {},
+  "shortcutDelete": "Delete the selected entry",
+  "@shortcutDelete": {},
+  "shortcutEscape": "Close the palette, dialog or search",
+  "@shortcutEscape": {},
+  "shortcutNavigate": "Move through results and open",
+  "@shortcutNavigate": {},
+  "settingsGlobalShortcutFailed": "Ctrl+Alt+P could not be registered — another application is probably using it.",
+  "@settingsGlobalShortcutFailed": {},
+  "vaultLockedManual": "Vault locked",
+  "@vaultLockedManual": {}
+}

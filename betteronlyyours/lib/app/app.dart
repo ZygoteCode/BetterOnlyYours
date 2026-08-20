@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
 import '../features/auth/create_vault_screen.dart';
@@ -12,7 +12,9 @@ import '../shared/widgets/toast_overlay.dart';
 import '../state/settings_controller.dart';
 import '../state/shell_controller.dart';
 import '../state/vault_controller.dart';
+import '../l10n/l10n.dart';
 import 'app_info.dart';
+import 'hotkey_service.dart';
 import 'intents.dart';
 import 'theme/app_theme.dart';
 import 'theme/tokens.dart';
@@ -28,6 +30,9 @@ class BetterOnlyYoursApp extends StatelessWidget {
       title: AppInfo.name,
       debugShowCheckedModeBanner: false,
       theme: AppTheme.build(settings.settings),
+      locale: settings.settings.language.locale,
+      supportedLocales: appSupportedLocales,
+      localizationsDelegates: appLocalizationsDelegates,
       home: const _AppRoot(),
     );
   }
@@ -50,6 +55,17 @@ class _AppRootState extends State<_AppRoot> {
   }
 
   void _noteActivity([_]) => context.read<VaultController>().noteActivity();
+
+  /// The global shortcut is a platform integration: it is absent in tests and
+  /// on builds where the hotkey plugin cannot start. Missing it must never
+  /// take the whole interface down.
+  HotkeyService? _hotkeys(BuildContext context) {
+    try {
+      return context.read<HotkeyService>();
+    } on ProviderNotFoundException {
+      return null;
+    }
+  }
 
   Map<Type, Action<Intent>> _actions(BuildContext context) {
     final shell = context.read<ShellController>();
@@ -154,6 +170,13 @@ class _AppRootState extends State<_AppRoot> {
     final vault = context.watch<VaultController>();
     final shell = context.watch<ShellController>();
     final palette = context.colors;
+
+    // Background notifications come from controllers that have no context.
+    // The hotkey service is a platform integration: absent in tests and on
+    // builds where the global shortcut is unavailable, so it stays optional.
+    final l10n = context.l10n;
+    vault.localizations = l10n;
+    _hotkeys(context)?.localizations = l10n;
 
     return Shortcuts(
       shortcuts: appShortcuts,
