@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
 
@@ -62,6 +63,30 @@ class VaultCrypto {
     final out = Uint8List(length);
     generator.deriveKey(password, 0, out, 0);
     return out;
+  }
+
+  /// HKDF-SHA256 (RFC 5869): turns one high-entropy key into as many
+  /// independent sub-keys as needed.
+  ///
+  /// Used to give every sealed secret its own key, so that two secrets
+  /// protected by the same vault key never share key material and a leaked
+  /// sub-key says nothing about the others.
+  static Uint8List hkdfSha256({
+    required Uint8List key,
+    required Uint8List salt,
+    required String info,
+    int length = keyLength,
+  }) {
+    final derivator = HKDFKeyDerivator(SHA256Digest())
+      ..init(
+        HkdfParameters(
+          key,
+          length,
+          salt,
+          Uint8List.fromList(utf8.encode(info)),
+        ),
+      );
+    return derivator.process(Uint8List(0));
   }
 
   static Uint8List aesGcm({

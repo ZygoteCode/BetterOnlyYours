@@ -22,6 +22,7 @@ import '../../state/toast_controller.dart';
 import '../../state/vault_controller.dart';
 import 'password_history_section.dart';
 import 'secret_field.dart';
+import 'totp_section.dart';
 import 'vault_actions.dart';
 
 /// Full entry editor: identity, credentials, notes, tags and custom fields.
@@ -339,7 +340,9 @@ class EntryDetailPanelState extends State<EntryDetailPanel> {
                             ),
                             onChanged: (_) => setState(() {}),
                           ),
-                          const SizedBox(height: Insets.lg),
+                          const SizedBox(height: Insets.xl),
+                          TotpSection(entry: entry),
+                          const SizedBox(height: Insets.xl),
                           AppTextField(
                             controller: _url,
                             label: l10n.fieldWebsite,

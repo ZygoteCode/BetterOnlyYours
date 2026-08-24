@@ -1,9 +1,13 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
 import '../core/models/vault_entry.dart';
 import '../core/models/vault_meta.dart';
+import '../core/security/totp.dart';
+import '../core/security/totp_secret_box.dart';
+import '../core/security/vault_crypto.dart';
 import '../core/security/vault_exception.dart';
 import '../core/security/vault_kdf.dart';
 import '../core/security/vault_repository.dart';
@@ -42,12 +46,10 @@ class DeletedEntry {
 /// kept in a [VaultSession] and wiped on lock.
 class VaultController extends ChangeNotifier {
   VaultController({
-    required ToastController toasts,
-    required SettingsController settings,
+    required this._toasts,
+    required this._settings,
     VaultStore? repository,
-  }) : _toasts = toasts,
-       _settings = settings,
-       _repository = repository ?? VaultRepository() {
+  }) : _repository = repository ?? VaultRepository() {
     // Turning auto-lock on in Settings must arm the timer immediately, not
     // only after the next interaction.
     _settings.addListener(_ensureAutoLockTimer);
@@ -82,6 +84,7 @@ class VaultController extends ChangeNotifier {
   VaultFileInfo? _fileInfo;
 
   VaultHealthReport? _health;
+  Uint8List? _totpKey;
   Future<void> _saveChain = Future<void>.value();
   Timer? _metaFlushTimer;
   Timer? _autoLockTimer;
@@ -341,6 +344,8 @@ class VaultController extends ChangeNotifier {
 
     _entries.clear();
     _meta = const VaultMeta();
+    VaultCrypto.wipe(_totpKey);
+    _totpKey = null;
     _selectedTitle = null;
     _query = '';
     _tagFilter = null;
@@ -484,12 +489,13 @@ class VaultController extends ChangeNotifier {
       index++;
     }
     final now = DateTime.now();
-    // A duplicate starts clean: old secrets are not copied around.
-    _entries[copyTitle] = source.withoutPasswordHistory().copyWith(
-      title: copyTitle,
-      createdAt: now,
-      updatedAt: now,
-    );
+    // A duplicate starts clean: old secrets are not copied around, and a
+    // second entry silently generating the same 2FA codes would be impossible
+    // to tell apart from the original.
+    _entries[copyTitle] = source
+        .withoutPasswordHistory()
+        .withoutTotp()
+        .copyWith(title: copyTitle, createdAt: now, updatedAt: now);
     _selectedTitle = copyTitle;
     notifyListeners();
     return _persist();
@@ -558,6 +564,104 @@ class VaultController extends ChangeNotifier {
     0,
     (total, entry) => total + entry.passwordHistory.length,
   );
+
+  // ------------------------------------------------------------ two-factor
+
+  /// How many entries carry a two-factor token.
+  int get totpCount => _entries.values.where((entry) => entry.hasTotp).length;
+
+  /// The code valid at [at] (now by default), or null when the entry has no
+  /// token or the token cannot be opened.
+  ///
+  /// The secret is unsealed, used and wiped inside this call: it never becomes
+  /// a field, a return value or anything the interface could render.
+  TotpCode? totpCode(VaultEntry entry, {DateTime? at}) {
+    final material = TotpSecretBox.tryOpen(entry.totp, _contentKey());
+    if (material == null) return null;
+    return material.codeThenDispose(at: at);
+  }
+
+  /// Algorithm, digits, period and labels of an entry's token — never the
+  /// secret. Null when there is no readable token.
+  TotpConfig? totpConfig(VaultEntry entry) {
+    final material = TotpSecretBox.tryOpen(entry.totp, _contentKey());
+    if (material == null) return null;
+    final config = material.config;
+    material.dispose();
+    return config;
+  }
+
+  /// True when the entry has a token that this vault cannot open — a sign the
+  /// content key was lost, not that the token is wrong.
+  bool totpIsUnreadable(VaultEntry entry) =>
+      entry.hasTotp && totpConfig(entry) == null;
+
+  /// Seals [secret] into the entry. The caller keeps ownership of the buffer
+  /// and is expected to wipe it afterwards.
+  Future<bool> setTotp(
+    String title, {
+    required Uint8List secret,
+    required TotpConfig config,
+  }) async {
+    final entry = _entries[title];
+    if (entry == null || _status != VaultStatus.unlocked) return false;
+
+    final String sealed;
+    try {
+      sealed = TotpSecretBox.seal(
+        secret: secret,
+        config: config,
+        contentKey: _ensureContentKey(),
+      );
+    } on TotpSealException {
+      return false;
+    }
+
+    _entries[title] = entry.copyWith(totp: sealed).touched();
+    _noteActivityInternal();
+    notifyListeners();
+    return _persist();
+  }
+
+  Future<bool> removeTotp(String title) async {
+    final entry = _entries[title];
+    if (entry == null || !entry.hasTotp) return false;
+    _entries[title] = entry.withoutTotp().touched();
+    notifyListeners();
+    return _persist();
+  }
+
+  /// The vault-wide key that seals tokens, or null while locked / before the
+  /// first token was ever stored.
+  Uint8List? _contentKey() {
+    if (_status != VaultStatus.unlocked) return null;
+    final cached = _totpKey;
+    if (cached != null) return cached;
+
+    final stored = _meta.secretKey;
+    if (stored.isEmpty) return null;
+    try {
+      final bytes = base64.decode(stored);
+      if (bytes.length != TotpSecretBox.contentKeyLength) return null;
+      return _totpKey = bytes;
+    } on FormatException {
+      return null;
+    }
+  }
+
+  Uint8List _ensureContentKey() {
+    final existing = _contentKey();
+    if (existing != null) return existing;
+
+    final key = TotpSecretBox.newContentKey();
+    final encoded = base64.encode(key);
+    // A key already recorded but unusable (wrong length, not base64) cannot
+    // open anything, so replacing it loses nothing that still worked.
+    _meta = _meta.secretKey.isEmpty
+        ? _meta.withSecretKey(encoded)
+        : _meta.copyWith(secretKey: encoded);
+    return _totpKey = key;
+  }
 
   /// Retries the last failed write.
   Future<bool> retrySave() => _persist();
@@ -650,6 +754,7 @@ class VaultController extends ChangeNotifier {
     _meta = meta;
     if (meta.lastUsed.isNotEmpty ||
         meta.createdAt != null ||
+        meta.secretKey.isNotEmpty ||
         meta.extra.isNotEmpty) {
       raw[VaultMeta.storageKey] = meta.toStorageValue();
     }

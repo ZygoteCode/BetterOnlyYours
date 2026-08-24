@@ -125,9 +125,9 @@ void main() {
 
   testWidgets('an unlocked vault paints the shell', (tester) async {
     store.seed('master password', <String, String>{
-      'GitHub': VaultEntry.create(
-        'GitHub',
-      ).copyWith(username: 'octocat').toStorageValue(),
+      'GitHub': VaultEntry.create('GitHub')
+          .copyWith(username: 'octocat')
+          .toStorageValue(),
     });
     await vault.initialize();
     await vault.unlock('master password');

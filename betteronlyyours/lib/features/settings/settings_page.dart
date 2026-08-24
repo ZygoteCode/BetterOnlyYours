@@ -571,6 +571,7 @@ class _ShortcutTable extends StatelessWidget {
         ('Ctrl + D', l10n.shortcutFavorite),
         ('Ctrl + Shift + C', l10n.shortcutCopyPassword),
         ('Ctrl + Shift + U', l10n.shortcutCopyUsername),
+        ('Ctrl + Shift + T', l10n.shortcutCopyTotp),
         ('Ctrl + G', l10n.shortcutGenerator),
         ('Ctrl + ,', l10n.shortcutSettings),
         ('Ctrl + L', l10n.shortcutLock),

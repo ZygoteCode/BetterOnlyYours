@@ -8,6 +8,7 @@ class VaultMeta {
     this.createdAt,
     this.updatedAt,
     this.lastUsed = const <String, DateTime>{},
+    this.secretKey = '',
     this.extra = const <String, dynamic>{},
   });
 
@@ -22,6 +23,13 @@ class VaultMeta {
 
   /// Entry title -> last time the entry was opened.
   final Map<String, DateTime> lastUsed;
+
+  /// Base64 of the vault-wide content key that seals two-factor secrets.
+  ///
+  /// Created the first time a token is stored and never rotated by itself:
+  /// re-keying the vault with a new master password re-encrypts the whole
+  /// file, so every sealed token keeps working without being touched.
+  final String secretKey;
 
   /// Unknown keys written by newer versions, preserved on round-trip.
   final Map<String, dynamic> extra;
@@ -39,6 +47,7 @@ class VaultMeta {
         'createdAt',
         'updatedAt',
         'lastUsed',
+        'secretKey',
       };
       final lastUsed = <String, DateTime>{};
       final rawLastUsed = decoded['lastUsed'];
@@ -59,6 +68,9 @@ class VaultMeta {
         createdAt: _time(decoded['createdAt']),
         updatedAt: _time(decoded['updatedAt']),
         lastUsed: lastUsed,
+        secretKey: decoded['secretKey'] is String
+            ? decoded['secretKey'] as String
+            : '',
         extra: <String, dynamic>{
           for (final entry in decoded.entries)
             if (!known.contains(entry.key)) entry.key: entry.value,
@@ -86,6 +98,7 @@ class VaultMeta {
           entry.key: entry.value.millisecondsSinceEpoch,
       };
     }
+    if (secretKey.isNotEmpty) json['secretKey'] = secretKey;
     return structuredPrefix + jsonEncode(json);
   }
 
@@ -93,15 +106,22 @@ class VaultMeta {
     DateTime? createdAt,
     DateTime? updatedAt,
     Map<String, DateTime>? lastUsed,
+    String? secretKey,
   }) {
     return VaultMeta(
       schemaVersion: schemaVersion,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       lastUsed: lastUsed ?? this.lastUsed,
+      secretKey: secretKey ?? this.secretKey,
       extra: extra,
     );
   }
+
+  /// Records the content key. Existing keys are never replaced: doing so would
+  /// orphan every token already sealed with the old one.
+  VaultMeta withSecretKey(String value) =>
+      secretKey.isNotEmpty ? this : copyWith(secretKey: value);
 
   /// Records an access, trimming the history to [keep] entries.
   ///

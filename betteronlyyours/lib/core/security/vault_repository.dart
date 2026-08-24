@@ -84,10 +84,9 @@ abstract interface class VaultStore {
 class VaultRepository implements VaultStore {
   VaultRepository({
     String? path,
-    bool deriveOnIsolate = true,
+    this._deriveOnIsolate = true,
     VaultKdfParams? kdfOverride,
   }) : _explicitPath = path,
-       _deriveOnIsolate = deriveOnIsolate,
        _kdf = kdfOverride ?? VaultKdfParams.current;
 
   final String? _explicitPath;

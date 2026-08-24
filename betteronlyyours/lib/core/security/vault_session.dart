@@ -11,12 +11,11 @@ import 'vault_kdf.dart';
 /// soon as unlocking or re-keying completes.
 class VaultSession {
   VaultSession({
-    required Uint8List key,
-    required Uint8List salt,
+    required this._key,
+    required this._salt,
     required this.kdf,
     required this.fileVersion,
-  }) : _key = key,
-       _salt = salt;
+  });
 
   final Uint8List _key;
   final Uint8List _salt;

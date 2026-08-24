@@ -105,6 +105,7 @@ class VaultEntry {
     this.updatedAt,
     this.customFields = const <VaultCustomField>[],
     this.passwordHistory = const <VaultPasswordRecord>[],
+    this.totp = '',
     this.extra = const <String, dynamic>{},
   });
 
@@ -128,6 +129,13 @@ class VaultEntry {
 
   /// Superseded passwords, newest first.
   final List<VaultPasswordRecord> passwordHistory;
+
+  /// The entry's two-factor token, sealed by [TotpSecretBox].
+  ///
+  /// Opaque on purpose: this is ciphertext, never the shared secret. Nothing
+  /// in the interface can turn it back into text — only the code generator
+  /// opens it, and only for as long as it takes to produce six digits.
+  final String totp;
 
   /// Fields written by a newer version of the app. Preserved verbatim so an
   /// older build never silently drops data it does not understand.
@@ -167,6 +175,7 @@ class VaultEntry {
       'updatedAt',
       'fields',
       'history',
+      'totp',
     };
     final extra = <String, dynamic>{
       for (final entry in json.entries)
@@ -185,6 +194,7 @@ class VaultEntry {
       updatedAt: _time(json['updatedAt']),
       customFields: _fields(json['fields']),
       passwordHistory: _history(json['history']),
+      totp: _string(json['totp']),
       extra: extra,
     );
   }
@@ -199,6 +209,7 @@ class VaultEntry {
       favorite ||
       customFields.isNotEmpty ||
       passwordHistory.isNotEmpty ||
+      totp.isNotEmpty ||
       createdAt != null ||
       updatedAt != null ||
       extra.isNotEmpty;
@@ -232,6 +243,7 @@ class VaultEntry {
     if (passwordHistory.isNotEmpty) {
       json['history'] = passwordHistory.map((r) => r.toJson()).toList();
     }
+    if (totp.isNotEmpty) json['totp'] = totp;
     return structuredPrefix + jsonEncode(json);
   }
 
@@ -247,6 +259,7 @@ class VaultEntry {
     DateTime? updatedAt,
     List<VaultCustomField>? customFields,
     List<VaultPasswordRecord>? passwordHistory,
+    String? totp,
     Map<String, dynamic>? extra,
   }) {
     return VaultEntry(
@@ -261,6 +274,7 @@ class VaultEntry {
       updatedAt: updatedAt ?? this.updatedAt,
       customFields: customFields ?? this.customFields,
       passwordHistory: passwordHistory ?? this.passwordHistory,
+      totp: totp ?? this.totp,
       extra: extra ?? this.extra,
     );
   }
@@ -310,6 +324,13 @@ class VaultEntry {
     if (isLegacyFormat) return this;
     return copyWith(createdAt: createdAt ?? stamp, updatedAt: stamp);
   }
+
+  /// True when the entry carries a two-factor token.
+  bool get hasTotp => totp.isNotEmpty;
+
+  /// The entry without its token, used when the user removes 2FA and when an
+  /// entry is copied out of the vault it was sealed for.
+  VaultEntry withoutTotp() => copyWith(totp: '');
 
   bool get hasPassword => password.isNotEmpty;
   bool get hasUsername => username.isNotEmpty;

@@ -13,11 +13,7 @@ import '../state/vault_controller.dart';
 /// Registration failure is never fatal: the app keeps working and Settings
 /// shows what happened with a retry.
 class HotkeyService {
-  HotkeyService({
-    required ShellController shell,
-    required VaultController vault,
-  }) : _shell = shell,
-       _vault = vault;
+  HotkeyService({required this._shell, required this._vault});
 
   /// Set once the widget tree exists, so a failure can be reported in the
   /// user's language.

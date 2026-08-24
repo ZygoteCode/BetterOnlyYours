@@ -41,12 +41,12 @@ void main() {
   setUp(() async {
     store = InMemoryVaultStore();
     store.seed('editor test password', <String, String>{
-      'GitHub': VaultEntry.create(
-        'GitHub',
-      ).copyWith(username: 'octocat').toStorageValue(),
-      'Bank': VaultEntry.create(
-        'Bank',
-      ).copyWith(username: 'me').toStorageValue(),
+      'GitHub': VaultEntry.create('GitHub')
+          .copyWith(username: 'octocat')
+          .toStorageValue(),
+      'Bank': VaultEntry.create('Bank')
+          .copyWith(username: 'me')
+          .toStorageValue(),
     });
     settings = SettingsController(service: MemorySettingsService());
     settings.load();

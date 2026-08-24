@@ -1,5 +1,6 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
+
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -1778,4 +1779,160 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get vaultLockedManual => 'Cassaforte bloccata';
+
+  @override
+  String get totpTitle => 'Codice a due fattori';
+
+  @override
+  String get totpEmptyHint =>
+      'Aggiungi la chiave di configurazione o il link otpauth:// del servizio e questa voce genera i suoi codici.';
+
+  @override
+  String get totpAdd => 'Aggiungi 2FA';
+
+  @override
+  String get totpReplace => 'Sostituisci';
+
+  @override
+  String get totpRemove => 'Rimuovi';
+
+  @override
+  String get totpSave => 'Salva token';
+
+  @override
+  String get totpCopy => 'Copia codice';
+
+  @override
+  String get totpLabel => 'Codice 2FA';
+
+  @override
+  String totpDetails(String algorithm, int digits, int period) {
+    return '$algorithm · $digits cifre · ${period}s';
+  }
+
+  @override
+  String get totpSecretHidden =>
+      'Il secret resta sigillato nella cassaforte e non viene più mostrato: si vedono solo i codici che genera.';
+
+  @override
+  String get totpUnreadable => 'Questo token non può essere aperto';
+
+  @override
+  String get totpUnreadableDetail =>
+      'La chiave che lo sigilla non è presente in questa cassaforte. Rimuovi il token e riconfiguralo dal servizio.';
+
+  @override
+  String get totpRemoveTitle => 'Rimuovere la verifica in due passaggi?';
+
+  @override
+  String get totpRemoveMessage =>
+      'Il secret sigillato viene eliminato. Per riattivarla servirà di nuovo la chiave di configurazione del servizio.';
+
+  @override
+  String get totpRemoved => 'Verifica in due passaggi rimossa';
+
+  @override
+  String get totpSaved => 'Verifica in due passaggi attiva';
+
+  @override
+  String get totpReplaced => 'Secret della verifica in due passaggi sostituito';
+
+  @override
+  String get totpSaveFailed => 'Il token non è stato salvato.';
+
+  @override
+  String get totpSetupTitle => 'Configura la verifica in due passaggi';
+
+  @override
+  String get totpSetupReplaceTitle => 'Sostituisci il secret a due fattori';
+
+  @override
+  String get totpSecretLabel => 'Chiave di configurazione o link otpauth://';
+
+  @override
+  String get totpSecretHelper =>
+      'Incolla la chiave base32 che il servizio mostra accanto al QR code, oppure il link otpauth:// completo.';
+
+  @override
+  String get totpUriDetected => 'Link otpauth:// riconosciuto';
+
+  @override
+  String totpUriDetectedFor(String label) {
+    return 'Link otpauth:// riconosciuto — $label';
+  }
+
+  @override
+  String get totpPreview => 'Anteprima dal vivo';
+
+  @override
+  String get totpAdvanced => 'Impostazioni avanzate';
+
+  @override
+  String get totpHideAdvanced => 'Nascondi le impostazioni avanzate';
+
+  @override
+  String get totpAlgorithm => 'Algoritmo';
+
+  @override
+  String get totpDigits => 'Cifre';
+
+  @override
+  String get totpPeriod => 'Periodo';
+
+  @override
+  String totpSecondsShort(int count) {
+    return '${count}s';
+  }
+
+  @override
+  String get totpKind => 'Tipo';
+
+  @override
+  String get totpKindStandard => 'Standard';
+
+  @override
+  String get totpKindSteam => 'Steam';
+
+  @override
+  String get totpWriteOnlyNotice =>
+      'Verifica che l\'anteprima coincida con il codice mostrato dal servizio: una volta salvato, il secret non è più leggibile da BetterOnlyYours.';
+
+  @override
+  String get menuCopyTotp => 'Copia codice 2FA';
+
+  @override
+  String get actionNoTotp => 'Nessun codice a due fattori';
+
+  @override
+  String get actionNoTotpDetail =>
+      'Aggiungi un token a questa voce per generare i codici.';
+
+  @override
+  String get totpBadgeTooltip => 'Verifica in due passaggi attiva';
+
+  @override
+  String get securityTotpTitle => 'Token a due fattori';
+
+  @override
+  String get securityTotpDescription =>
+      'Voci che generano codici propri. Ogni secret è sigillato con una chiave dedicata, derivata dalla chiave token della cassaforte.';
+
+  @override
+  String securityTotpValue(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count voci',
+      one: '1 voce',
+      zero: 'Nessuna voce',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get shortcutCopyTotp => 'Copia il codice 2FA selezionato';
+
+  @override
+  String get paletteCommandCopyTotp =>
+      'Copia il codice 2FA della voce selezionata';
 }

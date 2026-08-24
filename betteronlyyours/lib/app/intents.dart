@@ -33,6 +33,10 @@ class CopyUsernameIntent extends Intent {
   const CopyUsernameIntent();
 }
 
+class CopyTotpIntent extends Intent {
+  const CopyTotpIntent();
+}
+
 class OpenGeneratorIntent extends Intent {
   const OpenGeneratorIntent();
 }
@@ -72,6 +76,8 @@ final Map<ShortcutActivator, Intent> appShortcuts = <ShortcutActivator, Intent>{
       const CopyPasswordIntent(),
   const SingleActivator(LogicalKeyboardKey.keyU, control: true, shift: true):
       const CopyUsernameIntent(),
+  const SingleActivator(LogicalKeyboardKey.keyT, control: true, shift: true):
+      const CopyTotpIntent(),
   const SingleActivator(LogicalKeyboardKey.delete): const DeleteEntryIntent(),
   const SingleActivator(LogicalKeyboardKey.escape):
       const DismissOverlayIntent(),

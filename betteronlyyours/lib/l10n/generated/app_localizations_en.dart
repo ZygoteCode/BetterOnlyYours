@@ -1,5 +1,6 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
+
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -1758,4 +1759,160 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get vaultLockedManual => 'Vault locked';
+
+  @override
+  String get totpTitle => 'Two-factor code';
+
+  @override
+  String get totpEmptyHint =>
+      'Add the setup key or the otpauth:// link from the service and this entry generates its own codes.';
+
+  @override
+  String get totpAdd => 'Add 2FA';
+
+  @override
+  String get totpReplace => 'Replace';
+
+  @override
+  String get totpRemove => 'Remove';
+
+  @override
+  String get totpSave => 'Save token';
+
+  @override
+  String get totpCopy => 'Copy code';
+
+  @override
+  String get totpLabel => '2FA code';
+
+  @override
+  String totpDetails(String algorithm, int digits, int period) {
+    return '$algorithm · $digits digits · ${period}s';
+  }
+
+  @override
+  String get totpSecretHidden =>
+      'The secret is sealed inside the vault and is never shown again — only the codes it produces.';
+
+  @override
+  String get totpUnreadable => 'This token cannot be opened';
+
+  @override
+  String get totpUnreadableDetail =>
+      'The key that seals it is missing from this vault. Remove the token and set it up again from the service.';
+
+  @override
+  String get totpRemoveTitle => 'Remove two-factor?';
+
+  @override
+  String get totpRemoveMessage =>
+      'The sealed secret is deleted. You will need the setup key from the service to add it back.';
+
+  @override
+  String get totpRemoved => 'Two-factor removed';
+
+  @override
+  String get totpSaved => 'Two-factor enabled';
+
+  @override
+  String get totpReplaced => 'Two-factor secret replaced';
+
+  @override
+  String get totpSaveFailed => 'The token could not be stored.';
+
+  @override
+  String get totpSetupTitle => 'Set up two-factor';
+
+  @override
+  String get totpSetupReplaceTitle => 'Replace two-factor secret';
+
+  @override
+  String get totpSecretLabel => 'Setup key or otpauth:// link';
+
+  @override
+  String get totpSecretHelper =>
+      'Paste the base32 key the service shows next to the QR code, or the whole otpauth:// link.';
+
+  @override
+  String get totpUriDetected => 'otpauth:// link recognized';
+
+  @override
+  String totpUriDetectedFor(String label) {
+    return 'otpauth:// link recognized — $label';
+  }
+
+  @override
+  String get totpPreview => 'Live preview';
+
+  @override
+  String get totpAdvanced => 'Advanced settings';
+
+  @override
+  String get totpHideAdvanced => 'Hide advanced settings';
+
+  @override
+  String get totpAlgorithm => 'Algorithm';
+
+  @override
+  String get totpDigits => 'Digits';
+
+  @override
+  String get totpPeriod => 'Period';
+
+  @override
+  String totpSecondsShort(int count) {
+    return '${count}s';
+  }
+
+  @override
+  String get totpKind => 'Type';
+
+  @override
+  String get totpKindStandard => 'Standard';
+
+  @override
+  String get totpKindSteam => 'Steam';
+
+  @override
+  String get totpWriteOnlyNotice =>
+      'Check the preview matches the code the service shows. Once saved, the secret can never be read back out of BetterOnlyYours.';
+
+  @override
+  String get menuCopyTotp => 'Copy 2FA code';
+
+  @override
+  String get actionNoTotp => 'No two-factor code';
+
+  @override
+  String get actionNoTotpDetail =>
+      'Add a token to this entry to generate codes.';
+
+  @override
+  String get totpBadgeTooltip => 'Two-factor enabled';
+
+  @override
+  String get securityTotpTitle => 'Two-factor tokens';
+
+  @override
+  String get securityTotpDescription =>
+      'Entries generating their own codes. Each secret is sealed with its own key derived from a vault-wide token key.';
+
+  @override
+  String securityTotpValue(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count entries',
+      one: '1 entry',
+      zero: 'No entries',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get shortcutCopyTotp => 'Copy the selected 2FA code';
+
+  @override
+  String get paletteCommandCopyTotp =>
+      'Copy the 2FA code of the selected entry';
 }

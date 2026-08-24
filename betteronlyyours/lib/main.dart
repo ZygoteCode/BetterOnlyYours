@@ -90,10 +90,13 @@ Future<void> main() async {
   WidgetsBinding.instance.addPostFrameCallback((_) async {
     await window.initialize();
 
-    // Flush usage metadata and preferences before the process goes away.
+    // Flush usage metadata and preferences before the process goes away, then
+    // hand the system-wide shortcut back: a hotkey still registered makes
+    // Windows wait on the process during teardown.
     window.onBeforeClose = () async {
       await vault.flushPendingWrites();
       await settings.flush();
+      await hotkeys.unregister();
     };
 
     unawaited(vault.initialize());

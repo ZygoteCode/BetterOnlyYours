@@ -90,6 +90,13 @@ class SecurityCenterPage extends StatelessWidget {
                   label: l10n.securityMasterPasswordMemory,
                   value: l10n.securityMasterPasswordMemoryValue,
                 ),
+                Tooltip(
+                  message: l10n.securityTotpDescription,
+                  child: InfoRow(
+                    label: l10n.securityTotpTitle,
+                    value: l10n.securityTotpValue(vault.totpCount),
+                  ),
+                ),
                 InfoRow(
                   label: l10n.securityRenderingEngine,
                   value: RenderingInfo.backendLabel,

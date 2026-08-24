@@ -140,6 +140,13 @@ class _AppRootState extends State<_AppRoot> {
           return null;
         },
       ),
+      CopyTotpIntent: CallbackAction<CopyTotpIntent>(
+        onInvoke: (_) {
+          final entry = vault.selectedEntry;
+          if (entry != null) VaultActions.copyTotp(context, entry);
+          return null;
+        },
+      ),
       DeleteEntryIntent: CallbackAction<DeleteEntryIntent>(
         onInvoke: (_) {
           final entry = vault.selectedEntry;

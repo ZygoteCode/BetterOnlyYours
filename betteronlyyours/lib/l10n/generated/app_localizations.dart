@@ -3127,6 +3127,270 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Vault locked'**
   String get vaultLockedManual;
+
+  /// No description provided for @totpTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Two-factor code'**
+  String get totpTitle;
+
+  /// No description provided for @totpEmptyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add the setup key or the otpauth:// link from the service and this entry generates its own codes.'**
+  String get totpEmptyHint;
+
+  /// No description provided for @totpAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add 2FA'**
+  String get totpAdd;
+
+  /// No description provided for @totpReplace.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace'**
+  String get totpReplace;
+
+  /// No description provided for @totpRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get totpRemove;
+
+  /// No description provided for @totpSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save token'**
+  String get totpSave;
+
+  /// No description provided for @totpCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy code'**
+  String get totpCopy;
+
+  /// No description provided for @totpLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'2FA code'**
+  String get totpLabel;
+
+  /// No description provided for @totpDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'{algorithm} · {digits} digits · {period}s'**
+  String totpDetails(String algorithm, int digits, int period);
+
+  /// No description provided for @totpSecretHidden.
+  ///
+  /// In en, this message translates to:
+  /// **'The secret is sealed inside the vault and is never shown again — only the codes it produces.'**
+  String get totpSecretHidden;
+
+  /// No description provided for @totpUnreadable.
+  ///
+  /// In en, this message translates to:
+  /// **'This token cannot be opened'**
+  String get totpUnreadable;
+
+  /// No description provided for @totpUnreadableDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'The key that seals it is missing from this vault. Remove the token and set it up again from the service.'**
+  String get totpUnreadableDetail;
+
+  /// No description provided for @totpRemoveTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove two-factor?'**
+  String get totpRemoveTitle;
+
+  /// No description provided for @totpRemoveMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The sealed secret is deleted. You will need the setup key from the service to add it back.'**
+  String get totpRemoveMessage;
+
+  /// No description provided for @totpRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Two-factor removed'**
+  String get totpRemoved;
+
+  /// No description provided for @totpSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Two-factor enabled'**
+  String get totpSaved;
+
+  /// No description provided for @totpReplaced.
+  ///
+  /// In en, this message translates to:
+  /// **'Two-factor secret replaced'**
+  String get totpReplaced;
+
+  /// No description provided for @totpSaveFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The token could not be stored.'**
+  String get totpSaveFailed;
+
+  /// No description provided for @totpSetupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Set up two-factor'**
+  String get totpSetupTitle;
+
+  /// No description provided for @totpSetupReplaceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace two-factor secret'**
+  String get totpSetupReplaceTitle;
+
+  /// No description provided for @totpSecretLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Setup key or otpauth:// link'**
+  String get totpSecretLabel;
+
+  /// No description provided for @totpSecretHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'Paste the base32 key the service shows next to the QR code, or the whole otpauth:// link.'**
+  String get totpSecretHelper;
+
+  /// No description provided for @totpUriDetected.
+  ///
+  /// In en, this message translates to:
+  /// **'otpauth:// link recognized'**
+  String get totpUriDetected;
+
+  /// No description provided for @totpUriDetectedFor.
+  ///
+  /// In en, this message translates to:
+  /// **'otpauth:// link recognized — {label}'**
+  String totpUriDetectedFor(String label);
+
+  /// No description provided for @totpPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Live preview'**
+  String get totpPreview;
+
+  /// No description provided for @totpAdvanced.
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced settings'**
+  String get totpAdvanced;
+
+  /// No description provided for @totpHideAdvanced.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide advanced settings'**
+  String get totpHideAdvanced;
+
+  /// No description provided for @totpAlgorithm.
+  ///
+  /// In en, this message translates to:
+  /// **'Algorithm'**
+  String get totpAlgorithm;
+
+  /// No description provided for @totpDigits.
+  ///
+  /// In en, this message translates to:
+  /// **'Digits'**
+  String get totpDigits;
+
+  /// No description provided for @totpPeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'Period'**
+  String get totpPeriod;
+
+  /// No description provided for @totpSecondsShort.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}s'**
+  String totpSecondsShort(int count);
+
+  /// No description provided for @totpKind.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get totpKind;
+
+  /// No description provided for @totpKindStandard.
+  ///
+  /// In en, this message translates to:
+  /// **'Standard'**
+  String get totpKindStandard;
+
+  /// No description provided for @totpKindSteam.
+  ///
+  /// In en, this message translates to:
+  /// **'Steam'**
+  String get totpKindSteam;
+
+  /// No description provided for @totpWriteOnlyNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'Check the preview matches the code the service shows. Once saved, the secret can never be read back out of BetterOnlyYours.'**
+  String get totpWriteOnlyNotice;
+
+  /// No description provided for @menuCopyTotp.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy 2FA code'**
+  String get menuCopyTotp;
+
+  /// No description provided for @actionNoTotp.
+  ///
+  /// In en, this message translates to:
+  /// **'No two-factor code'**
+  String get actionNoTotp;
+
+  /// No description provided for @actionNoTotpDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a token to this entry to generate codes.'**
+  String get actionNoTotpDetail;
+
+  /// No description provided for @totpBadgeTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Two-factor enabled'**
+  String get totpBadgeTooltip;
+
+  /// No description provided for @securityTotpTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Two-factor tokens'**
+  String get securityTotpTitle;
+
+  /// No description provided for @securityTotpDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Entries generating their own codes. Each secret is sealed with its own key derived from a vault-wide token key.'**
+  String get securityTotpDescription;
+
+  /// No description provided for @securityTotpValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No entries} =1{1 entry} other{{count} entries}}'**
+  String securityTotpValue(int count);
+
+  /// No description provided for @shortcutCopyTotp.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy the selected 2FA code'**
+  String get shortcutCopyTotp;
+
+  /// No description provided for @paletteCommandCopyTotp.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy the 2FA code of the selected entry'**
+  String get paletteCommandCopyTotp;
 }
 
 class _AppLocalizationsDelegate

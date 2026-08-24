@@ -564,6 +564,17 @@ class _EntryRow extends StatelessWidget {
                               color: palette.warning,
                             ),
                           ],
+                          if (entry.hasTotp) ...<Widget>[
+                            const SizedBox(width: Insets.xs + 2),
+                            Tooltip(
+                              message: context.l10n.totpBadgeTooltip,
+                              child: Icon(
+                                Icons.shield_rounded,
+                                size: 12,
+                                color: palette.accent,
+                              ),
+                            ),
+                          ],
                         ],
                       ),
                       if (!tokens.isCompact) ...<Widget>[

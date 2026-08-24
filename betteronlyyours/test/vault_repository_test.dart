@@ -54,9 +54,8 @@ void main() {
       ),
       aad: header,
     );
-    File(
-      vaultPath,
-    ).writeAsBytesSync(VaultCrypto.concat(<Uint8List>[header, ciphertext]));
+    File(vaultPath)
+        .writeAsBytesSync(VaultCrypto.concat(<Uint8List>[header, ciphertext]));
   }
 
   test('creates, saves and re-opens a vault', () async {

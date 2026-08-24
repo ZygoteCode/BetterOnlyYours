@@ -1333,5 +1333,123 @@
   "settingsGlobalShortcutFailed": "Ctrl+Alt+P could not be registered — another application is probably using it.",
   "@settingsGlobalShortcutFailed": {},
   "vaultLockedManual": "Vault locked",
-  "@vaultLockedManual": {}
+  "@vaultLockedManual": {},
+  "totpTitle": "Two-factor code",
+  "@totpTitle": {},
+  "totpEmptyHint": "Add the setup key or the otpauth:// link from the service and this entry generates its own codes.",
+  "@totpEmptyHint": {},
+  "totpAdd": "Add 2FA",
+  "@totpAdd": {},
+  "totpReplace": "Replace",
+  "@totpReplace": {},
+  "totpRemove": "Remove",
+  "@totpRemove": {},
+  "totpSave": "Save token",
+  "@totpSave": {},
+  "totpCopy": "Copy code",
+  "@totpCopy": {},
+  "totpLabel": "2FA code",
+  "@totpLabel": {},
+  "totpDetails": "{algorithm} · {digits} digits · {period}s",
+  "@totpDetails": {
+    "placeholders": {
+      "algorithm": {
+        "type": "String"
+      },
+      "digits": {
+        "type": "int"
+      },
+      "period": {
+        "type": "int"
+      }
+    }
+  },
+  "totpSecretHidden": "The secret is sealed inside the vault and is never shown again — only the codes it produces.",
+  "@totpSecretHidden": {},
+  "totpUnreadable": "This token cannot be opened",
+  "@totpUnreadable": {},
+  "totpUnreadableDetail": "The key that seals it is missing from this vault. Remove the token and set it up again from the service.",
+  "@totpUnreadableDetail": {},
+  "totpRemoveTitle": "Remove two-factor?",
+  "@totpRemoveTitle": {},
+  "totpRemoveMessage": "The sealed secret is deleted. You will need the setup key from the service to add it back.",
+  "@totpRemoveMessage": {},
+  "totpRemoved": "Two-factor removed",
+  "@totpRemoved": {},
+  "totpSaved": "Two-factor enabled",
+  "@totpSaved": {},
+  "totpReplaced": "Two-factor secret replaced",
+  "@totpReplaced": {},
+  "totpSaveFailed": "The token could not be stored.",
+  "@totpSaveFailed": {},
+  "totpSetupTitle": "Set up two-factor",
+  "@totpSetupTitle": {},
+  "totpSetupReplaceTitle": "Replace two-factor secret",
+  "@totpSetupReplaceTitle": {},
+  "totpSecretLabel": "Setup key or otpauth:// link",
+  "@totpSecretLabel": {},
+  "totpSecretHelper": "Paste the base32 key the service shows next to the QR code, or the whole otpauth:// link.",
+  "@totpSecretHelper": {},
+  "totpUriDetected": "otpauth:// link recognized",
+  "@totpUriDetected": {},
+  "totpUriDetectedFor": "otpauth:// link recognized — {label}",
+  "@totpUriDetectedFor": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "totpPreview": "Live preview",
+  "@totpPreview": {},
+  "totpAdvanced": "Advanced settings",
+  "@totpAdvanced": {},
+  "totpHideAdvanced": "Hide advanced settings",
+  "@totpHideAdvanced": {},
+  "totpAlgorithm": "Algorithm",
+  "@totpAlgorithm": {},
+  "totpDigits": "Digits",
+  "@totpDigits": {},
+  "totpPeriod": "Period",
+  "@totpPeriod": {},
+  "totpSecondsShort": "{count}s",
+  "@totpSecondsShort": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "totpKind": "Type",
+  "@totpKind": {},
+  "totpKindStandard": "Standard",
+  "@totpKindStandard": {},
+  "totpKindSteam": "Steam",
+  "@totpKindSteam": {},
+  "totpWriteOnlyNotice": "Check the preview matches the code the service shows. Once saved, the secret can never be read back out of BetterOnlyYours.",
+  "@totpWriteOnlyNotice": {},
+  "menuCopyTotp": "Copy 2FA code",
+  "@menuCopyTotp": {},
+  "actionNoTotp": "No two-factor code",
+  "@actionNoTotp": {},
+  "actionNoTotpDetail": "Add a token to this entry to generate codes.",
+  "@actionNoTotpDetail": {},
+  "totpBadgeTooltip": "Two-factor enabled",
+  "@totpBadgeTooltip": {},
+  "securityTotpTitle": "Two-factor tokens",
+  "@securityTotpTitle": {},
+  "securityTotpDescription": "Entries generating their own codes. Each secret is sealed with its own key derived from a vault-wide token key.",
+  "@securityTotpDescription": {},
+  "securityTotpValue": "{count, plural, =0{No entries} =1{1 entry} other{{count} entries}}",
+  "@securityTotpValue": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "shortcutCopyTotp": "Copy the selected 2FA code",
+  "@shortcutCopyTotp": {},
+  "paletteCommandCopyTotp": "Copy the 2FA code of the selected entry",
+  "@paletteCommandCopyTotp": {}
 }

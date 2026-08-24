@@ -77,6 +77,27 @@ class VaultActions {
     return copyValue(context, value: entry.password, label: l10n.labelPassword);
   }
 
+  /// Copies the code the entry generates right now. The secret behind it is
+  /// unsealed inside the controller and never reaches this layer.
+  static Future<void> copyTotp(BuildContext context, VaultEntry entry) {
+    final l10n = context.l10n;
+    final toasts = context.read<ToastController>();
+    final code = entry.hasTotp
+        ? context.read<VaultController>().totpCode(entry)
+        : null;
+
+    if (code == null) {
+      toasts.warning(
+        l10n.actionNoTotp,
+        detail: entry.hasTotp
+            ? l10n.totpUnreadableDetail
+            : l10n.actionNoTotpDetail,
+      );
+      return Future<void>.value();
+    }
+    return copyValue(context, value: code.value, label: l10n.totpLabel);
+  }
+
   static Future<void> openUrl(BuildContext context, VaultEntry entry) async {
     final l10n = context.l10n;
     final toasts = context.read<ToastController>();
@@ -223,6 +244,13 @@ class VaultActions {
         shortcut: 'Ctrl+Shift+C',
         enabled: entry.password.isNotEmpty,
         onSelected: () => copyPassword(context, entry),
+      ),
+      AppMenuEntry(
+        label: l10n.menuCopyTotp,
+        icon: Icons.shield_outlined,
+        shortcut: 'Ctrl+Shift+T',
+        enabled: entry.hasTotp,
+        onSelected: () => copyTotp(context, entry),
       ),
       if (entry.url.isNotEmpty)
         AppMenuEntry(

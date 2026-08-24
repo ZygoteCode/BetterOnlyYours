@@ -86,6 +86,15 @@ class _CommandPaletteState extends State<CommandPalette> {
         run: (context) =>
             context.read<ShellController>().goTo(ShellDestination.generator),
       ),
+      if (vault.selectedEntry?.hasTotp ?? false)
+        _PaletteItem.command(
+          title: l10n.menuCopyTotp,
+          subtitle: l10n.paletteCommandCopyTotp,
+          icon: Icons.shield_outlined,
+          shortcut: const <String>['Ctrl', 'Shift', 'T'],
+          run: (context) =>
+              VaultActions.copyTotp(context, vault.selectedEntry!),
+        ),
       _PaletteItem.command(
         title: l10n.navLockVault,
         subtitle: l10n.paletteCommandLock,
