@@ -1,2 +1,12 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Encrypted vaults, packages and images are binary: never normalise line endings in them
+# (the legacy magic itself contains CR LF).
+*.plf binary
+*.bak binary
+*.onlyyours binary
+*.oypkg binary
+*.oyid binary
+*.png binary
+*.ico binary

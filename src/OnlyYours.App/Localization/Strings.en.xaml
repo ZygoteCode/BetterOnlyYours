@@ -1,0 +1,865 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+
+    <!-- Brand -->
+    <sys:String x:Key="Brand.Tagline">Your secrets. Sealed.</sys:String>
+    <sys:String x:Key="Intro.Skip">Press any key or click to skip</sys:String>
+    <sys:String x:Key="Title.Search">Search entries or commands…</sys:String>
+    <sys:String x:Key="Title.Lock">Lock</sys:String>
+
+    <!-- Common -->
+    <sys:String x:Key="Common.Back">Back</sys:String>
+    <sys:String x:Key="Common.Browse">Browse…</sys:String>
+    <sys:String x:Key="Common.Cancel">Cancel</sys:String>
+    <sys:String x:Key="Common.Confirm">Confirm</sys:String>
+    <sys:String x:Key="Common.Continue">Continue</sys:String>
+    <sys:String x:Key="Common.Copy">Copy</sys:String>
+    <sys:String x:Key="Common.Done">Done</sys:String>
+    <sys:String x:Key="Common.Ok">OK</sys:String>
+    <sys:String x:Key="Common.Remove">Remove</sys:String>
+    <sys:String x:Key="Common.Save">Save</sys:String>
+    <sys:String x:Key="Common.Undo">Undo</sys:String>
+
+    <!-- Time -->
+    <sys:String x:Key="Time.Never">never</sys:String>
+    <sys:String x:Key="Time.JustNow">just now</sys:String>
+    <sys:String x:Key="Time.MinutesAgo">{0} min ago</sys:String>
+    <sys:String x:Key="Time.HoursAgo">{0} h ago</sys:String>
+    <sys:String x:Key="Time.DaysAgo">{0} days ago</sys:String>
+    <sys:String x:Key="Time.DaysAgo.One">1 day ago</sys:String>
+    <sys:String x:Key="Time.MonthsAgo">{0} months ago</sys:String>
+    <sys:String x:Key="Time.MonthsAgo.One">1 month ago</sys:String>
+    <sys:String x:Key="Time.YearsAgo">{0} years ago</sys:String>
+    <sys:String x:Key="Time.YearsAgo.One">1 year ago</sys:String>
+
+    <!-- Crack time -->
+    <sys:String x:Key="Crack.Instant">instantly</sys:String>
+    <sys:String x:Key="Crack.Seconds">{0} seconds</sys:String>
+    <sys:String x:Key="Crack.Seconds.One">1 second</sys:String>
+    <sys:String x:Key="Crack.Minutes">{0} minutes</sys:String>
+    <sys:String x:Key="Crack.Minutes.One">1 minute</sys:String>
+    <sys:String x:Key="Crack.Hours">{0} hours</sys:String>
+    <sys:String x:Key="Crack.Hours.One">1 hour</sys:String>
+    <sys:String x:Key="Crack.Days">{0} days</sys:String>
+    <sys:String x:Key="Crack.Days.One">1 day</sys:String>
+    <sys:String x:Key="Crack.Years">{0} years</sys:String>
+    <sys:String x:Key="Crack.Years.One">1 year</sys:String>
+    <sys:String x:Key="Crack.Millennia">{0} millennia</sys:String>
+    <sys:String x:Key="Crack.Millennia.One">1 millennium</sys:String>
+    <sys:String x:Key="Crack.Eons">geological eons</sys:String>
+
+    <!-- Welcome -->
+    <sys:String x:Key="Welcome.Title">Welcome to OnlyYours</sys:String>
+    <sys:String x:Key="Welcome.Subtitle">A vault for your credentials, entirely on your computer. No account, no cloud, no telemetry: just extreme-grade cryptography and a key only you know.</sys:String>
+    <sys:String x:Key="Welcome.Migrate">Import from BetterOnlyYours</sys:String>
+    <sys:String x:Key="Welcome.Found">Found</sys:String>
+    <sys:String x:Key="Welcome.MigrateDesc">Bring every entry, 2FA code and password history from your old credentials.plf into OnlyYours, re-encrypted with stronger protection.</sys:String>
+    <sys:String x:Key="Welcome.LegacyFound">{0} · {1} · modified {2}</sys:String>
+    <sys:String x:Key="Welcome.Create">Create a new vault</sys:String>
+    <sys:String x:Key="Welcome.CreateDesc">Choose a master password and receive your recovery key.</sys:String>
+    <sys:String x:Key="Welcome.Open">Open an existing vault</sys:String>
+    <sys:String x:Key="Welcome.OpenDesc">Select a .onlyyours file on this PC or a USB drive.</sys:String>
+    <sys:String x:Key="Welcome.Privacy">Everything stays on this device. OnlyYours never connects to the Internet.</sys:String>
+
+    <!-- Lock -->
+    <sys:String x:Key="Lock.Subtitle">The vault is sealed. Enter your master password to open it.</sys:String>
+    <sys:String x:Key="Lock.PasswordPlaceholder">Master password</sys:String>
+    <sys:String x:Key="Lock.Unlock">Unlock</sys:String>
+    <sys:String x:Key="Lock.Hello">Unlock with Windows Hello</sys:String>
+    <sys:String x:Key="Lock.UseRecovery">Use the recovery key</sys:String>
+    <sys:String x:Key="Lock.UsePassword">Use the master password</sys:String>
+    <sys:String x:Key="Lock.OpenOther">Open another vault…</sys:String>
+    <sys:String x:Key="Lock.CapsLock">Caps Lock is on</sys:String>
+    <sys:String x:Key="Lock.Cooldown">Too many attempts: try again in {0} s</sys:String>
+    <sys:String x:Key="Lock.Failed">Failed attempts since last unlock: {0}</sys:String>
+    <sys:String x:Key="Lock.LastUnlock">Last unlocked {0}</sys:String>
+    <sys:String x:Key="Lock.Modified">saved {0}</sys:String>
+    <sys:String x:Key="Lock.EnterPassword">Enter your master password.</sys:String>
+    <sys:String x:Key="Lock.EnterRecovery">Enter your recovery key.</sys:String>
+    <sys:String x:Key="Lock.Locked">Vault locked</sys:String>
+    <sys:String x:Key="Lock.Reason.Idle">Locked after inactivity.</sys:String>
+    <sys:String x:Key="Lock.Reason.Session">Locked together with Windows.</sys:String>
+    <sys:String x:Key="Lock.Reason.Sleep">Locked before sleep.</sys:String>
+    <sys:String x:Key="Lock.Reason.Minimize">Locked on minimize.</sys:String>
+    <sys:String x:Key="Lock.RecoveryUsed">Signed in with the recovery key</sys:String>
+    <sys:String x:Key="Lock.RecoveryUsedDetail">If you forgot your master password, set a new one from the Security center.</sys:String>
+
+    <!-- Create -->
+    <sys:String x:Key="Create.Title">New vault</sys:String>
+    <sys:String x:Key="Create.Step0">Name and master password</sys:String>
+    <sys:String x:Key="Create.Step1">Recovery kit</sys:String>
+    <sys:String x:Key="Create.Step2">Windows Hello</sys:String>
+    <sys:String x:Key="Create.Step3">All set</sys:String>
+    <sys:String x:Key="Create.DefaultName">My vault</sys:String>
+    <sys:String x:Key="Create.NameLabel">Vault name</sys:String>
+    <sys:String x:Key="Create.PasswordLabel">Master password</sys:String>
+    <sys:String x:Key="Create.PasswordPlaceholder">A long phrase only you know</sys:String>
+    <sys:String x:Key="Create.ConfirmLabel">Confirm</sys:String>
+    <sys:String x:Key="Create.ConfirmPlaceholder">Repeat the master password</sys:String>
+    <sys:String x:Key="Create.StrengthHint">Longer is better: a phrase of 4–6 words is ideal.</sys:String>
+    <sys:String x:Key="Create.CrackTime">Against this vault: {0}</sys:String>
+    <sys:String x:Key="Create.Match">Passwords match</sys:String>
+    <sys:String x:Key="Create.NoMatch">Passwords do not match</sys:String>
+    <sys:String x:Key="Create.KdfLabel">Key derivation strength (Argon2id)</sys:String>
+    <sys:String x:Key="Create.Seal">Seal the vault</sys:String>
+    <sys:String x:Key="Create.Deriving">Deriving the key…</sys:String>
+    <sys:String x:Key="Create.NameRequired">Give the vault a name.</sys:String>
+    <sys:String x:Key="Create.TooShort">The master password needs at least 8 characters (14 or more is better).</sys:String>
+    <sys:String x:Key="Create.WeakTitle">Weak password</sys:String>
+    <sys:String x:Key="Create.WeakMessage">This master password is easy to guess. It protects everything else: we recommend choosing a longer one.</sys:String>
+    <sys:String x:Key="Create.UseAnyway">Use it anyway</sys:String>
+    <sys:String x:Key="Create.DoneTitle">Your vault is sealed</sys:String>
+    <sys:String x:Key="Create.DoneMessage">The keys are derived, the file is encrypted and your recovery kit is ready.</sys:String>
+    <sys:String x:Key="Create.Open">Open the vault</sys:String>
+    <sys:String x:Key="Create.Welcome">Welcome to OnlyYours</sys:String>
+    <sys:String x:Key="Create.WelcomeDetail">Press Ctrl+N to create your first entry.</sys:String>
+
+    <!-- Recovery -->
+    <sys:String x:Key="Recovery.Explain">This recovery key opens the vault even if you forget your master password. It is shown now and never again: keep it offline, for example printed in a safe place.</sys:String>
+    <sys:String x:Key="Recovery.Label">Recovery key</sys:String>
+    <sys:String x:Key="Recovery.SaveFile">Save the kit…</sys:String>
+    <sys:String x:Key="Recovery.Warning">Anyone holding this key can open the vault. Don't store it in plain text in the cloud and don't email it.</sys:String>
+    <sys:String x:Key="Recovery.Acknowledge">I have saved the recovery key in a safe place</sys:String>
+    <sys:String x:Key="Recovery.FileName">OnlyYours - recovery kit.txt</sys:String>
+    <sys:String x:Key="Recovery.Saved">Recovery kit saved</sys:String>
+    <sys:String x:Key="Recovery.KitHeader">ONLYYOURS — RECOVERY KIT</sys:String>
+    <sys:String x:Key="Recovery.KitVault">Vault: {0}</sys:String>
+    <sys:String x:Key="Recovery.KitDate">Created on: {0}</sys:String>
+    <sys:String x:Key="Recovery.KitInstructions">To use it: on the lock screen choose "Use the recovery key" and type it in (dashes and capitals are optional). Keep this sheet offline and destroy it if you generate a new key.</sys:String>
+    <sys:String x:Key="Recovery.NewTitle">New recovery key</sys:String>
+    <sys:String x:Key="Recovery.NewMessage">The previous key no longer works. Save this one instead.</sys:String>
+    <sys:String x:Key="Recovery.RegenerateTitle">Generate a new recovery key?</sys:String>
+    <sys:String x:Key="Recovery.RegenerateMessage">The current key will be invalidated immediately.</sys:String>
+    <sys:String x:Key="Recovery.Regenerate">Generate new key</sys:String>
+
+    <!-- Hello -->
+    <sys:String x:Key="Hello.Title">Quick unlock with Windows Hello</sys:String>
+    <sys:String x:Key="Hello.Explain">Use your face, fingerprint or PIN to open the vault on this PC. The key is bound to the TPM chip: copying the file to another computer is not enough to use it. Your master password always keeps working.</sys:String>
+    <sys:String x:Key="Hello.Enable">Turn on Windows Hello</sys:String>
+    <sys:String x:Key="Hello.Skip">Not now</sys:String>
+
+    <!-- Migration -->
+    <sys:String x:Key="Migrate.Title">Migrate from BetterOnlyYours</sys:String>
+    <sys:String x:Key="Migrate.Subtitle">The old vault is only read: it will not be modified or deleted.</sys:String>
+    <sys:String x:Key="Migrate.Source">Source file</sys:String>
+    <sys:String x:Key="Migrate.NoSource">No credentials.plf found: select it with "Browse".</sys:String>
+    <sys:String x:Key="Migrate.PasswordLabel">BetterOnlyYours master password</sys:String>
+    <sys:String x:Key="Migrate.PasswordPlaceholder">The password you used in BetterOnlyYours</sys:String>
+    <sys:String x:Key="Migrate.PasswordPrompt">Enter the master password of the old vault.</sys:String>
+    <sys:String x:Key="Migrate.Untouched">Supports every format (v1, v2 PBKDF2 and v3 Argon2id) and, if the main file is damaged, its .bak copy.</sys:String>
+    <sys:String x:Key="Migrate.Decrypt">Decrypt</sys:String>
+    <sys:String x:Key="Migrate.EnterPassword">Enter the password of the old vault.</sys:String>
+    <sys:String x:Key="Migrate.WrongPassword">This password doesn't open the file. Check Caps Lock.</sys:String>
+    <sys:String x:Key="Migrate.Opened">Vault opened:</sys:String>
+    <sys:String x:Key="Migrate.NewProtection">New vault protection</sys:String>
+    <sys:String x:Key="Migrate.Reuse">Keep the same master password</sys:String>
+    <sys:String x:Key="Migrate.ReuseDesc">Only the encryption changes: heavier Argon2id, cascade encryption and per-field sealing.</sys:String>
+    <sys:String x:Key="Migrate.New">Choose a new master password</sys:String>
+    <sys:String x:Key="Migrate.NewDesc">Best if the old one was short or reused elsewhere.</sys:String>
+    <sys:String x:Key="Migrate.Start">Start migration</sys:String>
+    <sys:String x:Key="Migrate.Progress1">Reading the old vault…</sys:String>
+    <sys:String x:Key="Migrate.Progress2">Converting and re-encrypting…</sys:String>
+    <sys:String x:Key="Migrate.Progress3">Importing preferences…</sys:String>
+    <sys:String x:Key="Migrate.Stage1">Decryption</sys:String>
+    <sys:String x:Key="Migrate.Stage2">Sealing</sys:String>
+    <sys:String x:Key="Migrate.Stage3">Preferences</sys:String>
+    <sys:String x:Key="Migrate.ReportTitle">Migration complete</sys:String>
+    <sys:String x:Key="Migrate.Entries">entries</sys:String>
+    <sys:String x:Key="Migrate.Logins">logins</sys:String>
+    <sys:String x:Key="Migrate.Totp">2FA codes</sys:String>
+    <sys:String x:Key="Migrate.History">past passwords</sys:String>
+    <sys:String x:Key="Migrate.Notes">notes</sys:String>
+    <sys:String x:Key="Migrate.Favorites">favorites</sys:String>
+    <sys:String x:Key="Migrate.Custom">custom fields</sys:String>
+    <sys:String x:Key="Migrate.Tags">tags</sys:String>
+    <sys:String x:Key="Migrate.Finish">Open the new vault</sys:String>
+    <sys:String x:Key="Migrate.VaultName">Personal vault</sys:String>
+    <sys:String x:Key="Migrate.Done">Welcome to OnlyYours</sys:String>
+    <sys:String x:Key="Migrate.DoneDetail">{0} entries migrated and sealed.</sys:String>
+    <sys:String x:Key="Migrate.DoneDetail.One">1 entry migrated and sealed.</sys:String>
+
+    <!-- Shell -->
+    <sys:String x:Key="Shell.New">New entry</sys:String>
+    <sys:String x:Key="Shell.Tags">Tags</sys:String>
+    <sys:String x:Key="Shell.Items">items</sys:String>
+    <sys:String x:Key="Shell.Sort">Sort order</sys:String>
+    <sys:String x:Key="Shell.SearchPlaceholder">Search (Ctrl+F)</sys:String>
+    <sys:String x:Key="Shell.EmptyList">No entries match.</sys:String>
+    <sys:String x:Key="Shell.ClearFilters">Clear filters</sys:String>
+    <sys:String x:Key="Shell.EmptyVault">Your vault is empty</sys:String>
+    <sys:String x:Key="Shell.EmptyVaultHint">Add your first login, secure note or card: everything is sealed instantly.</sys:String>
+    <sys:String x:Key="Shell.CreateFirst">Create your first entry</sys:String>
+    <sys:String x:Key="Shell.EmptyTitle">Your vault</sys:String>
+    <sys:String x:Key="Shell.EmptyHint">Select an entry to see its details, or create a new one.</sys:String>
+    <sys:String x:Key="Shell.HintNew">new entry</sys:String>
+    <sys:String x:Key="Shell.HintPalette">commands</sys:String>
+    <sys:String x:Key="Shell.HintGlobal">search from anywhere</sys:String>
+    <sys:String x:Key="Shell.ToggleRail">Expand or collapse the sidebar</sys:String>
+
+    <sys:String x:Key="Rail.All">All entries</sys:String>
+    <sys:String x:Key="Rail.Favorites">Favorites</sys:String>
+    <sys:String x:Key="Rail.Recent">Recent</sys:String>
+    <sys:String x:Key="Rail.Generator">Generator</sys:String>
+    <sys:String x:Key="Rail.Security">Security center</sys:String>
+    <sys:String x:Key="Rail.Sharing">Sharing</sys:String>
+    <sys:String x:Key="Rail.Transfer">Import and export</sys:String>
+    <sys:String x:Key="Rail.Trash">Trash</sys:String>
+    <sys:String x:Key="Rail.Settings">Settings</sys:String>
+
+    <sys:String x:Key="Sort.Title">Name</sys:String>
+    <sys:String x:Key="Sort.Recent">Recently used</sys:String>
+    <sys:String x:Key="Sort.Modified">Recently modified</sys:String>
+    <sys:String x:Key="Sort.Created">Recently created</sys:String>
+    <sys:String x:Key="Sort.Strength">Weakest first</sys:String>
+
+    <sys:String x:Key="Status.Ready">Ready</sys:String>
+    <sys:String x:Key="Status.Saving">Saving…</sys:String>
+    <sys:String x:Key="Status.Saved">Saved at {0}</sys:String>
+    <sys:String x:Key="Status.SaveFailed">Save failed</sys:String>
+    <sys:String x:Key="Status.Entries">{0} entries</sys:String>
+    <sys:String x:Key="Status.Entries.One">1 entry</sys:String>
+    <sys:String x:Key="Status.AutoLock">Locks in {0}</sys:String>
+    <sys:String x:Key="Status.Clipboard">Clipboard clears in {0} s</sys:String>
+    <sys:String x:Key="Status.Memory">Protected memory · {0} regions · {1}</sys:String>
+    <sys:String x:Key="Status.Memory.One">Protected memory · 1 region · {1}</sys:String>
+    <sys:String x:Key="Save.Failed">The vault was not saved</sys:String>
+    <sys:String x:Key="Save.Retry">Retry</sys:String>
+
+    <!-- Kinds -->
+    <sys:String x:Key="Kind.Login">Login</sys:String>
+    <sys:String x:Key="Kind.SecureNote">Secure note</sys:String>
+    <sys:String x:Key="Kind.PaymentCard">Payment card</sys:String>
+    <sys:String x:Key="Kind.Identity">Identity</sys:String>
+    <sys:String x:Key="Kind.WiFi">Wi-Fi network</sys:String>
+    <sys:String x:Key="Kind.SshKey">SSH key</sys:String>
+    <sys:String x:Key="Kind.ApiKey">API key</sys:String>
+    <sys:String x:Key="Kind.BankAccount">Bank account</sys:String>
+
+    <!-- Field kinds -->
+    <sys:String x:Key="FieldKind.Username">Username</sys:String>
+    <sys:String x:Key="FieldKind.Email">Email</sys:String>
+    <sys:String x:Key="FieldKind.Password">Password</sys:String>
+    <sys:String x:Key="FieldKind.Url">Website</sys:String>
+    <sys:String x:Key="FieldKind.Totp">2FA code</sys:String>
+    <sys:String x:Key="FieldKind.Notes">Notes</sys:String>
+    <sys:String x:Key="FieldKind.CardHolder">Cardholder</sys:String>
+    <sys:String x:Key="FieldKind.CardNumber">Card number</sys:String>
+    <sys:String x:Key="FieldKind.CardExpiry">Expiry</sys:String>
+    <sys:String x:Key="FieldKind.CardCvv">CVV</sys:String>
+    <sys:String x:Key="FieldKind.CardPin">PIN</sys:String>
+    <sys:String x:Key="FieldKind.FullName">Full name</sys:String>
+    <sys:String x:Key="FieldKind.Phone">Phone</sys:String>
+    <sys:String x:Key="FieldKind.Address">Address</sys:String>
+    <sys:String x:Key="FieldKind.BirthDate">Date of birth</sys:String>
+    <sys:String x:Key="FieldKind.Company">Company</sys:String>
+    <sys:String x:Key="FieldKind.DocumentNumber">Document number</sys:String>
+    <sys:String x:Key="FieldKind.Ssid">Network name (SSID)</sys:String>
+    <sys:String x:Key="FieldKind.WifiSecurity">Security</sys:String>
+    <sys:String x:Key="FieldKind.PrivateKey">Private key</sys:String>
+    <sys:String x:Key="FieldKind.PublicKey">Public key</sys:String>
+    <sys:String x:Key="FieldKind.Passphrase">Passphrase</sys:String>
+    <sys:String x:Key="FieldKind.Host">Host</sys:String>
+    <sys:String x:Key="FieldKind.ApiKeyId">Key ID</sys:String>
+    <sys:String x:Key="FieldKind.ApiSecret">Secret</sys:String>
+    <sys:String x:Key="FieldKind.BankName">Bank</sys:String>
+    <sys:String x:Key="FieldKind.AccountHolder">Account holder</sys:String>
+    <sys:String x:Key="FieldKind.Iban">IBAN</sys:String>
+    <sys:String x:Key="FieldKind.Swift">BIC / SWIFT</sys:String>
+    <sys:String x:Key="FieldKind.AccountNumber">Account number</sys:String>
+    <sys:String x:Key="FieldKind.CustomText">Text field</sys:String>
+    <sys:String x:Key="FieldKind.CustomSecret">Secret field</sys:String>
+    <sys:String x:Key="FieldKind.CustomUrl">Link</sys:String>
+    <sys:String x:Key="FieldKind.CustomNumber">Number</sys:String>
+    <sys:String x:Key="FieldKind.CustomDate">Date</sys:String>
+
+    <!-- Entry actions -->
+    <sys:String x:Key="Entry.Untitled">Untitled</sys:String>
+    <sys:String x:Key="Entry.Created">Entry created</sys:String>
+    <sys:String x:Key="Entry.Saved">Changes saved</sys:String>
+    <sys:String x:Key="Entry.Duplicated">Entry duplicated</sys:String>
+    <sys:String x:Key="Entry.CopySuffix">(copy)</sys:String>
+    <sys:String x:Key="Entry.FavoriteOn">Added to favorites</sys:String>
+    <sys:String x:Key="Entry.FavoriteOff">Removed from favorites</sys:String>
+    <sys:String x:Key="Entry.TrashTitle">Move to trash?</sys:String>
+    <sys:String x:Key="Entry.TrashMessage">"{0}" will stay in the trash for {1} days, then it will be deleted forever.</sys:String>
+    <sys:String x:Key="Entry.TrashMessage.One">"{0}" will stay in the trash for 1 day, then it will be deleted forever.</sys:String>
+    <sys:String x:Key="Entry.MoveToTrash">Move to trash</sys:String>
+    <sys:String x:Key="Entry.Trashed">Moved to trash</sys:String>
+
+    <!-- Detail -->
+    <sys:String x:Key="Detail.Edit">Edit</sys:String>
+    <sys:String x:Key="Detail.Favorite">Favorite (Ctrl+D)</sys:String>
+    <sys:String x:Key="Detail.AutoType">Auto-type (Ctrl+Shift+A)</sys:String>
+    <sys:String x:Key="Detail.Share">Share sealed</sys:String>
+    <sys:String x:Key="Detail.Duplicate">Duplicate</sys:String>
+    <sys:String x:Key="Detail.Trash">Move to trash (Del)</sys:String>
+    <sys:String x:Key="Detail.Totp">Verification code</sys:String>
+    <sys:String x:Key="Detail.Open">Open in browser</sys:String>
+    <sys:String x:Key="Detail.AddTotp">Add 2FA</sys:String>
+    <sys:String x:Key="Detail.Created">Created</sys:String>
+    <sys:String x:Key="Detail.Modified">Modified</sys:String>
+    <sys:String x:Key="Detail.LastUsed">Last used</sys:String>
+    <sys:String x:Key="Detail.Expires">Expires on</sys:String>
+
+    <!-- Editor -->
+    <sys:String x:Key="Editor.NewTitle">New entry · {0}</sys:String>
+    <sys:String x:Key="Editor.EditTitle">Edit entry</sys:String>
+    <sys:String x:Key="Editor.TitlePlaceholder">Title, for example GitHub</sys:String>
+    <sys:String x:Key="Editor.LabelPlaceholder">Label</sys:String>
+    <sys:String x:Key="Editor.CustomLabel">Custom field</sys:String>
+    <sys:String x:Key="Editor.MoveUp">Move up</sys:String>
+    <sys:String x:Key="Editor.MoveDown">Move down</sys:String>
+    <sys:String x:Key="Editor.RemoveField">Remove field</sys:String>
+    <sys:String x:Key="Editor.Generate">Generate a strong password</sys:String>
+    <sys:String x:Key="Editor.AddField">Add field</sys:String>
+    <sys:String x:Key="Editor.Totp">Two-factor authentication (TOTP)</sys:String>
+    <sys:String x:Key="Editor.SetupTotp">Set up</sys:String>
+    <sys:String x:Key="Editor.Tags">Tags</sys:String>
+    <sys:String x:Key="Editor.TagPlaceholder">Add a tag and press Enter</sys:String>
+    <sys:String x:Key="Editor.Expiry">Expiry reminder</sys:String>
+    <sys:String x:Key="Editor.ExpiryPlaceholder">dd/mm/yyyy</sys:String>
+    <sys:String x:Key="Editor.Expiry30">+30 days</sys:String>
+    <sys:String x:Key="Editor.Expiry90">+90 days</sys:String>
+    <sys:String x:Key="Editor.Expiry365">+1 year</sys:String>
+    <sys:String x:Key="Editor.ExpiryNone">None</sys:String>
+    <sys:String x:Key="Editor.AutoType">Auto-type sequence</sys:String>
+    <sys:String x:Key="Editor.AutoTypeHint">Placeholders: {USERNAME} {PASSWORD} {TOTP} {URL} {TITLE} {TAB} {ENTER} {SPACE} {DELAY=200}</sys:String>
+    <sys:String x:Key="Editor.TitleRequired">A title is required.</sys:String>
+    <sys:String x:Key="Editor.BadDate">Invalid expiry date.</sys:String>
+    <sys:String x:Key="Editor.DiscardTitle">Discard changes?</sys:String>
+    <sys:String x:Key="Editor.DiscardMessage">Your changes to this entry have not been saved.</sys:String>
+    <sys:String x:Key="Editor.Discard">Discard</sys:String>
+
+    <!-- Edit menu (secure fields) -->
+    <sys:String x:Key="Edit.Paste">Paste</sys:String>
+    <sys:String x:Key="Edit.Copy">Copy (protected clipboard)</sys:String>
+    <sys:String x:Key="Edit.Cut">Cut</sys:String>
+    <sys:String x:Key="Edit.SelectAll">Select all</sys:String>
+    <sys:String x:Key="Edit.Reveal">Reveal</sys:String>
+    <sys:String x:Key="Edit.Hide">Hide</sys:String>
+    <sys:String x:Key="Edit.Clear">Clear</sys:String>
+
+    <!-- History -->
+    <sys:String x:Key="History.Header">Previous passwords ({0})</sys:String>
+    <sys:String x:Key="History.Restore">Restore</sys:String>
+    <sys:String x:Key="History.Forget">Forget</sys:String>
+    <sys:String x:Key="History.Clear">Clear history</sys:String>
+    <sys:String x:Key="History.RestoreTitle">Restore this password?</sys:String>
+    <sys:String x:Key="History.RestoreMessage">It becomes the current password again; the current one moves to the history.</sys:String>
+    <sys:String x:Key="History.Restored">Password restored</sys:String>
+    <sys:String x:Key="History.ClearTitle">Clear the history?</sys:String>
+    <sys:String x:Key="History.ClearMessage">This entry's previous passwords will be deleted forever.</sys:String>
+    <sys:String x:Key="History.ClearAllTitle">Clear all history?</sys:String>
+    <sys:String x:Key="History.ClearAllMessage">{0} previous passwords will be deleted from every entry.</sys:String>
+    <sys:String x:Key="History.ClearAllMessage.One">1 previous password will be deleted.</sys:String>
+
+    <!-- TOTP -->
+    <sys:String x:Key="Totp.SetupTitle">Set up the 2FA code</sys:String>
+    <sys:String x:Key="Totp.SetupMessage">Paste the otpauth:// link or the secret key (base32) shown by the service. The key will never be displayed again.</sys:String>
+    <sys:String x:Key="Totp.Details">{0} · {1} digits · {2} s</sys:String>
+    <sys:String x:Key="Totp.Invalid">Enter a valid otpauth:// link or base32 key.</sys:String>
+    <sys:String x:Key="Totp.Save">Save 2FA</sys:String>
+    <sys:String x:Key="Totp.Added">2FA code added</sys:String>
+    <sys:String x:Key="Totp.None">No 2FA code</sys:String>
+    <sys:String x:Key="Totp.Configured">Configured and sealed</sys:String>
+    <sys:String x:Key="Totp.Pending">Will be saved ({0})</sys:String>
+    <sys:String x:Key="Totp.Unreadable">The code cannot be read</sys:String>
+    <sys:String x:Key="Totp.Unavailable">unavailable</sys:String>
+    <sys:String x:Key="Totp.Error.empty">The key is empty.</sys:String>
+    <sys:String x:Key="Totp.Error.invalid-character">The key contains non-base32 characters.</sys:String>
+    <sys:String x:Key="Totp.Error.invalid-length">The key has an impossible length: it may be incomplete.</sys:String>
+    <sys:String x:Key="Totp.Error.trailing-bits">The key ends in the middle of a byte: it may be truncated.</sys:String>
+    <sys:String x:Key="Totp.Error.malformed">The otpauth:// link is not valid.</sys:String>
+    <sys:String x:Key="Totp.Error.hotp-unsupported">Counter-based codes (HOTP) are not supported.</sys:String>
+    <sys:String x:Key="Totp.Error.no-secret">The link does not contain the secret key.</sys:String>
+
+    <!-- Clipboard & toasts -->
+    <sys:String x:Key="Clipboard.Password">Password</sys:String>
+    <sys:String x:Key="Clipboard.OldPassword">Previous password</sys:String>
+    <sys:String x:Key="Clipboard.Generated">Generated password</sys:String>
+    <sys:String x:Key="Clipboard.RecoveryKey">Recovery key</sys:String>
+    <sys:String x:Key="Clipboard.Totp">2FA code</sys:String>
+    <sys:String x:Key="Toast.Copied">Copied to clipboard</sys:String>
+    <sys:String x:Key="Toast.CopiedField">{0} copied</sys:String>
+    <sys:String x:Key="Toast.ClearsIn">Kept out of clipboard history · clears in {0} s</sys:String>
+    <sys:String x:Key="Toast.CopyFailed">Copy failed</sys:String>
+    <sys:String x:Key="Toast.NothingToCopy">Nothing to copy</sys:String>
+    <sys:String x:Key="Toast.TotpCopied">2FA code copied</sys:String>
+    <sys:String x:Key="Toast.TotpValid">Valid for {0} more s</sys:String>
+
+    <!-- Health -->
+    <sys:String x:Key="Health.Weak">Weak</sys:String>
+    <sys:String x:Key="Health.Reused">Reused</sys:String>
+    <sys:String x:Key="Health.Expired">Expired</sys:String>
+    <sys:String x:Key="Health.Expiring">Expiring</sys:String>
+    <sys:String x:Key="Health.WeakDetail">This password is easy to guess: generate a new one.</sys:String>
+    <sys:String x:Key="Health.ReusedDetail">The same password is used in {0} other entries: if one site is breached, so are the others.</sys:String>
+    <sys:String x:Key="Health.ReusedDetail.One">The same password is used in 1 other entry: if one site is breached, so is the other.</sys:String>
+    <sys:String x:Key="Health.ExpiredDetail">The expiry reminder has passed: time to change it.</sys:String>
+    <sys:String x:Key="Health.OldDetail">Not changed for {0} months.</sys:String>
+
+    <!-- Strength -->
+    <sys:String x:Key="Strength.Empty">—</sys:String>
+    <sys:String x:Key="Strength.VeryWeak">Very weak</sys:String>
+    <sys:String x:Key="Strength.Weak">Weak</sys:String>
+    <sys:String x:Key="Strength.Fair">Fair</sys:String>
+    <sys:String x:Key="Strength.Strong">Strong</sys:String>
+    <sys:String x:Key="Strength.Excellent">Excellent</sys:String>
+    <sys:String x:Key="Strength.Bits">{0} bits</sys:String>
+    <sys:String x:Key="Hint.Empty">Type or generate a password.</sys:String>
+    <sys:String x:Key="Hint.TooShort">Use at least 12 characters.</sys:String>
+    <sys:String x:Key="Hint.CommonPassword">It's one of the most used passwords in the world.</sys:String>
+    <sys:String x:Key="Hint.ContainsCommonWord">Contains common words.</sys:String>
+    <sys:String x:Key="Hint.KeyboardPattern">Contains keyboard patterns.</sys:String>
+    <sys:String x:Key="Hint.Repetition">Contains repetitions.</sys:String>
+    <sys:String x:Key="Hint.Sequence">Contains sequences like abc or 123.</sys:String>
+    <sys:String x:Key="Hint.DateOrYear">Contains a year or a date.</sys:String>
+    <sys:String x:Key="Hint.OnlyDigits">Digits only: add letters and symbols.</sys:String>
+    <sys:String x:Key="Hint.AddMoreClasses">Mix capitals, digits and symbols.</sys:String>
+    <sys:String x:Key="Hint.LongerIsStronger">Length matters more than anything.</sys:String>
+    <sys:String x:Key="Hint.Excellent">Perfect to store and forget.</sys:String>
+
+    <!-- KDF -->
+    <sys:String x:Key="Kdf.Standard">Standard</sys:String>
+    <sys:String x:Key="Kdf.High">High</sys:String>
+    <sys:String x:Key="Kdf.Extreme">Extreme</sys:String>
+    <sys:String x:Key="Kdf.Title">Key derivation strength</sys:String>
+    <sys:String x:Key="Kdf.Message">More memory and more passes make every brute-force attempt vastly more expensive, at the cost of a slightly slower unlock.</sys:String>
+    <sys:String x:Key="Kdf.Confirm">Confirm with your master password to apply the new parameters.</sys:String>
+    <sys:String x:Key="Kdf.Done">Key derivation strengthened</sys:String>
+    <sys:String x:Key="Kdf.Failed">Could not strengthen the key derivation</sys:String>
+    <sys:String x:Key="Kdf.UpgradeAvailable">You can strengthen this vault</sys:String>
+    <sys:String x:Key="Kdf.UpgradeDetail">Current: {0}. Recommended: {1}. Security center → Strengthen.</sys:String>
+
+    <!-- Generator -->
+    <sys:String x:Key="Generator.Title">Generator</sys:String>
+    <sys:String x:Key="Generator.Subtitle">Cryptographically random passwords, passphrases and PINs, created directly in protected memory.</sys:String>
+    <sys:String x:Key="Generator.Regenerate">Regenerate</sys:String>
+    <sys:String x:Key="Generator.UseInEntry">Use in a new entry</sys:String>
+    <sys:String x:Key="Generator.Characters">Characters</sys:String>
+    <sys:String x:Key="Generator.Passphrase">Passphrase</sys:String>
+    <sys:String x:Key="Generator.Length">Length</sys:String>
+    <sys:String x:Key="Generator.Lowercase">Lowercase (a–z)</sys:String>
+    <sys:String x:Key="Generator.Uppercase">Uppercase (A–Z)</sys:String>
+    <sys:String x:Key="Generator.Digits">Digits (0–9)</sys:String>
+    <sys:String x:Key="Generator.Symbols">Symbols (!@#…)</sys:String>
+    <sys:String x:Key="Generator.Ambiguous">Avoid ambiguous characters (Il1O0)</sys:String>
+    <sys:String x:Key="Generator.Exclude">Exclude characters</sys:String>
+    <sys:String x:Key="Generator.ExcludePlaceholder">For example: {}[]</sys:String>
+    <sys:String x:Key="Generator.Words">Words</sys:String>
+    <sys:String x:Key="Generator.Capitalize">Capitalize words</sys:String>
+    <sys:String x:Key="Generator.AddNumber">Add a number</sys:String>
+    <sys:String x:Key="Generator.Italian">Italian words</sys:String>
+    <sys:String x:Key="Generator.Separator">Separator</sys:String>
+    <sys:String x:Key="Generator.PinHint">Trivial PINs (all-same digits or sequences) are discarded automatically.</sys:String>
+    <sys:String x:Key="Generator.History">Generated this session</sys:String>
+    <sys:String x:Key="Generator.HistoryHint">They live only in protected memory and vanish when you lock.</sys:String>
+    <sys:String x:Key="Generator.ClearHistory">Clear</sys:String>
+    <sys:String x:Key="Generator.Bits">{0} bits of entropy</sys:String>
+    <sys:String x:Key="Generator.LengthValue">{0} characters</sys:String>
+    <sys:String x:Key="Generator.CrackTime">Brute force at a trillion guesses per second: {0}</sys:String>
+
+    <!-- Security center -->
+    <sys:String x:Key="Security.Title">Security center</sys:String>
+    <sys:String x:Key="Security.Subtitle">The real state of your encryption, your keys and your passwords.</sys:String>
+    <sys:String x:Key="Security.ScoreLabel">SCORE</sys:String>
+    <sys:String x:Key="Security.ScoreExcellent">Excellent</sys:String>
+    <sys:String x:Key="Security.ScoreGood">Good</sys:String>
+    <sys:String x:Key="Security.ScoreFair">Needs work</sys:String>
+    <sys:String x:Key="Security.ScorePoor">At risk</sys:String>
+    <sys:String x:Key="Security.Summary">{0} passwords analyzed · issues found: {1}</sys:String>
+    <sys:String x:Key="Security.Summary.One">1 password analyzed · issues found: {1}</sys:String>
+    <sys:String x:Key="Security.Cat.weak">Weak passwords</sys:String>
+    <sys:String x:Key="Security.Cat.weak.Desc">Easy to guess</sys:String>
+    <sys:String x:Key="Security.Cat.reused">Reused passwords</sys:String>
+    <sys:String x:Key="Security.Cat.reused.Desc">Identical across entries</sys:String>
+    <sys:String x:Key="Security.Cat.old">Old passwords</sys:String>
+    <sys:String x:Key="Security.Cat.old.Desc">Unchanged for over a year</sys:String>
+    <sys:String x:Key="Security.Cat.expired">Expiries</sys:String>
+    <sys:String x:Key="Security.Cat.expired.Desc">Expired or due within 30 days</sys:String>
+    <sys:String x:Key="Security.Cat.totp">Without 2FA</sys:String>
+    <sys:String x:Key="Security.Cat.totp.Desc">Logins without a verification code</sys:String>
+    <sys:String x:Key="Security.Cat.empty">No password</sys:String>
+    <sys:String x:Key="Security.Cat.empty.Desc">Logins with an empty password</sys:String>
+    <sys:String x:Key="Security.Keys">Keys and unlock methods</sys:String>
+    <sys:String x:Key="Security.MasterPassword">Master password</sys:String>
+    <sys:String x:Key="Security.Change">Change</sys:String>
+    <sys:String x:Key="Security.Strengthen">Strengthen</sys:String>
+    <sys:String x:Key="Security.RecoveryKey">Recovery key</sys:String>
+    <sys:String x:Key="Security.RecoveryDesc">Opens the vault if you forget your password.</sys:String>
+    <sys:String x:Key="Security.Regenerate">Regenerate</sys:String>
+    <sys:String x:Key="Security.HelloOn">On for this PC (TPM key)</sys:String>
+    <sys:String x:Key="Security.HelloOff">Available, not turned on</sys:String>
+    <sys:String x:Key="Security.HelloUnavailable">Not available on this PC</sys:String>
+    <sys:String x:Key="Security.HelloEnable">Turn on</sys:String>
+    <sys:String x:Key="Security.HelloDisable">Turn off</sys:String>
+    <sys:String x:Key="Security.HelloEnabled">Windows Hello turned on</sys:String>
+    <sys:String x:Key="Security.HelloDisabled">Windows Hello turned off</sys:String>
+    <sys:String x:Key="Security.HelloFailed">Windows Hello failed</sys:String>
+    <sys:String x:Key="Security.Encryption">Vault encryption</sys:String>
+    <sys:String x:Key="Security.Kdf">Key derivation</sys:String>
+    <sys:String x:Key="Security.Cipher">Cipher</sys:String>
+    <sys:String x:Key="Security.Commitment">Integrity and key commitment</sys:String>
+    <sys:String x:Key="Security.Fields">Sensitive fields</sys:String>
+    <sys:String x:Key="Security.FieldsValue">AES-256-GCM per field, sealed in RAM as well</sys:String>
+    <sys:String x:Key="Security.Padding">Padding</sys:String>
+    <sys:String x:Key="Security.Sharing">Sharing</sys:String>
+    <sys:String x:Key="Security.File">File</sys:String>
+    <sys:String x:Key="Security.Counter">Anti-rollback counter</sys:String>
+    <sys:String x:Key="Security.OpenFolder">Show the file in its folder</sys:String>
+    <sys:String x:Key="Security.Protections">Runtime protections</sys:String>
+    <sys:String x:Key="Security.Memory">Locked memory</sys:String>
+    <sys:String x:Key="Security.MemoryValue">{0} regions · {1} kept out of the page file · kernel-encrypted keys: {2}</sys:String>
+    <sys:String x:Key="Security.MemoryValue.One">1 region · {1} kept out of the page file · kernel-encrypted keys: {2}</sys:String>
+    <sys:String x:Key="Security.MemoryEncryption">Keys encrypted at rest</sys:String>
+    <sys:String x:Key="Security.ProcessAccess">Memory reads from other processes</sys:String>
+    <sys:String x:Key="Security.Mitigations">Process mitigations</sys:String>
+    <sys:String x:Key="Security.Capture">Excluded from screen capture</sys:String>
+    <sys:String x:Key="Security.Clipboard">Protected clipboard</sys:String>
+    <sys:String x:Key="Security.ClipboardValue">Kept out of history · cleared after {0} s</sys:String>
+    <sys:String x:Key="Security.Active">Active</sys:String>
+    <sys:String x:Key="Security.Inactive">Off</sys:String>
+    <sys:String x:Key="Security.Partial">Partial</sys:String>
+    <sys:String x:Key="Security.Unavailable">Unavailable</sys:String>
+    <sys:String x:Key="Security.HistoryCount">{0} previous passwords kept</sys:String>
+    <sys:String x:Key="Security.HistoryCount.One">1 previous password kept</sys:String>
+    <sys:String x:Key="Security.Backups">Encrypted backups</sys:String>
+    <sys:String x:Key="Security.OpenBackups">Open the folder</sys:String>
+    <sys:String x:Key="Security.NoBackups">No backups yet: one is made on the first save of each session and then at most every 15 minutes.</sys:String>
+    <sys:String x:Key="Security.Audit">Event log</sys:String>
+
+    <!-- Change password -->
+    <sys:String x:Key="ChangePassword.Title">Change the master password</sys:String>
+    <sys:String x:Key="ChangePassword.Current">Enter your current master password.</sys:String>
+    <sys:String x:Key="ChangePassword.New">Choose the new master password.</sys:String>
+    <sys:String x:Key="ChangePassword.Apply">Change password</sys:String>
+    <sys:String x:Key="ChangePassword.Wrong">The master password is not correct</sys:String>
+    <sys:String x:Key="ChangePassword.RotateTitle">Rotate the vault key too?</sys:String>
+    <sys:String x:Key="ChangePassword.RotateMessage">Recommended. A brand-new vault key is generated and every secret is re-encrypted: an old copy of the file plus the old password would reveal nothing about future data. You'll receive a new recovery key and Windows Hello will need to be turned on again.</sys:String>
+    <sys:String x:Key="ChangePassword.Rotate">Rotate the key</sys:String>
+    <sys:String x:Key="ChangePassword.Done">Master password changed</sys:String>
+    <sys:String x:Key="ChangePassword.DoneRotated">Vault key rotated and every secret re-encrypted.</sys:String>
+    <sys:String x:Key="ChangePassword.Failed">Could not change the password</sys:String>
+    <sys:String x:Key="ChangePassword.BackupsTitle">Delete older backups?</sys:String>
+    <sys:String x:Key="ChangePassword.BackupsMessage">Existing backups still open with the old password. If you fear it was compromised, delete them.</sys:String>
+    <sys:String x:Key="ChangePassword.DeleteBackups">Delete backups</sys:String>
+
+    <!-- Backups -->
+    <sys:String x:Key="Backup.Restore">Restore</sys:String>
+    <sys:String x:Key="Backup.RestoreTitle">Restore this backup?</sys:String>
+    <sys:String x:Key="Backup.RestoreMessage">The vault content will go back to how it was on {0}. The current state stays available as a backup.</sys:String>
+    <sys:String x:Key="Backup.PasswordTitle">Backup password</sys:String>
+    <sys:String x:Key="Backup.PasswordMessage">This backup predates a key rotation: enter the master password that was valid back then.</sys:String>
+    <sys:String x:Key="Backup.Restored">Backup restored</sys:String>
+    <sys:String x:Key="Backup.Failed">Restore failed</sys:String>
+    <sys:String x:Key="Backup.Delete">Delete all</sys:String>
+    <sys:String x:Key="Backup.DeleteTitle">Delete every backup?</sys:String>
+    <sys:String x:Key="Backup.DeleteMessage">This vault's encrypted backups will be deleted from disk.</sys:String>
+    <sys:String x:Key="Backup.Deleted">{0} backups deleted</sys:String>
+    <sys:String x:Key="Backup.Deleted.One">1 backup deleted</sys:String>
+
+    <!-- Rollback -->
+    <sys:String x:Key="Rollback.Title">The vault is older than expected</sys:String>
+    <sys:String x:Key="Rollback.Detail">The file was replaced with a version older than the one already seen on this PC (a restore or tampering). Check that your recent entries are there.</sys:String>
+
+    <!-- Sharing -->
+    <sys:String x:Key="Sharing.Title">Sealed sharing</sys:String>
+    <sys:String x:Key="Sharing.Subtitle">Send credentials to another person in a package only their vault can open. Post-quantum hybrid cryptography: ML-KEM-1024 + ECDH P-384, ML-DSA-87 + ECDSA P-384 signatures.</sys:String>
+    <sys:String x:Key="Sharing.Unsupported">This version of Windows lacks ML-KEM and ML-DSA: sharing needs an up-to-date Windows 11.</sys:String>
+    <sys:String x:Key="Sharing.NoIdentity">Create your OnlyYours identity</sys:String>
+    <sys:String x:Key="Sharing.NoIdentityDesc">A key pair kept inside the vault. The public half is the address others send sealed packages to; the private half never leaves the vault.</sys:String>
+    <sys:String x:Key="Sharing.CreateIdentity">Create identity</sys:String>
+    <sys:String x:Key="Sharing.CreateTitle">New identity</sys:String>
+    <sys:String x:Key="Sharing.CreateLabel">Name shown to recipients</sys:String>
+    <sys:String x:Key="Sharing.Created">Identity created</sys:String>
+    <sys:String x:Key="Sharing.CreatedDetail">Share your OnlyYours ID with whoever needs to send you credentials.</sys:String>
+    <sys:String x:Key="Sharing.YourIdentity">Your identity</sys:String>
+    <sys:String x:Key="Sharing.Algorithms">Fingerprint: confirm it out loud with whoever adds your ID.</sys:String>
+    <sys:String x:Key="Sharing.CopyId">Copy ID</sys:String>
+    <sys:String x:Key="Sharing.SaveId">Save ID…</sys:String>
+    <sys:String x:Key="Sharing.IdLabel">OnlyYours ID</sys:String>
+    <sys:String x:Key="Sharing.IdSaved">ID saved</sys:String>
+    <sys:String x:Key="Sharing.Share">Share entries</sys:String>
+    <sys:String x:Key="Sharing.ShareDesc">Create an encrypted, signed .oypkg package for a contact.</sys:String>
+    <sys:String x:Key="Sharing.Open">Open a package</sys:String>
+    <sys:String x:Key="Sharing.OpenDesc">Verify the sender's signature and import the entries you received.</sys:String>
+    <sys:String x:Key="Sharing.Contacts">Contacts</sys:String>
+    <sys:String x:Key="Sharing.AddContact">Add contact</sys:String>
+    <sys:String x:Key="Sharing.NoContacts">No contacts. Add the OnlyYours ID of whoever will receive your credentials.</sys:String>
+    <sys:String x:Key="Sharing.Verified">verified</sys:String>
+    <sys:String x:Key="Sharing.ToggleVerified">Mark as verified / unverified</sys:String>
+    <sys:String x:Key="Sharing.FromFile">From a .oyid file</sys:String>
+    <sys:String x:Key="Sharing.FromFileDesc">The ID saved by the contact.</sys:String>
+    <sys:String x:Key="Sharing.FromText">Paste the text</sys:String>
+    <sys:String x:Key="Sharing.FromTextDesc">The block starting with ONLYYOURS-ID:</sys:String>
+    <sys:String x:Key="Sharing.PasteId">Contact's OnlyYours ID</sys:String>
+    <sys:String x:Key="Sharing.InvalidId">This is not a valid OnlyYours ID</sys:String>
+    <sys:String x:Key="Sharing.OwnId">This is your own ID</sys:String>
+    <sys:String x:Key="Sharing.VerifyTitle">Verify the fingerprint</sys:String>
+    <sys:String x:Key="Sharing.VerifyMessage" xml:space="preserve">{0}
+
+Fingerprint: {1}
+
+Compare it with the contact over a different channel (in person or by phone). Does it match?</sys:String>
+    <sys:String x:Key="Sharing.VerifyYes">It matches, verified</sys:String>
+    <sys:String x:Key="Sharing.ContactAdded">Contact added</sys:String>
+    <sys:String x:Key="Sharing.RemoveTitle">Remove the contact?</sys:String>
+    <sys:String x:Key="Sharing.RemoveMessage">"{0}" will be removed from your contacts.</sys:String>
+    <sys:String x:Key="Sharing.NeedIdentityTitle">An identity is needed</sys:String>
+    <sys:String x:Key="Sharing.NeedIdentity">First create your OnlyYours identity on the Sharing page.</sys:String>
+    <sys:String x:Key="Sharing.NeedContactTitle">No recipient</sys:String>
+    <sys:String x:Key="Sharing.NeedContact">First add the contact you want to send entries to.</sys:String>
+    <sys:String x:Key="Sharing.PickEntries">Choose the entries to share</sys:String>
+    <sys:String x:Key="Sharing.PickRecipient">Choose the recipient</sys:String>
+    <sys:String x:Key="Sharing.PickRecipientMessage">{0} entries will be encrypted for the recipient and signed with your identity.</sys:String>
+    <sys:String x:Key="Sharing.PickRecipientMessage.One">1 entry will be encrypted for the recipient and signed with your identity.</sys:String>
+    <sys:String x:Key="Sharing.Seal">Seal the package</sys:String>
+    <sys:String x:Key="Sharing.Sealed">Package sealed</sys:String>
+    <sys:String x:Key="Sharing.SealedDetail">{0} entries for {1}.</sys:String>
+    <sys:String x:Key="Sharing.SealedDetail.One">1 entry for {1}.</sys:String>
+    <sys:String x:Key="Sharing.Failed">Sharing failed</sys:String>
+
+    <!-- Packages -->
+    <sys:String x:Key="Package.Title">Package with {0} entries</sys:String>
+    <sys:String x:Key="Package.Title.One">Package with 1 entry</sys:String>
+    <sys:String x:Key="Package.PasswordTitle">Password-protected package</sys:String>
+    <sys:String x:Key="Package.PasswordMessage">Enter the password chosen by whoever created the package.</sys:String>
+    <sys:String x:Key="Package.PasswordProtected">Password-protected package.</sys:String>
+    <sys:String x:Key="Package.FromVerified">Signed by {0} (verified) · {1}</sys:String>
+    <sys:String x:Key="Package.FromKnown">Signed by {0} (unverified) · {1}</sys:String>
+    <sys:String x:Key="Package.FromUnknown">Valid signature from an unknown sender: "{0}" · {1}</sys:String>
+    <sys:String x:Key="Package.Import">Import</sys:String>
+    <sys:String x:Key="Package.Imported">{0} entries imported</sys:String>
+    <sys:String x:Key="Package.Imported.One">1 entry imported</sys:String>
+    <sys:String x:Key="Package.Failed">Could not open the package</sys:String>
+
+    <!-- Trash -->
+    <sys:String x:Key="Trash.Title">Trash</sys:String>
+    <sys:String x:Key="Trash.Retention">Deleted entries stay here for {0} days, then they are erased forever.</sys:String>
+    <sys:String x:Key="Trash.Retention.One">Deleted entries stay here for 1 day, then they are erased forever.</sys:String>
+    <sys:String x:Key="Trash.Empty">Empty the trash</sys:String>
+    <sys:String x:Key="Trash.IsEmpty">The trash is empty.</sys:String>
+    <sys:String x:Key="Trash.Restore">Restore</sys:String>
+    <sys:String x:Key="Trash.Restored">Entry restored</sys:String>
+    <sys:String x:Key="Trash.DeleteForever">Delete forever</sys:String>
+    <sys:String x:Key="Trash.DeleteTitle">Delete forever?</sys:String>
+    <sys:String x:Key="Trash.DeleteMessage">"{0}" will be permanently deleted. This cannot be undone.</sys:String>
+    <sys:String x:Key="Trash.EmptyTitle">Empty the trash?</sys:String>
+    <sys:String x:Key="Trash.EmptyMessage">{0} entries will be permanently deleted.</sys:String>
+    <sys:String x:Key="Trash.EmptyMessage.One">1 entry will be permanently deleted.</sys:String>
+    <sys:String x:Key="Trash.DaysLeft">deleted in {0} days</sys:String>
+    <sys:String x:Key="Trash.DaysLeft.One">deleted in 1 day</sys:String>
+
+    <!-- Transfer -->
+    <sys:String x:Key="Transfer.Title">Import and export</sys:String>
+    <sys:String x:Key="Transfer.Subtitle">Move your credentials in and out of OnlyYours, always choosing the safest format.</sys:String>
+    <sys:String x:Key="Transfer.ImportHeader">Import</sys:String>
+    <sys:String x:Key="Transfer.ExportHeader">Export</sys:String>
+    <sys:String x:Key="Transfer.Legacy">BetterOnlyYours</sys:String>
+    <sys:String x:Key="Transfer.LegacyDesc">Merge an old credentials.plf into this vault.</sys:String>
+    <sys:String x:Key="Transfer.Csv">CSV file</sys:String>
+    <sys:String x:Key="Transfer.CsvDesc">From browsers and other password managers.</sys:String>
+    <sys:String x:Key="Transfer.Package">OnlyYours package</sys:String>
+    <sys:String x:Key="Transfer.PackageDesc">A .oypkg you received or exported earlier.</sys:String>
+    <sys:String x:Key="Transfer.ExportPackage">Encrypted package</sys:String>
+    <sys:String x:Key="Transfer.ExportPackageDesc">Selected entries, protected by Argon2id and cascade encryption.</sys:String>
+    <sys:String x:Key="Transfer.Backup">Vault copy</sys:String>
+    <sys:String x:Key="Transfer.BackupDesc">The complete .onlyyours file, already encrypted.</sys:String>
+    <sys:String x:Key="Transfer.ExportCsv">Plain-text CSV</sys:String>
+    <sys:String x:Key="Transfer.ExportCsvDesc">Not recommended: anyone who reads the file sees every password.</sys:String>
+    <sys:String x:Key="Transfer.FormatsTitle">CSV formats detected automatically</sys:String>
+    <sys:String x:Key="Transfer.Formats">Chrome, Edge, Brave, Firefox, Bitwarden, 1Password, KeePass and KeePassXC, LastPass, Proton Pass, Dashlane, OnlyYours and any CSV with headers such as title, url, username, password, notes, totp, tags.</sys:String>
+    <sys:String x:Key="Transfer.CsvTitle">Import the CSV?</sys:String>
+    <sys:String x:Key="Transfer.CsvMessage">{0} rows in {1} format. Duplicate entries will be skipped.</sys:String>
+    <sys:String x:Key="Transfer.CsvMessage.One">1 row in {1} format. Duplicate entries will be skipped.</sys:String>
+    <sys:String x:Key="Transfer.Import">Import</sys:String>
+    <sys:String x:Key="Transfer.CsvUnknown">The columns of this CSV could not be recognized</sys:String>
+    <sys:String x:Key="Transfer.Imported">{0} entries imported</sys:String>
+    <sys:String x:Key="Transfer.Imported.One">1 entry imported</sys:String>
+    <sys:String x:Key="Transfer.Skipped">{0} already present, skipped</sys:String>
+    <sys:String x:Key="Transfer.CsvReport">Duplicates skipped: {0} · with 2FA: {1} · empty rows: {2}</sys:String>
+    <sys:String x:Key="Transfer.DeleteCsvTitle">Delete the CSV file?</sys:String>
+    <sys:String x:Key="Transfer.DeleteCsvMessage">The CSV holds your passwords in plain text. Now that they're in the vault, it's best to overwrite and delete it.</sys:String>
+    <sys:String x:Key="Transfer.DeleteCsv">Overwrite and delete</sys:String>
+    <sys:String x:Key="Transfer.Failed">Operation failed</sys:String>
+    <sys:String x:Key="Transfer.NothingToExport">The vault is empty</sys:String>
+    <sys:String x:Key="Transfer.PackageTitle">Export an encrypted package</sys:String>
+    <sys:String x:Key="Transfer.PackageMessage">Choose the entries to include.</sys:String>
+    <sys:String x:Key="Transfer.PackagePassword">Package password</sys:String>
+    <sys:String x:Key="Transfer.PackagePasswordMessage">It will be needed to open the package: choose a strong one and share it separately.</sys:String>
+    <sys:String x:Key="Transfer.Exported">{0} entries exported</sys:String>
+    <sys:String x:Key="Transfer.Exported.One">1 entry exported</sys:String>
+    <sys:String x:Key="Transfer.CsvExportTitle">Plain-text export</sys:String>
+    <sys:String x:Key="Transfer.CsvExportWarning">The CSV file will contain every password, note and 2FA link with no protection at all. Anyone with access to it can read them. Continue only if you know exactly where it will end up.</sys:String>
+    <sys:String x:Key="Transfer.CsvExportContinue">I understand, continue</sys:String>
+    <sys:String x:Key="Transfer.ConfirmIdentity">Confirm your master password to export.</sys:String>
+    <sys:String x:Key="Transfer.CsvExported">CSV exported in plain text</sys:String>
+    <sys:String x:Key="Transfer.CsvExportedDetail">Delete it as soon as you no longer need it.</sys:String>
+    <sys:String x:Key="Transfer.BackupCopied">Vault copy saved</sys:String>
+
+    <sys:String x:Key="CsvFormat.Generic">generic</sys:String>
+    <sys:String x:Key="CsvFormat.Chrome">Chrome / Edge</sys:String>
+    <sys:String x:Key="CsvFormat.Firefox">Firefox</sys:String>
+    <sys:String x:Key="CsvFormat.Bitwarden">Bitwarden</sys:String>
+    <sys:String x:Key="CsvFormat.OnePassword">1Password</sys:String>
+    <sys:String x:Key="CsvFormat.KeePass">KeePass / KeePassXC</sys:String>
+    <sys:String x:Key="CsvFormat.LastPass">LastPass</sys:String>
+    <sys:String x:Key="CsvFormat.ProtonPass">Proton Pass</sys:String>
+    <sys:String x:Key="CsvFormat.Dashlane">Dashlane</sys:String>
+    <sys:String x:Key="CsvFormat.OnlyYours">OnlyYours</sys:String>
+
+    <!-- Settings -->
+    <sys:String x:Key="Settings.Title">Settings</sys:String>
+    <sys:String x:Key="Settings.Subtitle">Preferences apply immediately. They never contain secrets.</sys:String>
+    <sys:String x:Key="Settings.Appearance">Appearance</sys:String>
+    <sys:String x:Key="Settings.Theme">Theme</sys:String>
+    <sys:String x:Key="Settings.Theme.Dark">Obsidian</sys:String>
+    <sys:String x:Key="Settings.Theme.DarkDesc">Dark, the original look</sys:String>
+    <sys:String x:Key="Settings.Theme.Light">Ivory</sys:String>
+    <sys:String x:Key="Settings.Theme.LightDesc">Light and warm</sys:String>
+    <sys:String x:Key="Settings.Theme.System">System</sys:String>
+    <sys:String x:Key="Settings.Theme.SystemDesc">Follows Windows</sys:String>
+    <sys:String x:Key="Settings.Accent">Accent metal</sys:String>
+    <sys:String x:Key="Settings.Motion">Animations</sys:String>
+    <sys:String x:Key="Settings.Motion.Cinematic">Cinematic</sys:String>
+    <sys:String x:Key="Settings.Motion.Reduced">Reduced</sys:String>
+    <sys:String x:Key="Settings.Motion.Off">Off</sys:String>
+    <sys:String x:Key="Settings.Intro">Opening sequence</sys:String>
+    <sys:String x:Key="Settings.Intro.Cinematic">Cinematic</sys:String>
+    <sys:String x:Key="Settings.Intro.Short">Short</sys:String>
+    <sys:String x:Key="Settings.Intro.Off">None</sys:String>
+    <sys:String x:Key="Settings.Colorize">Color letters, digits and symbols in revealed passwords</sys:String>
+    <sys:String x:Key="Settings.Security">Security</sys:String>
+    <sys:String x:Key="Settings.AutoLock">Auto-lock</sys:String>
+    <sys:String x:Key="Settings.AutoLockDesc">After this long without using the computer</sys:String>
+    <sys:String x:Key="Settings.LockOnWindowsLock">Lock when you lock Windows (Win+L)</sys:String>
+    <sys:String x:Key="Settings.LockOnSleep">Lock before sleep or hibernation</sys:String>
+    <sys:String x:Key="Settings.LockOnMinimize">Lock on minimize</sys:String>
+    <sys:String x:Key="Settings.Clipboard">Clipboard clearing</sys:String>
+    <sys:String x:Key="Settings.ClipboardDesc">Erase copied secrets after</sys:String>
+    <sys:String x:Key="Settings.ClipboardHistory">Keep secrets out of clipboard history</sys:String>
+    <sys:String x:Key="Settings.ClipboardHistoryDesc">Copied passwords never reach Win+V or the cloud-synced clipboard.</sys:String>
+    <sys:String x:Key="Settings.Capture">Protect from screen capture</sys:String>
+    <sys:String x:Key="Settings.CaptureDesc">The window appears black in screenshots, recordings and screen sharing.</sys:String>
+    <sys:String x:Key="Settings.Hardening">Process protection</sys:String>
+    <sys:String x:Key="Settings.HardeningDesc">Stops other programs from reading OnlyYours' memory and blocks DLL injection. Takes effect on next start.</sys:String>
+    <sys:String x:Key="Settings.History">Keep previous passwords</sys:String>
+    <sys:String x:Key="Settings.ConfirmDelete">Ask before deleting</sys:String>
+    <sys:String x:Key="Settings.Kdf">Strength for new vaults and password changes</sys:String>
+    <sys:String x:Key="Settings.KdfDesc">Argon2id parameters used when you create a vault or change the master password.</sys:String>
+    <sys:String x:Key="Settings.Behavior">Behavior</sys:String>
+    <sys:String x:Key="Settings.Hotkeys">Global shortcuts</sys:String>
+    <sys:String x:Key="Settings.HotkeyOk">{0} quick search · {1} auto-type</sys:String>
+    <sys:String x:Key="Settings.HotkeyFailed">Already taken by another app: {0}</sys:String>
+    <sys:String x:Key="Settings.MinimizeToTray">Minimize to the notification area</sys:String>
+    <sys:String x:Key="Settings.CloseToTray">Close to the notification area</sys:String>
+    <sys:String x:Key="Settings.StartWithWindows">Start with Windows</sys:String>
+    <sys:String x:Key="Settings.StartMinimized">Start minimized</sys:String>
+    <sys:String x:Key="Settings.AutoTypeDelay">Delay between auto-typed keys</sys:String>
+    <sys:String x:Key="Settings.TrashRetention">Days in trash</sys:String>
+    <sys:String x:Key="Settings.BackupRetention">Backups to keep</sys:String>
+    <sys:String x:Key="Settings.Vault">Vault</sys:String>
+    <sys:String x:Key="Settings.Rename">Rename</sys:String>
+    <sys:String x:Key="Settings.RenameTitle">Rename the vault</sys:String>
+    <sys:String x:Key="Settings.RenameLabel">Vault name</sys:String>
+    <sys:String x:Key="Settings.DataFolder">Data folder</sys:String>
+    <sys:String x:Key="Settings.Open">Open</sys:String>
+    <sys:String x:Key="Settings.Never">Never</sys:String>
+    <sys:String x:Key="Settings.Minutes">{0} minutes</sys:String>
+    <sys:String x:Key="Settings.Minutes.One">1 minute</sys:String>
+    <sys:String x:Key="Settings.Seconds">{0} seconds</sys:String>
+    <sys:String x:Key="Settings.Seconds.One">1 second</sys:String>
+    <sys:String x:Key="Settings.AboutText">Local by design: no network, no account, no telemetry. Argon2id, ChaCha20-Poly1305, AES-256-GCM, HMAC-SHA-512, ML-KEM-1024, ML-DSA-87.</sys:String>
+    <sys:String x:Key="Accent.aurum">Gold</sys:String>
+    <sys:String x:Key="Accent.copper">Copper</sys:String>
+    <sys:String x:Key="Accent.platinum">Platinum</sys:String>
+    <sys:String x:Key="Accent.jade">Jade</sys:String>
+
+    <!-- Palette -->
+    <sys:String x:Key="Palette.Placeholder">Search entries or type a command…</sys:String>
+    <sys:String x:Key="Palette.Empty">No results</sys:String>
+    <sys:String x:Key="Palette.Command">Command</sys:String>
+    <sys:String x:Key="Palette.Navigate">navigate</sys:String>
+    <sys:String x:Key="Palette.OpenAction">open</sys:String>
+    <sys:String x:Key="Palette.CopyPassword">copy password</sys:String>
+    <sys:String x:Key="Palette.CopyUser">copy username</sys:String>
+    <sys:String x:Key="Palette.Close">close</sys:String>
+    <sys:String x:Key="Palette.NewLogin">New login</sys:String>
+    <sys:String x:Key="Palette.NewNote">New secure note</sys:String>
+    <sys:String x:Key="Palette.NewCard">New payment card</sys:String>
+    <sys:String x:Key="Palette.Generator">Open the generator</sys:String>
+    <sys:String x:Key="Palette.Security">Open the security center</sys:String>
+    <sys:String x:Key="Palette.Sharing">Open sharing</sys:String>
+    <sys:String x:Key="Palette.Transfer">Import or export</sys:String>
+    <sys:String x:Key="Palette.Trash">Open the trash</sys:String>
+    <sys:String x:Key="Palette.Settings">Open settings</sys:String>
+    <sys:String x:Key="Palette.Theme">Toggle light/dark theme</sys:String>
+    <sys:String x:Key="Palette.Lock">Lock the vault</sys:String>
+
+    <!-- Auto-type -->
+    <sys:String x:Key="AutoType.NoTarget">No target window</sys:String>
+    <sys:String x:Key="AutoType.NoTargetDetail">Bring the app you want to type into to the front, then come back here (or press Ctrl+Alt+A from that app).</sys:String>
+    <sys:String x:Key="AutoType.Aborted">Auto-type stopped</sys:String>
+    <sys:String x:Key="AutoType.AbortedDetail">The target window lost focus.</sys:String>
+    <sys:String x:Key="AutoType.NoMatch">No entry for this window</sys:String>
+
+    <!-- Tray -->
+    <sys:String x:Key="Tray.Open">Open OnlyYours</sys:String>
+    <sys:String x:Key="Tray.QuickSearch">Quick search</sys:String>
+    <sys:String x:Key="Tray.Generate">Copy a generated password</sys:String>
+    <sys:String x:Key="Tray.Lock">Lock</sys:String>
+    <sys:String x:Key="Tray.Exit">Exit</sys:String>
+
+    <!-- Dialogs & files -->
+    <sys:String x:Key="Dialog.Password">Password</sys:String>
+    <sys:String x:Key="Dialog.ConfirmPassword">Repeat the password</sys:String>
+    <sys:String x:Key="Dialog.SelectAll">Select all / none</sys:String>
+    <sys:String x:Key="File.VaultFilter">OnlyYours vault</sys:String>
+    <sys:String x:Key="File.LegacyFilter">BetterOnlyYours vault</sys:String>
+    <sys:String x:Key="File.PackageFilter">OnlyYours package</sys:String>
+    <sys:String x:Key="File.AllFilter">All files</sys:String>
+
+    <!-- Errors -->
+    <sys:String x:Key="Error.PasswordEmpty">Enter a password.</sys:String>
+    <sys:String x:Key="Error.PasswordMismatch">The passwords do not match.</sys:String>
+    <sys:String x:Key="Error.Required">Required field.</sys:String>
+    <sys:String x:Key="Error.NothingSelected">Select at least one item.</sys:String>
+    <sys:String x:Key="Error.Unexpected">Something went wrong</sys:String>
+    <sys:String x:Key="Error.NotAVault.Title">File not recognized</sys:String>
+    <sys:String x:Key="Error.NotAVault">The selected file is not an OnlyYours vault.</sys:String>
+    <sys:String x:Key="VaultError.NotFound">The vault file does not exist.</sys:String>
+    <sys:String x:Key="VaultError.NotAVault">This file is not an OnlyYours vault.</sys:String>
+    <sys:String x:Key="VaultError.UnsupportedVersion">The vault was created by a newer version of OnlyYours.</sys:String>
+    <sys:String x:Key="VaultError.Truncated">The file is incomplete: restore a backup.</sys:String>
+    <sys:String x:Key="VaultError.Corrupted">The vault content is damaged.</sys:String>
+    <sys:String x:Key="VaultError.InvalidPassword">Wrong master password.</sys:String>
+    <sys:String x:Key="VaultError.InvalidRecoveryKey">The recovery key is not valid for this vault.</sys:String>
+    <sys:String x:Key="VaultError.HelloUnavailable">Windows Hello is not turned on for this vault.</sys:String>
+    <sys:String x:Key="VaultError.HelloFailed">Windows Hello did not return the correct key.</sys:String>
+    <sys:String x:Key="VaultError.IntegrityFailure">The file fails its integrity check: it was modified or damaged.</sys:String>
+    <sys:String x:Key="VaultError.AccessDenied">Access to the file was denied. Close other apps using it.</sys:String>
+    <sys:String x:Key="VaultError.IoFailure">The file could not be read or written. Check your free disk space.</sys:String>
+    <sys:String x:Key="VaultError.Cancelled">Operation cancelled.</sys:String>
+    <sys:String x:Key="VaultError.Locked">The vault is locked.</sys:String>
+    <sys:String x:Key="VaultError.UnsafeParameters">The file requests invalid security parameters.</sys:String>
+
+    <!-- Audit -->
+    <sys:String x:Key="Audit.VaultCreated">Vault created</sys:String>
+    <sys:String x:Key="Audit.Unlocked">Unlocked with the master password</sys:String>
+    <sys:String x:Key="Audit.UnlockedWithRecovery">Unlocked with the recovery key</sys:String>
+    <sys:String x:Key="Audit.UnlockedWithHello">Unlocked with Windows Hello</sys:String>
+    <sys:String x:Key="Audit.MasterPasswordChanged">Master password changed</sys:String>
+    <sys:String x:Key="Audit.RecoveryKeyRegenerated">Recovery key regenerated</sys:String>
+    <sys:String x:Key="Audit.HelloEnabled">Windows Hello turned on</sys:String>
+    <sys:String x:Key="Audit.HelloDisabled">Windows Hello turned off</sys:String>
+    <sys:String x:Key="Audit.Exported">Export</sys:String>
+    <sys:String x:Key="Audit.Imported">Import</sys:String>
+    <sys:String x:Key="Audit.Migrated">Migrated from BetterOnlyYours</sys:String>
+    <sys:String x:Key="Audit.BackupRestored">Backup restored</sys:String>
+    <sys:String x:Key="Audit.KdfUpgraded">Key derivation strengthened</sys:String>
+    <sys:String x:Key="Audit.PackageShared">Package shared</sys:String>
+    <sys:String x:Key="Audit.PackageReceived">Package received</sys:String>
+    <sys:String x:Key="Audit.RollbackDetected">File rollback detected</sys:String>
+    <sys:String x:Key="Audit.TrashEmptied">Trash emptied</sys:String>
+</ResourceDictionary>

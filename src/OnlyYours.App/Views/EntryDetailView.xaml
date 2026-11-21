@@ -1,0 +1,203 @@
+<UserControl x:Class="OnlyYours.App.Views.EntryDetailView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:c="clr-namespace:OnlyYours.App.Controls"
+             xmlns:vm="clr-namespace:OnlyYours.App.ViewModels"
+             AutomationProperties.AutomationId="EntryDetail">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="32,24,32,32" MaxWidth="820" x:Name="Body">
+            <!-- Hero header -->
+            <Grid c:Anim.Enter="Rise" x:Name="Header">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <c:Monogram Text="{Binding Title}" IsFavorite="{Binding IsFavorite}" Width="64" Height="64" c:Anim.Enter="Pop" />
+                <StackPanel Grid.Column="1" Margin="18,0,12,0" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding Title}" ToolTip="{Binding Title}" Style="{StaticResource Text.Title}" FontSize="25" TextTrimming="CharacterEllipsis" AutomationProperties.AutomationId="DetailTitle" />
+                    <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                        <c:Glyph Data="{Binding KindIcon, Converter={StaticResource Icon}}" Width="14" Height="14" Foreground="{DynamicResource Brush.TextFaint}" />
+                        <TextBlock Text="{Binding KindName}" Style="{StaticResource Text.Caption}" Margin="6,0,0,0" />
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Top" x:Name="HeaderActions">
+                    <Button Style="{StaticResource Button.Icon}" c:Hint.Icon="{DynamicResource Icon.Star}" c:Hint.IsActive="{Binding IsFavorite}" Command="{Binding FavoriteCommand}" ToolTip="{DynamicResource Detail.Favorite}" AutomationProperties.AutomationId="FavoriteButton" />
+                    <Button Style="{StaticResource Button.Icon}" c:Hint.Icon="{DynamicResource Icon.Keyboard}" Command="{Binding AutoTypeCommand}" ToolTip="{DynamicResource Detail.AutoType}" Visibility="{Binding CanAutoType, Converter={StaticResource Visible}}" />
+                    <Button Style="{StaticResource Button.Icon}" c:Hint.Icon="{DynamicResource Icon.Share}" Command="{Binding ShareCommand}" ToolTip="{DynamicResource Detail.Share}" />
+                    <Button Style="{StaticResource Button.Icon}" c:Hint.Icon="{DynamicResource Icon.Copy}" Command="{Binding DuplicateCommand}" ToolTip="{DynamicResource Detail.Duplicate}" />
+                    <Button Style="{StaticResource Button.Icon}" c:Hint.Icon="{DynamicResource Icon.Trash}" c:Hint.Tone="danger" Command="{Binding TrashCommand}" ToolTip="{DynamicResource Detail.Trash}" AutomationProperties.AutomationId="TrashButton" />
+                    <Button Style="{StaticResource Button.Secondary}" c:Hint.Icon="{DynamicResource Icon.Edit}" Content="{DynamicResource Detail.Edit}" Command="{Binding EditCommand}" Margin="8,0,0,0" MinHeight="34" Padding="14,6" AutomationProperties.AutomationId="EditButton" />
+                </StackPanel>
+            </Grid>
+
+            <!-- Tags -->
+            <ItemsControl ItemsSource="{Binding Tags}" Margin="82,10,0,0" Visibility="{Binding HasTags, Converter={StaticResource Visible}}" Focusable="False">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Style="{StaticResource Chip}">
+                            <StackPanel Orientation="Horizontal">
+                                <c:Glyph Data="{DynamicResource Icon.Tag}" Width="11" Height="11" Foreground="{DynamicResource Brush.TextAccent}" />
+                                <TextBlock Text="{Binding}" FontSize="12" Foreground="{DynamicResource Brush.TextAccent}" Margin="5,0,0,0" />
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <!-- Health warning -->
+            <Border Background="{DynamicResource Brush.WarningSoft}" CornerRadius="12" Padding="14,10" Margin="0,18,0,0" Visibility="{Binding HasHealthWarning, Converter={StaticResource Visible}}" c:Anim.Enter="Rise" c:Anim.Delay="60">
+                <StackPanel Orientation="Horizontal">
+                    <c:Glyph Data="{DynamicResource Icon.ShieldAlert}" Width="16" Height="16" Foreground="{DynamicResource Brush.Warning}" />
+                    <TextBlock Text="{Binding HealthWarning}" Foreground="{DynamicResource Brush.Warning}" Margin="10,0,0,0" TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+
+            <!-- TOTP -->
+            <Border Style="{StaticResource Card}" Margin="0,18,0,0" Padding="18,14" Visibility="{Binding DataContext.HasTotp, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource Visible}}" c:Anim.Enter="Rise" c:Anim.Delay="80" DataContext="{Binding Totp}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <c:TotpRing Progress="{Binding Progress}" Seconds="{Binding Seconds}" Width="46" Height="46" Thickness="3.5" />
+                    <StackPanel Grid.Column="1" Margin="16,0" VerticalAlignment="Center">
+                        <TextBlock Text="{DynamicResource Detail.Totp}" Style="{StaticResource Text.Overline}" Margin="0" />
+                        <TextBlock x:Name="TotpCode" Text="{Binding Code}" FontFamily="{StaticResource Font.Mono}" FontSize="27" FontWeight="SemiBold" Foreground="{DynamicResource Brush.TextAccent}" RenderTransformOrigin="0.5,0.5" AutomationProperties.AutomationId="TotpCode">
+                            <TextBlock.RenderTransform>
+                                <ScaleTransform />
+                            </TextBlock.RenderTransform>
+                        </TextBlock>
+                        <TextBlock Text="{Binding Description}" Style="{StaticResource Text.Caption}" />
+                    </StackPanel>
+                    <Button Grid.Column="2" Style="{StaticResource Button.Secondary}" c:Hint.Icon="{DynamicResource Icon.Copy}" Content="{DynamicResource Common.Copy}" Command="{Binding CopyCommand}" VerticalAlignment="Center" />
+                </Grid>
+            </Border>
+
+            <!-- Fields -->
+            <Border Style="{StaticResource Card}" Margin="0,18,0,0" Padding="6" c:Anim.Enter="Rise" c:Anim.Delay="120">
+                <ItemsControl ItemsSource="{Binding Fields}" Focusable="False">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type vm:FieldViewModel}">
+                            <Border x:Name="Row" CornerRadius="10" Padding="14,10" Background="Transparent">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Border Width="32" Height="32" CornerRadius="9" Background="{DynamicResource Brush.SurfaceRaised}" VerticalAlignment="Top">
+                                        <c:Glyph Data="{Binding IconKey, Converter={StaticResource Icon}}" Width="16" Height="16" Foreground="{DynamicResource Brush.TextMuted}" />
+                                    </Border>
+                                    <StackPanel Grid.Column="1" Margin="14,0,10,0" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Label}" Style="{StaticResource Text.Caption}" />
+                                        <TextBlock Text="{Binding Text}" TextWrapping="Wrap" Margin="0,3,0,0" FontSize="14" Visibility="{Binding IsPlain, Converter={StaticResource Visible}}" x:Name="PlainValue" />
+                                        <c:SecretText Source="{Binding}" IsRevealed="{Binding IsRevealed}" MaskLength="{Binding MaskLength}" Wrap="{Binding IsMultiline}" FontSize="14.5" Margin="0,4,0,0"
+                                                      Visibility="{Binding IsSensitive, Converter={StaticResource Visible}}" AutomationProperties.AutomationId="SecretValue" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" x:Name="Actions" Opacity="0.55">
+                                        <Button Style="{StaticResource Button.Icon}" Width="30" Height="30" c:Hint.Icon="{DynamicResource Icon.External}" Command="{Binding OpenCommand}" Visibility="{Binding IsUrl, Converter={StaticResource Visible}}" ToolTip="{DynamicResource Detail.Open}" />
+                                        <ToggleButton Style="{StaticResource Button.Icon}" Width="30" Height="30" c:Hint.Icon="{DynamicResource Icon.Eye}" IsChecked="{Binding IsRevealed}" Visibility="{Binding IsSensitive, Converter={StaticResource Visible}}" ToolTip="{DynamicResource Edit.Reveal}" AutomationProperties.AutomationId="RevealButton" />
+                                        <Button Style="{StaticResource Button.Icon}" Width="30" Height="30" c:Hint.Icon="{DynamicResource Icon.Copy}" Command="{Binding CopyCommand}" ToolTip="{DynamicResource Common.Copy}" AutomationProperties.AutomationId="CopyFieldButton" />
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                            <DataTemplate.Triggers>
+                                <Trigger SourceName="Row" Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Row" Property="Background" Value="{DynamicResource Brush.SurfaceHover}" />
+                                    <Setter TargetName="Actions" Property="Opacity" Value="1" />
+                                </Trigger>
+                                <DataTrigger Binding="{Binding IsMonospace}" Value="True">
+                                    <Setter TargetName="PlainValue" Property="FontFamily" Value="{StaticResource Font.Mono}" />
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Border>
+
+            <!-- Strength + 2FA prompt -->
+            <Grid Margin="4,14,4,0" Visibility="{Binding HasStrength, Converter={StaticResource Visible}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel>
+                    <c:StrengthMeter Level="{Binding StrengthLevel}" Width="220" HorizontalAlignment="Left" />
+                    <TextBlock Text="{Binding StrengthText}" Foreground="{Binding StrengthLevel, Converter={StaticResource LevelBrush}}" FontSize="{StaticResource Size.Small}" Margin="0,6,0,0" />
+                </StackPanel>
+                <Button Grid.Column="1" Style="{StaticResource Button.Link}" c:Hint.Icon="{DynamicResource Icon.Timer}" Content="{DynamicResource Detail.AddTotp}" Command="{Binding SetupTotpCommand}" Visibility="{Binding CanHaveTotp, Converter={StaticResource Visible}}" VerticalAlignment="Center" />
+            </Grid>
+
+            <!-- History -->
+            <Border Style="{StaticResource Card}" Margin="0,18,0,0" Padding="6" Visibility="{Binding HasHistory, Converter={StaticResource Visible}}">
+                <StackPanel>
+                    <Button Style="{StaticResource Button.Ghost}" Command="{Binding ToggleHistoryCommand}" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" Padding="12,8">
+                        <Grid>
+                            <StackPanel Orientation="Horizontal">
+                                <c:Glyph Data="{DynamicResource Icon.History}" Width="16" Height="16" />
+                                <TextBlock Text="{Binding HistoryHeader}" Margin="10,0,0,0" FontWeight="SemiBold" />
+                            </StackPanel>
+                            <c:Glyph Data="{DynamicResource Icon.ChevronDown}" Width="14" Height="14" HorizontalAlignment="Right" />
+                        </Grid>
+                    </Button>
+                    <StackPanel Visibility="{Binding HistoryExpanded, Converter={StaticResource Visible}}">
+                        <ItemsControl ItemsSource="{Binding History}" Focusable="False">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="{x:Type vm:HistoryItemViewModel}">
+                                    <Grid Margin="14,6">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel>
+                                            <c:SecretText Source="{Binding}" IsRevealed="{Binding IsRevealed}" FontSize="13.5" />
+                                            <TextBlock Style="{StaticResource Text.Caption}" Margin="0,2,0,0"><Run Text="{Binding When, Mode=OneWay}" /> · <Run Text="{Binding Ago, Mode=OneWay}" /></TextBlock>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                            <ToggleButton Style="{StaticResource Button.Icon}" Width="30" Height="30" c:Hint.Icon="{DynamicResource Icon.Eye}" IsChecked="{Binding IsRevealed}" />
+                                            <Button Style="{StaticResource Button.Icon}" Width="30" Height="30" c:Hint.Icon="{DynamicResource Icon.Copy}" Command="{Binding CopyCommand}" />
+                                            <Button Style="{StaticResource Button.Icon}" Width="30" Height="30" c:Hint.Icon="{DynamicResource Icon.Restore}" Command="{Binding RestoreCommand}" ToolTip="{DynamicResource History.Restore}" />
+                                            <Button Style="{StaticResource Button.Icon}" Width="30" Height="30" c:Hint.Icon="{DynamicResource Icon.Close}" c:Hint.Tone="danger" Command="{Binding ForgetCommand}" ToolTip="{DynamicResource History.Forget}" />
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <Button Style="{StaticResource Button.Link}" Content="{DynamicResource History.Clear}" Command="{Binding ClearHistoryCommand}" Margin="14,6,0,10" HorizontalAlignment="Left" Foreground="{DynamicResource Brush.Danger}" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Metadata -->
+            <UniformGrid Columns="4" Margin="6,22,6,0" c:Anim.Enter="Fade" c:Anim.Delay="200">
+                <StackPanel>
+                    <TextBlock Text="{DynamicResource Detail.Created}" Style="{StaticResource Text.Overline}" />
+                    <TextBlock Text="{Binding Created}" Style="{StaticResource Text.Caption}" Foreground="{DynamicResource Brush.TextMuted}" />
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock Text="{DynamicResource Detail.Modified}" Style="{StaticResource Text.Overline}" />
+                    <TextBlock Text="{Binding Modified}" Style="{StaticResource Text.Caption}" Foreground="{DynamicResource Brush.TextMuted}" />
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock Text="{DynamicResource Detail.LastUsed}" Style="{StaticResource Text.Overline}" />
+                    <TextBlock Text="{Binding LastUsed}" Style="{StaticResource Text.Caption}" Foreground="{DynamicResource Brush.TextMuted}" />
+                </StackPanel>
+                <StackPanel Visibility="{Binding HasExpiry, Converter={StaticResource Visible}}">
+                    <TextBlock Text="{DynamicResource Detail.Expires}" Style="{StaticResource Text.Overline}" />
+                    <TextBlock Text="{Binding Expires}" Style="{StaticResource Text.Caption}" Foreground="{DynamicResource Brush.TextMuted}" />
+                </StackPanel>
+            </UniformGrid>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

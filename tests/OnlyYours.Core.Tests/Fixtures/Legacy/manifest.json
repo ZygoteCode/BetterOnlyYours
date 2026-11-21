@@ -1,0 +1,350 @@
+{
+  "generator": "BetterOnlyYours legacy code (path dependency), tools/legacy-fixtures",
+  "generatedAt": "2026-11-21T13:24:22.740606Z",
+  "vaults": [
+    {
+      "file": "v3-argon2id.plf",
+      "password": "correct horse battery staple ✓",
+      "version": 3,
+      "kdf": "argon2id",
+      "memoryKiB": 8192,
+      "iterations": 2,
+      "parallelism": 2,
+      "entries": [
+        {
+          "title": "GitHub",
+          "structured": true,
+          "username": "ada@example.com",
+          "password": "Tr0ub4dor&3-horse",
+          "url": "https://github.com/login",
+          "notes": "Account principale.\nChiavi SSH sul portatile.",
+          "tags": [
+            "dev",
+            "lavoro"
+          ],
+          "favorite": true,
+          "createdAt": 1673352000000,
+          "updatedAt": 1717243200000,
+          "fields": [
+            {
+              "label": "Codici di recupero",
+              "value": "a1b2-c3d4-e5f6",
+              "secret": true
+            },
+            {
+              "label": "Team",
+              "value": "Platform"
+            }
+          ],
+          "history": [
+            {
+              "password": "oldPassword#2",
+              "replacedAt": 1717243200000
+            },
+            {
+              "password": "oldPassword#1",
+              "replacedAt": 1694779200000
+            }
+          ],
+          "totp": {
+            "secretBase32": "JBSWY3DPEHPK3PXP",
+            "algorithm": "SHA1",
+            "digits": 6,
+            "period": 30,
+            "codes": [
+              {
+                "unixMs": 1700000000000,
+                "code": "324550"
+              },
+              {
+                "unixMs": 1234567890000,
+                "code": "742275"
+              }
+            ]
+          },
+          "extra": {}
+        },
+        {
+          "title": "Banca Intesa",
+          "structured": true,
+          "username": "ada.lovelace",
+          "password": "Pàss€wörd!🔐 κλειδί",
+          "url": "intesasanpaolo.com",
+          "notes": "",
+          "tags": [
+            "banca"
+          ],
+          "favorite": false,
+          "createdAt": 1646222400000,
+          "updatedAt": 1646222400000,
+          "fields": [],
+          "history": [],
+          "totp": {
+            "secretBase32": "JBSWY3DPEHPK3PXP",
+            "algorithm": "SHA256",
+            "digits": 8,
+            "period": 60,
+            "codes": [
+              {
+                "unixMs": 1700000000000,
+                "code": "71205722"
+              },
+              {
+                "unixMs": 1234567890000,
+                "code": "45806924"
+              }
+            ]
+          },
+          "extra": {}
+        },
+        {
+          "title": "Server SSH",
+          "structured": true,
+          "username": "root",
+          "password": "p@$$w0rd with spaces & \"quotes\"",
+          "url": "ssh://10.0.0.5:2222",
+          "notes": "Riga 1\r\nRiga 2\tcon tab\n— fine —",
+          "tags": [],
+          "favorite": false,
+          "createdAt": 1637409600000,
+          "updatedAt": 1637496000000,
+          "fields": [],
+          "history": [],
+          "extra": {
+            "color": "blue",
+            "pinnedAt": 1650000000000
+          }
+        },
+        {
+          "title": "Vecchio account",
+          "structured": true,
+          "username": "ada1815",
+          "password": "",
+          "url": "",
+          "notes": "",
+          "tags": [],
+          "favorite": false,
+          "createdAt": 1557057600000,
+          "updatedAt": 1557057600000,
+          "fields": [],
+          "history": [],
+          "extra": {}
+        },
+        {
+          "title": "Account \"speciale\" 🚀 <tag> & co",
+          "structured": true,
+          "username": "",
+          "password": "emoji🚀🚀and\u0000null?",
+          "url": "https://example.org/path?q=1&x=ä",
+          "notes": "",
+          "tags": [],
+          "favorite": false,
+          "createdAt": 1704110400000,
+          "updatedAt": 1706875200000,
+          "fields": [],
+          "history": [],
+          "extra": {}
+        },
+        {
+          "title": "Wi-Fi casa",
+          "structured": false,
+          "notes": "SSID: Casa\nPassword Wi-Fi: correct-horse-battery\nRouter: 192.168.1.1",
+          "username": "",
+          "password": "",
+          "url": "",
+          "tags": [],
+          "favorite": false,
+          "fields": [],
+          "history": [],
+          "extra": {}
+        }
+      ],
+      "lastUsed": {
+        "GitHub": 1717318800000,
+        "Banca Intesa": 1717092000000
+      },
+      "metaCreatedAt": 1557057600000
+    },
+    {
+      "file": "v3-pbkdf2.plf",
+      "password": "pbkdf2-password",
+      "version": 3,
+      "kdf": "pbkdf2",
+      "iterations": 2000,
+      "entries": [
+        {
+          "title": "Posta",
+          "structured": true,
+          "username": "ada@posta.it",
+          "password": "Sp3cial-Chars_!?",
+          "url": "https://mail.example.it",
+          "notes": "",
+          "tags": [],
+          "favorite": false,
+          "createdAt": 1586001600000,
+          "updatedAt": 1586088000000,
+          "fields": [],
+          "history": [],
+          "extra": {}
+        },
+        {
+          "title": "Nota libera",
+          "structured": false,
+          "notes": "Solo testo",
+          "username": "",
+          "password": "",
+          "url": "",
+          "tags": [],
+          "favorite": false,
+          "fields": [],
+          "history": [],
+          "extra": {}
+        }
+      ]
+    },
+    {
+      "file": "v2-pbkdf2.plf",
+      "password": "v2 password",
+      "version": 2,
+      "kdf": "pbkdf2",
+      "iterations": 5000,
+      "entries": [
+        {
+          "title": "Forum",
+          "structured": false,
+          "notes": "utente: ada / pw: hunter2",
+          "username": "",
+          "password": "",
+          "url": "",
+          "tags": [],
+          "favorite": false,
+          "fields": [],
+          "history": [],
+          "extra": {}
+        },
+        {
+          "title": "Codice allarme",
+          "structured": false,
+          "notes": "4711",
+          "username": "",
+          "password": "",
+          "url": "",
+          "tags": [],
+          "favorite": false,
+          "fields": [],
+          "history": [],
+          "extra": {}
+        }
+      ]
+    },
+    {
+      "file": "v1.plf",
+      "password": "first-build",
+      "version": 1,
+      "kdf": "pbkdf2",
+      "iterations": 3000,
+      "entries": [
+        {
+          "title": "Primo segreto",
+          "structured": false,
+          "notes": "scritto dalla prima build",
+          "username": "",
+          "password": "",
+          "url": "",
+          "tags": [],
+          "favorite": false,
+          "fields": [],
+          "history": [],
+          "extra": {}
+        }
+      ]
+    },
+    {
+      "file": "backup-only/credentials.plf",
+      "password": "backup password",
+      "version": 3,
+      "kdf": "argon2id",
+      "memoryKiB": 8192,
+      "iterations": 2,
+      "parallelism": 2,
+      "recoveredFromBackup": true,
+      "entries": [
+        {
+          "title": "Posta",
+          "structured": true,
+          "username": "ada@posta.it",
+          "password": "Sp3cial-Chars_!?",
+          "url": "https://mail.example.it",
+          "notes": "",
+          "tags": [],
+          "favorite": false,
+          "createdAt": 1586001600000,
+          "updatedAt": 1586088000000,
+          "fields": [],
+          "history": [],
+          "extra": {}
+        }
+      ]
+    }
+  ],
+  "settings": {
+    "file": "settings.json",
+    "language": "it",
+    "autoLockMinutes": 15,
+    "clipboardClearSeconds": 15
+  },
+  "argon2id": [
+    {
+      "password": "70617373776f7264",
+      "salt": "736f6d6573616c74736f6d6573616c74",
+      "memoryKiB": 64,
+      "iterations": 1,
+      "parallelism": 1,
+      "key": "e793d64ef75d58f503d4631b2b149f7f80127c5f3993d89b1c9b781e51d0b413"
+    },
+    {
+      "password": "70617373776f7264",
+      "salt": "736f6d6573616c74736f6d6573616c74",
+      "memoryKiB": 256,
+      "iterations": 2,
+      "parallelism": 2,
+      "key": "c112d2ee6b9d514413f806243187952186e8f19cacab80f20a823d549f111d2c"
+    },
+    {
+      "password": "70c3a4737377c3b6726420e29c93",
+      "salt": "30313233343536373839616263646566",
+      "memoryKiB": 1024,
+      "iterations": 3,
+      "parallelism": 4,
+      "key": "44be9f2974ff3c4f4b339086c06393c6e14a0e9a36abf102a989140ca8115dc1"
+    },
+    {
+      "password": "",
+      "salt": "656d70747970617373776f726473616c",
+      "memoryKiB": 512,
+      "iterations": 1,
+      "parallelism": 3,
+      "key": "f02262671fcfe83e31c3c851f05af12d685802204c507e7b6c6fd4073c40b711"
+    },
+    {
+      "password": "61206d756368206c6f6e67657220706173737068726173652077697468206d616e7920776f726473",
+      "salt": "6c6f6e67657273616c7476616c756521",
+      "memoryKiB": 2048,
+      "iterations": 2,
+      "parallelism": 1,
+      "key": "24a6b1475e0f1160af6a549e3dd595a3c443fa29f165a6b93e4ef4633357a824"
+    }
+  ],
+  "pbkdf2Sha256": {
+    "password": "70617373776f7264",
+    "salt": "73616c7473616c7473616c7473616c74",
+    "iterations": 3000,
+    "key": "e8ea7e66b819685b69aa56a6b4c515951718a326760a8729d214658e873ce37c"
+  },
+  "hkdfSha256": {
+    "ikm": "0707070707070707070707070707070707070707070707070707070707070707",
+    "salt": "09090909090909090909090909090909",
+    "info": "betteronlyyours/totp/v1/entry-key",
+    "key": "b3ab8cf584dbc1052b2772c95bed6b6d44d2d8777c7d876ff2217aaa31a6a632"
+  }
+}

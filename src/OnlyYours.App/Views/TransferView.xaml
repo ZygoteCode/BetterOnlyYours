@@ -1,0 +1,69 @@
+<UserControl x:Class="OnlyYours.App.Views.TransferView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:c="clr-namespace:OnlyYours.App.Controls"
+             AutomationProperties.AutomationId="TransferView">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="{StaticResource Pad.Page}" MaxWidth="1000">
+            <TextBlock Text="{DynamicResource Transfer.Title}" Style="{StaticResource Text.Hero}" c:Anim.Enter="Rise" />
+            <TextBlock Text="{DynamicResource Transfer.Subtitle}" Style="{StaticResource Text.Muted}" Margin="0,6,0,22" c:Anim.Enter="Rise" c:Anim.Delay="60" />
+
+            <TextBlock Text="{DynamicResource Transfer.ImportHeader}" Style="{StaticResource Text.Overline}" />
+            <UniformGrid Columns="3" c:Anim.Enter="Rise" c:Anim.Delay="100">
+                <Button Style="{StaticResource Button.Card}" Command="{Binding ImportLegacyCommand}" Margin="0,0,8,8">
+                    <StackPanel>
+                        <c:Glyph Data="{DynamicResource Icon.Archive}" Width="24" Height="24" HorizontalAlignment="Left" Foreground="{DynamicResource Brush.Accent}" />
+                        <TextBlock Text="{DynamicResource Transfer.Legacy}" FontWeight="SemiBold" Margin="0,12,0,0" />
+                        <TextBlock Text="{DynamicResource Transfer.LegacyDesc}" Style="{StaticResource Text.Caption}" TextWrapping="Wrap" Margin="0,4,0,0" />
+                    </StackPanel>
+                </Button>
+                <Button Style="{StaticResource Button.Card}" Command="{Binding ImportCsvCommand}" Margin="4,0,4,8">
+                    <StackPanel>
+                        <c:Glyph Data="{DynamicResource Icon.List}" Width="24" Height="24" HorizontalAlignment="Left" Foreground="{DynamicResource Brush.Accent}" />
+                        <TextBlock Text="{DynamicResource Transfer.Csv}" FontWeight="SemiBold" Margin="0,12,0,0" />
+                        <TextBlock Text="{DynamicResource Transfer.CsvDesc}" Style="{StaticResource Text.Caption}" TextWrapping="Wrap" Margin="0,4,0,0" />
+                    </StackPanel>
+                </Button>
+                <Button Style="{StaticResource Button.Card}" Command="{Binding OpenPackageCommand}" Margin="8,0,0,8">
+                    <StackPanel>
+                        <c:Glyph Data="{DynamicResource Icon.Package}" Width="24" Height="24" HorizontalAlignment="Left" Foreground="{DynamicResource Brush.Accent}" />
+                        <TextBlock Text="{DynamicResource Transfer.Package}" FontWeight="SemiBold" Margin="0,12,0,0" />
+                        <TextBlock Text="{DynamicResource Transfer.PackageDesc}" Style="{StaticResource Text.Caption}" TextWrapping="Wrap" Margin="0,4,0,0" />
+                    </StackPanel>
+                </Button>
+            </UniformGrid>
+
+            <TextBlock Text="{DynamicResource Transfer.ExportHeader}" Style="{StaticResource Text.Overline}" Margin="0,18,0,6" />
+            <UniformGrid Columns="3" c:Anim.Enter="Rise" c:Anim.Delay="160">
+                <Button Style="{StaticResource Button.Card}" Command="{Binding ExportPackageCommand}" Margin="0,0,8,8">
+                    <StackPanel>
+                        <c:Glyph Data="{DynamicResource Icon.Lock}" Width="24" Height="24" HorizontalAlignment="Left" Foreground="{DynamicResource Brush.Success}" />
+                        <TextBlock Text="{DynamicResource Transfer.ExportPackage}" FontWeight="SemiBold" Margin="0,12,0,0" />
+                        <TextBlock Text="{DynamicResource Transfer.ExportPackageDesc}" Style="{StaticResource Text.Caption}" TextWrapping="Wrap" Margin="0,4,0,0" />
+                    </StackPanel>
+                </Button>
+                <Button Style="{StaticResource Button.Card}" Command="{Binding BackupCopyCommand}" Margin="4,0,4,8">
+                    <StackPanel>
+                        <c:Glyph Data="{DynamicResource Icon.Seal}" Width="24" Height="24" HorizontalAlignment="Left" Foreground="{DynamicResource Brush.Success}" />
+                        <TextBlock Text="{DynamicResource Transfer.Backup}" FontWeight="SemiBold" Margin="0,12,0,0" />
+                        <TextBlock Text="{DynamicResource Transfer.BackupDesc}" Style="{StaticResource Text.Caption}" TextWrapping="Wrap" Margin="0,4,0,0" />
+                    </StackPanel>
+                </Button>
+                <Button Style="{StaticResource Button.Card}" Command="{Binding ExportCsvCommand}" Margin="8,0,0,8">
+                    <StackPanel>
+                        <c:Glyph Data="{DynamicResource Icon.Warning}" Width="24" Height="24" HorizontalAlignment="Left" Foreground="{DynamicResource Brush.Danger}" />
+                        <TextBlock Text="{DynamicResource Transfer.ExportCsv}" FontWeight="SemiBold" Margin="0,12,0,0" />
+                        <TextBlock Text="{DynamicResource Transfer.ExportCsvDesc}" Style="{StaticResource Text.Caption}" TextWrapping="Wrap" Margin="0,4,0,0" />
+                    </StackPanel>
+                </Button>
+            </UniformGrid>
+
+            <Border Style="{StaticResource Card}" Margin="0,18,0,0">
+                <StackPanel>
+                    <TextBlock Text="{DynamicResource Transfer.FormatsTitle}" FontWeight="SemiBold" />
+                    <TextBlock Text="{DynamicResource Transfer.Formats}" Style="{StaticResource Text.Caption}" TextWrapping="Wrap" Margin="0,6,0,0" />
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

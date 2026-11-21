@@ -1,0 +1,17 @@
+# .NET build output
+bin/
+obj/
+artifacts/
+publish/
+TestResults/
+*.user
+*.suo
+.vs/
+*.binlog
+
+# Test snapshots produced by the graphical test-suite
+tests/**/Snapshots/
+
+# Dart/Flutter tool caches (legacy fixture generator)
+tools/legacy-fixtures/.dart_tool/
+tools/legacy-fixtures/build/

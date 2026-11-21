@@ -1,0 +1,27 @@
+{
+  "language": "italian",
+  "theme": "obsidian",
+  "density": "compact",
+  "reduceMotion": true,
+  "autoLockMinutes": 15,
+  "clipboardClearSeconds": 15,
+  "confirmDelete": false,
+  "revealSecretsByDefault": false,
+  "keepPasswordHistory": true,
+  "sidebarWidth": 280.0,
+  "globalHotkeyEnabled": false,
+  "rememberWindowBounds": true,
+  "generator": {
+    "mode": "passphrase",
+    "length": 24,
+    "lowercase": true,
+    "uppercase": true,
+    "digits": true,
+    "symbols": false,
+    "avoidAmbiguous": true,
+    "words": 6,
+    "separator": ".",
+    "capitalizeWords": true,
+    "appendNumber": false
+  }
+}

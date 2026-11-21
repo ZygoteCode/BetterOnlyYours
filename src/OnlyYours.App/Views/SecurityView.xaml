@@ -1,0 +1,186 @@
+<UserControl x:Class="OnlyYours.App.Views.SecurityView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:c="clr-namespace:OnlyYours.App.Controls"
+             xmlns:vm="clr-namespace:OnlyYours.App.ViewModels"
+             AutomationProperties.AutomationId="SecurityView">
+    <UserControl.Resources>
+        <DataTemplate x:Key="InfoRowTemplate" DataType="{x:Type vm:InfoRow}">
+            <Grid Margin="0,7">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="170" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <c:Glyph Data="{Binding IconKey, Converter={StaticResource Icon}}" Width="15" Height="15" Foreground="{DynamicResource Brush.TextFaint}" VerticalAlignment="Top" Margin="0,2,0,0" />
+                <TextBlock Grid.Column="1" Text="{Binding Label}" Foreground="{DynamicResource Brush.TextMuted}" Margin="10,0,8,0" TextWrapping="Wrap" />
+                <TextBlock Grid.Column="2" Text="{Binding Value}" TextWrapping="Wrap" />
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="{StaticResource Pad.Page}" MaxWidth="1100">
+            <TextBlock Text="{DynamicResource Security.Title}" Style="{StaticResource Text.Hero}" c:Anim.Enter="Rise" />
+            <TextBlock Text="{DynamicResource Security.Subtitle}" Style="{StaticResource Text.Muted}" Margin="0,6,0,22" c:Anim.Enter="Rise" c:Anim.Delay="60" />
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="300" />
+                    <ColumnDefinition Width="18" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Border Style="{StaticResource Card}" c:Anim.Enter="Pop" c:Anim.Delay="100" x:Name="ScoreCard">
+                    <StackPanel HorizontalAlignment="Center">
+                        <c:HealthGauge Value="{Binding Score}" Caption="{DynamicResource Security.ScoreLabel}" Width="200" Height="200" AutomationProperties.AutomationId="HealthScore" />
+                        <TextBlock Text="{Binding ScoreCaption}" Style="{StaticResource Text.Subtitle}" HorizontalAlignment="Center" Margin="0,4,0,0" />
+                        <TextBlock Text="{Binding Summary}" Style="{StaticResource Text.Caption}" HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap" Margin="0,4,0,6" />
+                    </StackPanel>
+                </Border>
+                <ItemsControl Grid.Column="2" ItemsSource="{Binding Categories}" Focusable="False" x:Name="CategoryList">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="2" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type vm:HealthCategoryViewModel}">
+                            <Button Style="{StaticResource Button.Card}" Command="{Binding OpenCommand}" Margin="0,0,10,10" Padding="16,14" c:Anim.Enter="Rise">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Border Width="38" Height="38" CornerRadius="11" Background="{Binding Tone, Converter={StaticResource ToneSoft}}">
+                                        <c:Glyph Data="{Binding IconKey, Converter={StaticResource Icon}}" Width="18" Height="18" Foreground="{Binding Tone, Converter={StaticResource Tone}}" />
+                                    </Border>
+                                    <StackPanel Grid.Column="1" Margin="12,0,8,0" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Title}" FontWeight="SemiBold" TextWrapping="Wrap" />
+                                        <TextBlock Text="{Binding Description}" Style="{StaticResource Text.Caption}" TextWrapping="Wrap" />
+                                    </StackPanel>
+                                    <TextBlock Grid.Column="2" Text="{Binding Count}" FontSize="24" FontFamily="{StaticResource Font.Display}" Foreground="{Binding Tone, Converter={StaticResource Tone}}" VerticalAlignment="Center" />
+                                </Grid>
+                            </Button>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+
+            <!-- Keys and unlock methods -->
+            <TextBlock Text="{DynamicResource Security.Keys}" Style="{StaticResource Text.Subtitle}" Margin="0,26,0,12" />
+            <UniformGrid Columns="3">
+                <Border Style="{StaticResource Card}" Margin="0,0,10,0">
+                    <StackPanel>
+                        <c:Glyph Data="{DynamicResource Icon.Key}" Width="22" Height="22" HorizontalAlignment="Left" Foreground="{DynamicResource Brush.Accent}" />
+                        <TextBlock Text="{DynamicResource Security.MasterPassword}" FontWeight="SemiBold" Margin="0,10,0,0" />
+                        <TextBlock Text="{Binding KdfText}" Style="{StaticResource Text.Caption}" TextWrapping="Wrap" Margin="0,2,0,12" />
+                        <WrapPanel>
+                            <Button Style="{StaticResource Button.Secondary}" Content="{DynamicResource Security.Change}" Command="{Binding ChangePasswordCommand}" Margin="0,0,8,6" AutomationProperties.AutomationId="ChangePasswordButton" />
+                            <Button Style="{StaticResource Button.Ghost}" Content="{DynamicResource Security.Strengthen}" Command="{Binding StrengthenCommand}" />
+                        </WrapPanel>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource Card}" Margin="5,0">
+                    <StackPanel>
+                        <c:Glyph Data="{DynamicResource Icon.Archive}" Width="22" Height="22" HorizontalAlignment="Left" Foreground="{DynamicResource Brush.Accent}" />
+                        <TextBlock Text="{DynamicResource Security.RecoveryKey}" FontWeight="SemiBold" Margin="0,10,0,0" />
+                        <TextBlock Text="{DynamicResource Security.RecoveryDesc}" Style="{StaticResource Text.Caption}" TextWrapping="Wrap" Margin="0,2,0,12" />
+                        <Button Style="{StaticResource Button.Secondary}" Content="{DynamicResource Security.Regenerate}" Command="{Binding RecoveryCommand}" HorizontalAlignment="Left" />
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource Card}" Margin="10,0,0,0">
+                    <StackPanel>
+                        <c:Glyph Data="{DynamicResource Icon.Fingerprint}" Width="22" Height="22" HorizontalAlignment="Left" Foreground="{DynamicResource Brush.Accent}" />
+                        <TextBlock Text="Windows Hello" FontWeight="SemiBold" Margin="0,10,0,0" />
+                        <TextBlock Text="{Binding HelloText}" Style="{StaticResource Text.Caption}" TextWrapping="Wrap" Margin="0,2,0,12" />
+                        <Button Style="{StaticResource Button.Secondary}" Command="{Binding ToggleHelloCommand}" HorizontalAlignment="Left" IsEnabled="{Binding HelloAvailable}">
+                            <Grid>
+                                <TextBlock Text="{DynamicResource Security.HelloEnable}" Visibility="{Binding HasHello, Converter={StaticResource Hidden}}" />
+                                <TextBlock Text="{DynamicResource Security.HelloDisable}" Visibility="{Binding HasHello, Converter={StaticResource Visible}}" />
+                            </Grid>
+                        </Button>
+                    </StackPanel>
+                </Border>
+            </UniformGrid>
+
+            <Grid Margin="0,26,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="18" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <StackPanel>
+                    <TextBlock Text="{DynamicResource Security.Encryption}" Style="{StaticResource Text.Subtitle}" Margin="0,0,0,12" />
+                    <Border Style="{StaticResource Card}">
+                        <ItemsControl ItemsSource="{Binding Crypto}" ItemTemplate="{StaticResource InfoRowTemplate}" Focusable="False" />
+                    </Border>
+                    <Button Style="{StaticResource Button.Link}" c:Hint.Icon="{DynamicResource Icon.Folder}" Content="{DynamicResource Security.OpenFolder}" Command="{Binding OpenFolderCommand}" Margin="4,10,0,0" HorizontalAlignment="Left" />
+                </StackPanel>
+                <StackPanel Grid.Column="2">
+                    <TextBlock Text="{DynamicResource Security.Protections}" Style="{StaticResource Text.Subtitle}" Margin="0,0,0,12" />
+                    <Border Style="{StaticResource Card}">
+                        <ItemsControl ItemsSource="{Binding Protections}" ItemTemplate="{StaticResource InfoRowTemplate}" Focusable="False" />
+                    </Border>
+                    <Border Style="{StaticResource Card}" Margin="0,12,0,0" Padding="18,12">
+                        <Grid>
+                            <TextBlock Text="{Binding HistoryText}" VerticalAlignment="Center" />
+                            <Button Style="{StaticResource Button.Link}" Content="{DynamicResource History.Clear}" Command="{Binding ClearHistoryCommand}" HorizontalAlignment="Right" Foreground="{DynamicResource Brush.Danger}" />
+                        </Grid>
+                    </Border>
+                </StackPanel>
+            </Grid>
+
+            <Grid Margin="0,26,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="18" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <StackPanel>
+                    <Grid Margin="0,0,0,12">
+                        <TextBlock Text="{DynamicResource Security.Backups}" Style="{StaticResource Text.Subtitle}" />
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button Style="{StaticResource Button.Link}" Content="{DynamicResource Security.OpenBackups}" Command="{Binding OpenBackupsCommand}" Margin="0,0,14,0" />
+                            <Button Style="{StaticResource Button.Link}" Content="{DynamicResource Backup.Delete}" Command="{Binding DeleteBackupsCommand}" Foreground="{DynamicResource Brush.Danger}" Visibility="{Binding HasBackups, Converter={StaticResource Visible}}" />
+                        </StackPanel>
+                    </Grid>
+                    <Border Style="{StaticResource Card}" Padding="8">
+                        <Grid>
+                            <TextBlock Text="{DynamicResource Security.NoBackups}" Style="{StaticResource Text.Caption}" Margin="10" Visibility="{Binding HasBackups, Converter={StaticResource Hidden}}" />
+                            <ItemsControl ItemsSource="{Binding Backups}" Focusable="False">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type vm:BackupItemViewModel}">
+                                        <Grid Margin="10,6">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <c:Glyph Data="{DynamicResource Icon.Archive}" Width="16" Height="16" Foreground="{DynamicResource Brush.TextFaint}" />
+                                            <StackPanel Grid.Column="1" Margin="12,0">
+                                                <TextBlock Text="{Binding When}" />
+                                                <TextBlock Style="{StaticResource Text.Caption}"><Run Text="{Binding Ago, Mode=OneWay}" /> · <Run Text="{Binding Size, Mode=OneWay}" /> · <Run Text="{Binding Counter, Mode=OneWay}" /></TextBlock>
+                                            </StackPanel>
+                                            <Button Grid.Column="2" Style="{StaticResource Button.Ghost}" c:Hint.Icon="{DynamicResource Icon.Restore}" Content="{DynamicResource Backup.Restore}" Command="{Binding RestoreCommand}" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Grid>
+                    </Border>
+                </StackPanel>
+                <StackPanel Grid.Column="2">
+                    <TextBlock Text="{DynamicResource Security.Audit}" Style="{StaticResource Text.Subtitle}" Margin="0,0,0,12" />
+                    <Border Style="{StaticResource Card}">
+                        <ItemsControl ItemsSource="{Binding Audit}" ItemTemplate="{StaticResource InfoRowTemplate}" Focusable="False" />
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

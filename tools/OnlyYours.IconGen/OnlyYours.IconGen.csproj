@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Dev tool: renders the OnlyYours mark into Assets\OnlyYours.ico and Assets\OnlyYours-256.png. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net11.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\src\OnlyYours.App\Controls\SealArt.cs" Link="SealArt.cs" />
+  </ItemGroup>
+
+</Project>

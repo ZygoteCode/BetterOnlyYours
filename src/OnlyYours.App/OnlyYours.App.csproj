@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net11.0-windows10.0.19041.0</TargetFramework>
+    <SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
+    <UseWPF>true</UseWPF>
+    <RootNamespace>OnlyYours.App</RootNamespace>
+    <AssemblyName>OnlyYours</AssemblyName>
+    <StartupObject>OnlyYours.App.Program</StartupObject>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Assets\OnlyYours.ico</ApplicationIcon>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <SelfContained>false</SelfContained>
+    <TieredPGO>true</TieredPGO>
+    <TieredCompilation>true</TieredCompilation>
+    <ConcurrentGarbageCollection>true</ConcurrentGarbageCollection>
+    <ServerGarbageCollection>false</ServerGarbageCollection>
+    <InvariantGlobalization>false</InvariantGlobalization>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <AssemblyTitle>OnlyYours</AssemblyTitle>
+    <Description>OnlyYours — your secrets, sealed.</Description>
+  </PropertyGroup>
+
+  <!-- Release builds are precompiled (ReadyToRun): no JIT on the hot start-up path. -->
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <PublishReadyToRun>true</PublishReadyToRun>
+    <Optimize>true</Optimize>
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OnlyYours.Core\OnlyYours.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="OnlyYours.App.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\OnlyYours.ico" />
+    <Resource Include="Assets\OnlyYours-256.png" />
+    <Resource Include="Assets\Splash.png" />
+  </ItemGroup>
+
+</Project>

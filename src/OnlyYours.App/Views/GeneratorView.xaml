@@ -1,0 +1,144 @@
+<UserControl x:Class="OnlyYours.App.Views.GeneratorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:c="clr-namespace:OnlyYours.App.Controls"
+             xmlns:vm="clr-namespace:OnlyYours.App.ViewModels"
+             AutomationProperties.AutomationId="GeneratorView">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="{StaticResource Pad.Page}" MaxWidth="1100" x:Name="Layout">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="24" />
+                <ColumnDefinition Width="340" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <StackPanel>
+                <TextBlock Text="{DynamicResource Generator.Title}" Style="{StaticResource Text.Hero}" c:Anim.Enter="Rise" />
+                <TextBlock Text="{DynamicResource Generator.Subtitle}" Style="{StaticResource Text.Muted}" Margin="0,6,0,22" c:Anim.Enter="Rise" c:Anim.Delay="60" />
+
+                <!-- Output -->
+                <Border Style="{StaticResource Card}" Padding="26,24" c:Anim.Enter="Rise" c:Anim.Delay="100">
+                    <StackPanel>
+                        <Border CornerRadius="12" Background="{DynamicResource Brush.Input}" BorderBrush="{DynamicResource Brush.Line}" BorderThickness="1" Padding="20,18" MinHeight="84">
+                            <c:SecretText x:Name="Output" Source="{Binding}" Version="{Binding Version}" IsRevealed="True" Wrap="True" FontSize="22" VerticalAlignment="Center" AutomationProperties.AutomationId="GeneratedValue" />
+                        </Border>
+                        <Grid Margin="0,16,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <c:StrengthMeter Level="{Binding StrengthLevel}" Width="260" HorizontalAlignment="Left" />
+                                <TextBlock Margin="0,8,0,0" FontSize="{StaticResource Size.Small}">
+                                    <Run Text="{Binding StrengthText, Mode=OneWay}" Foreground="{Binding StrengthLevel, Converter={StaticResource LevelBrush}}" FontWeight="SemiBold" />
+                                    <Run Text=" · " Foreground="{DynamicResource Brush.TextFaint}" />
+                                    <Run Text="{Binding EntropyText, Mode=OneWay}" Foreground="{DynamicResource Brush.TextMuted}" />
+                                    <Run Text=" · " Foreground="{DynamicResource Brush.TextFaint}" />
+                                    <Run Text="{Binding LengthText, Mode=OneWay}" Foreground="{DynamicResource Brush.TextMuted}" />
+                                </TextBlock>
+                                <TextBlock Text="{Binding CrackText}" Style="{StaticResource Text.Caption}" Margin="0,4,0,0" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12,0,0,0">
+                                <Button Style="{StaticResource Button.Secondary}" c:Hint.Icon="{DynamicResource Icon.Refresh}" Content="{DynamicResource Generator.Regenerate}" Command="{Binding RegenerateCommand}" Margin="0,0,10,0" AutomationProperties.AutomationId="RegenerateButton" />
+                                <Button Style="{StaticResource Button.Primary}" c:Hint.Icon="{DynamicResource Icon.Copy}" Content="{DynamicResource Common.Copy}" Command="{Binding CopyCommand}" AutomationProperties.AutomationId="CopyGeneratedButton" />
+                            </StackPanel>
+                        </Grid>
+                        <Button Style="{StaticResource Button.Link}" c:Hint.Icon="{DynamicResource Icon.Plus}" Content="{DynamicResource Generator.UseInEntry}" Command="{Binding UseCommand}" HorizontalAlignment="Left" Margin="0,14,0,0" />
+                    </StackPanel>
+                </Border>
+
+                <!-- Options -->
+                <Border Style="{StaticResource Card}" Margin="0,18,0,0" Padding="26,22" c:Anim.Enter="Rise" c:Anim.Delay="160">
+                    <StackPanel>
+                        <Border Style="{StaticResource Segmented}" HorizontalAlignment="Left">
+                            <StackPanel Orientation="Horizontal">
+                                <RadioButton Style="{StaticResource Segment}" Content="{DynamicResource Generator.Characters}" c:Hint.Icon="{DynamicResource Icon.Hash}" IsChecked="{Binding Mode, Converter={StaticResource Equals}, ConverterParameter=Characters}" />
+                                <RadioButton Style="{StaticResource Segment}" Content="{DynamicResource Generator.Passphrase}" c:Hint.Icon="{DynamicResource Icon.Text}" IsChecked="{Binding Mode, Converter={StaticResource Equals}, ConverterParameter=Passphrase}" />
+                                <RadioButton Style="{StaticResource Segment}" Content="PIN" c:Hint.Icon="{DynamicResource Icon.Lock}" IsChecked="{Binding Mode, Converter={StaticResource Equals}, ConverterParameter=Pin}" />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- characters -->
+                        <StackPanel Visibility="{Binding IsCharacters, Converter={StaticResource Visible}}" Margin="0,20,0,0">
+                            <Grid>
+                                <TextBlock Text="{DynamicResource Generator.Length}" FontWeight="SemiBold" />
+                                <TextBlock Text="{Binding Length}" Style="{StaticResource Text.Accent}" HorizontalAlignment="Right" FontSize="16" />
+                            </Grid>
+                            <Slider Minimum="6" Maximum="128" Value="{Binding Length}" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,8,0,14" SmallChange="1" LargeChange="8" AutomationProperties.AutomationId="LengthSlider" />
+                            <UniformGrid Columns="2">
+                                <CheckBox Style="{StaticResource Toggle}" Content="{DynamicResource Generator.Lowercase}" IsChecked="{Binding Lowercase}" Margin="0,6,24,6" />
+                                <CheckBox Style="{StaticResource Toggle}" Content="{DynamicResource Generator.Uppercase}" IsChecked="{Binding Uppercase}" Margin="0,6,0,6" />
+                                <CheckBox Style="{StaticResource Toggle}" Content="{DynamicResource Generator.Digits}" IsChecked="{Binding Digits}" Margin="0,6,24,6" />
+                                <CheckBox Style="{StaticResource Toggle}" Content="{DynamicResource Generator.Symbols}" IsChecked="{Binding Symbols}" Margin="0,6,0,6" />
+                                <CheckBox Style="{StaticResource Toggle}" Content="{DynamicResource Generator.Ambiguous}" IsChecked="{Binding AvoidAmbiguous}" Margin="0,6,24,6" />
+                            </UniformGrid>
+                            <TextBlock Text="{DynamicResource Generator.Exclude}" Style="{StaticResource Text.Overline}" Margin="0,14,0,6" />
+                            <TextBox Text="{Binding ExcludeCharacters, UpdateSourceTrigger=PropertyChanged, Delay=300}" FontFamily="{StaticResource Font.Mono}" c:Hint.Placeholder="{DynamicResource Generator.ExcludePlaceholder}" />
+                        </StackPanel>
+
+                        <!-- passphrase -->
+                        <StackPanel Visibility="{Binding IsPassphrase, Converter={StaticResource Visible}}" Margin="0,20,0,0">
+                            <Grid>
+                                <TextBlock Text="{DynamicResource Generator.Words}" FontWeight="SemiBold" />
+                                <TextBlock Text="{Binding Words}" Style="{StaticResource Text.Accent}" HorizontalAlignment="Right" FontSize="16" />
+                            </Grid>
+                            <Slider Minimum="3" Maximum="12" Value="{Binding Words}" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,8,0,14" />
+                            <UniformGrid Columns="2">
+                                <CheckBox Style="{StaticResource Toggle}" Content="{DynamicResource Generator.Capitalize}" IsChecked="{Binding CapitalizeWords}" Margin="0,6,24,6" />
+                                <CheckBox Style="{StaticResource Toggle}" Content="{DynamicResource Generator.AddNumber}" IsChecked="{Binding AppendNumber}" Margin="0,6,0,6" />
+                                <CheckBox Style="{StaticResource Toggle}" Content="{DynamicResource Generator.Italian}" IsChecked="{Binding ItalianWords}" Margin="0,6,24,6" />
+                            </UniformGrid>
+                            <TextBlock Text="{DynamicResource Generator.Separator}" Style="{StaticResource Text.Overline}" Margin="0,14,0,6" />
+                            <TextBox Text="{Binding Separator, UpdateSourceTrigger=PropertyChanged, Delay=300}" Width="100" HorizontalAlignment="Left" FontFamily="{StaticResource Font.Mono}" />
+                        </StackPanel>
+
+                        <!-- pin -->
+                        <StackPanel Visibility="{Binding IsPin, Converter={StaticResource Visible}}" Margin="0,20,0,0">
+                            <Grid>
+                                <TextBlock Text="{DynamicResource Generator.Digits}" FontWeight="SemiBold" />
+                                <TextBlock Text="{Binding PinLength}" Style="{StaticResource Text.Accent}" HorizontalAlignment="Right" FontSize="16" />
+                            </Grid>
+                            <Slider Minimum="4" Maximum="16" Value="{Binding PinLength}" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,8,0,8" />
+                            <TextBlock Text="{DynamicResource Generator.PinHint}" Style="{StaticResource Text.Caption}" TextWrapping="Wrap" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+
+            <!-- History -->
+            <Border Grid.Column="2" Style="{StaticResource Card}" VerticalAlignment="Top" Margin="0,78,0,0" c:Anim.Enter="Right" c:Anim.Delay="200" x:Name="HistoryCard">
+                <StackPanel>
+                    <Grid>
+                        <TextBlock Text="{DynamicResource Generator.History}" Style="{StaticResource Text.Subtitle}" FontSize="15" />
+                        <Button Style="{StaticResource Button.Link}" Content="{DynamicResource Generator.ClearHistory}" Command="{Binding ClearHistoryCommand}" HorizontalAlignment="Right" FontSize="12" Visibility="{Binding HasHistory, Converter={StaticResource Visible}}" />
+                    </Grid>
+                    <TextBlock Text="{DynamicResource Generator.HistoryHint}" Style="{StaticResource Text.Caption}" TextWrapping="Wrap" Margin="0,4,0,10" />
+                    <ItemsControl ItemsSource="{Binding History}" Focusable="False">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="{x:Type vm:GeneratedItemViewModel}">
+                                <Grid Margin="0,6">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <c:SecretText Source="{Binding}" IsRevealed="{Binding IsRevealed}" FontSize="13" MaskLength="10" />
+                                        <TextBlock Style="{StaticResource Text.Caption}"><Run Text="{Binding When, Mode=OneWay}" /> · <Run Text="{Binding Entropy, Mode=OneWay}" /></TextBlock>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                        <ToggleButton Style="{StaticResource Button.Icon}" Width="28" Height="28" c:Hint.Icon="{DynamicResource Icon.Eye}" IsChecked="{Binding IsRevealed}" />
+                                        <Button Style="{StaticResource Button.Icon}" Width="28" Height="28" c:Hint.Icon="{DynamicResource Icon.Copy}" Command="{Binding CopyCommand}" />
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

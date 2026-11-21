@@ -1,0 +1,20 @@
+name: legacy_fixtures
+description: >-
+  Generates genuine BetterOnlyYours vault files with the legacy app's own code,
+  used as fixtures by OnlyYours' migration tests.
+publish_to: none
+version: 1.0.0
+
+environment:
+  sdk: ^3.13.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  betteronlyyours:
+    path: ../../betteronlyyours
+  pointycastle: ^4.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter

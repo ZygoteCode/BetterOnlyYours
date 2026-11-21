@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/OnlyYours.Core/OnlyYours.Core.csproj" />
+    <Project Path="src/OnlyYours.App/OnlyYours.App.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/OnlyYours.Core.Tests/OnlyYours.Core.Tests.csproj" />
+    <Project Path="tests/OnlyYours.App.Tests/OnlyYours.App.Tests.csproj" />
+  </Folder>
+  <Folder Name="/tools/">
+    <Project Path="tools/OnlyYours.IconGen/OnlyYours.IconGen.csproj" />
+  </Folder>
+</Solution>
